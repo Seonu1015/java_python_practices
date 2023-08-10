@@ -1,10 +1,12 @@
 package miniRPG;
 
 public class RPG_main {
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		UnitCharacter user = new UnitCharacter();
+		user.unitInfo();
+		
+		user.printAttack();
+		
 	}
-
 }
