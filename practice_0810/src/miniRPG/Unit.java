@@ -14,7 +14,11 @@ public class Unit {
 		
 	}
 	
-	String getname() {
+	int getHealth() {
+		return health;
+	}
+	
+	String getName() {
 		return name;
 	}
 	
