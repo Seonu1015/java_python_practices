@@ -4,6 +4,7 @@ abstract class Unit {
 	
 	private String name;
 	private int health;
+	private int attack;
 	
 	Unit() {
 		
@@ -18,16 +19,24 @@ abstract class Unit {
 		return name;
 	}
 	
-	int getHealth() {
-		return health;
-	}
-	
 	void setName(String name) {
 		this.name = name;
 	}
 	
+	int getHealth() {
+		return health;
+	}
+	
 	void setHealth(int health) {
 		this.health = health;
+	}
+	
+	int getAttack() {
+		return attack;
+	}
+
+	void setAttack(int attack) {
+		this.attack = attack;
 	}
 	
 	abstract void unitInfo();

@@ -8,9 +8,6 @@ public class UnitCharacter extends Unit {
 	Scanner sc = new Scanner(System.in);
 
 	private String birth;
-	private int attack;
-	private int maxDamage;
-	private int minDamage;
 	private int level = 0;
 	// private int gold = 0;
 
@@ -18,7 +15,6 @@ public class UnitCharacter extends Unit {
 		super();
 		this.setName();
 		this.setBirth();
-		this.setAttack();
 	}
 
 	String setName() {
@@ -26,14 +22,6 @@ public class UnitCharacter extends Unit {
 		String inputName = sc.next();
 		this.setName(inputName);
 		return this.getName();
-	}
-
-	int getAttack() {
-		return this.attack;
-	}
-
-	void setAttack() {
-		this.attack = (int) (Math.random() * (maxDamage - minDamage) + minDamage);
 	}
 
 	void printAttack() {
@@ -46,25 +34,19 @@ public class UnitCharacter extends Unit {
 		String selectBirth = sc.next();
 		if (selectBirth.equals("퇴역군인")) {
 			this.setHealth(130);
-			this.maxDamage = 25;
-			this.minDamage = 15;
+			this.setAttack(27);
 		} else if (selectBirth.equals("도굴꾼")) {
 			this.setHealth(120);
-			this.maxDamage = 30;
-			this.minDamage = 10;
+			this.setAttack(30);
 		} else if (selectBirth.equals("망국의왕족")) {
 			this.setHealth(80);
-			this.maxDamage = 3;
-			this.minDamage = 1;
+			this.setAttack(32);
 		} else if (selectBirth.equals("역병의사")) {
 			this.setHealth(90);
-			;
-			this.maxDamage = 3;
-			this.minDamage = 1;
+			this.setAttack(25);
 		} else if (selectBirth.equals("못가진자")) {
 			this.setHealth(100);
-			this.maxDamage = 11;
-			this.minDamage = 11;
+			this.setAttack(10);
 		}
 	}
 
@@ -76,6 +58,7 @@ public class UnitCharacter extends Unit {
 		System.out.println("└ 체력 : " + this.getHealth());
 		// System.out.println("└ 소지금 : " + gold);
 		System.out.println(this.getAttack());
+		System.out.println("-----------------------");
 	}
 
 }

@@ -32,5 +32,6 @@ public class UnitMonster extends Unit {
 		System.out.println("┌ 몬스터명 : " + this.getName());
 		System.out.println("└ 체력 : " + this.getHealth());
 		System.out.println(this.getAttack());
+		System.out.println("-----------------------");
 	}
 }

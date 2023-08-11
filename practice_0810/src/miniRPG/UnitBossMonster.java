@@ -49,6 +49,7 @@ public class UnitBossMonster extends UnitMonster {
 		System.out.println("│ 체력 : " + this.getHealth());
 		System.out.println("└ 스킬 : " + skill);
 		System.out.println(this.getAttack());
+		System.out.println("-----------------------");
 	}
 
 }
