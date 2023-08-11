@@ -18,5 +18,7 @@ public class RPG_main {
 		ItemArmor armor1 = new ItemArmor();
 		armor1.itemInfo();
 		
+		
+		
 	}
 }
