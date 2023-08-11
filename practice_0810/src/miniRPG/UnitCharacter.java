@@ -1,15 +1,21 @@
 package miniRPG;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class UnitCharacter extends Unit {
+public class UnitCharacter extends Unit implements Interface_Equip {
 
 	Scanner sc = new Scanner(System.in);
 
 	private String birth;
 	private int level = 0;
+	private double exp = 0;
 	// private int gold = 0;
+	
+	static ArrayList<ItemPortion> portionBag = new ArrayList<>();
+	
+	
 
 	UnitCharacter() {
 		super();
@@ -56,9 +62,46 @@ public class UnitCharacter extends Unit {
 		System.out.println("┌ 캐릭터명 : " + this.getName());
 		System.out.println("│ 레벨 : " + level);
 		System.out.println("└ 체력 : " + this.getHealth());
-		// System.out.println("└ 소지금 : " + gold);
-		System.out.println(this.getAttack());
+		//System.out.println("└ 소지금 : " + gold);
+		//System.out.println(this.getAttack());
+		
+		//무기를 장착했다면 장착한 무기 정보도 출력하게끔?
+		//포션 갯수 확인 가능하게
+		
 		System.out.println("-----------------------");
+	}
+
+	double getExp() {
+		return this.exp;
+	}
+
+	double setExp() {
+		exp = (double) (Math.random() * 90 + 20);
+		System.out.println(exp + "의 경험치를 획득하였습니다.");
+		return this.getExp();
+	}
+
+	double accumulateExp() {
+		this.exp += this.setExp();
+		if (this.exp >= 300) {
+			System.out.println("★ " + this.getName() + " LEVEL UP ★");
+			System.out.println(this.getName() + "의 공격력이 상승합니다. (+3)");
+			this.level++;
+			this.exp -= 300;
+			this.setAttack(3);
+		}
+		return this.getExp();
+	}
+
+	@Override
+	public void equip(Item item) {
+		
+	}
+
+	@Override
+	public void unequip(Item item) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

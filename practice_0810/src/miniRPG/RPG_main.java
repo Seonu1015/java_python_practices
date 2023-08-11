@@ -11,14 +11,15 @@ public class RPG_main {
 		UnitMonster mob3 = new UnitMonster("구울", 90, 24, 8);
 		UnitMonster mob4 = new UnitMonster("광신도", 110, 27, 11);
 		
-		UnitBossMonster boss1 = new UnitBossMonster("트리가드", 200, 40, 30, "벼락치기", 15);
+		UnitBoss boss1 = new UnitBoss("트리가드", 200, 40, 30, "벼락치기", 15);
 		
 		ItemWeapon weapon1 = new ItemWeapon();
 		weapon1.itemInfo();
-		ItemArmor armor1 = new ItemArmor();
-		armor1.itemInfo();
+
 		
 		
 		
 	}
 }
+
+//이모지 사이트 참고해서 넣으면 더 재밌어질지도??

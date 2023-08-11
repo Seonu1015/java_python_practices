@@ -3,6 +3,7 @@ package miniRPG;
 public class ItemPortion extends Item {
 
 	private int heal;
+	private int quantity;
 	
 	ItemPortion(String name, String description, int heal) {
 		super(name, description);
@@ -15,6 +16,14 @@ public class ItemPortion extends Item {
 	
 	void setHeal(int heal) {
 		this.heal = heal;
+	}
+	
+	int getQuantity() {
+		return quantity;
+	}
+	
+	void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 	@Override
