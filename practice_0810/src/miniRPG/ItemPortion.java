@@ -3,7 +3,7 @@ package miniRPG;
 public class ItemPortion extends Item {
 
 	private int heal;
-	private int quantity;
+	private int quantity=0;
 	
 	ItemPortion(String name, String description, int heal) {
 		super(name, description);
@@ -29,8 +29,9 @@ public class ItemPortion extends Item {
 	@Override
 	void itemInfo() {		
 		System.out.println("-----------------------");
-		System.out.println("[[ " + this.getName() + " ]]");
-		System.out.println("- 설명 : " + this.getDescription());
+		System.out.println("💊 " + this.getName());
+		System.out.println("┌ 설명 : " + this.getDescription());
+		System.out.println("└ 회복량 : " + heal);
 		System.out.println("-----------------------");
 	}
 	

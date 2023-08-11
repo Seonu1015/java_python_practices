@@ -11,7 +11,6 @@ public class UnitCharacter extends Unit implements Interface_Equip {
 	private String birth;
 	private int level = 0;
 	private double exp = 0;
-	// private int gold = 0;
 	
 	static ArrayList<ItemPortion> portionBag = new ArrayList<>();
 	
@@ -62,7 +61,6 @@ public class UnitCharacter extends Unit implements Interface_Equip {
 		System.out.println("┌ 캐릭터명 : " + this.getName());
 		System.out.println("│ 레벨 : " + level);
 		System.out.println("└ 체력 : " + this.getHealth());
-		//System.out.println("└ 소지금 : " + gold);
 		//System.out.println(this.getAttack());
 		
 		//무기를 장착했다면 장착한 무기 정보도 출력하게끔?
