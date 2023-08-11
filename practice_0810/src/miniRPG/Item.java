@@ -2,6 +2,14 @@ package miniRPG;
 
 public class Item {
 	
-	String name;
+	private String name;
+	
+	String getname() {
+		return name;
+	}
+	
+	void setname() {
+		this.name = name;
+	}
 	
 }

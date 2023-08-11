@@ -1,16 +1,17 @@
 package miniRPG;
 
-import java.util.Scanner;
-
-public class Unit {
-	
-	Scanner sc = new Scanner(System.in);
+abstract class Unit {
 	
 	private String name;
 	private int health;
 	
 	Unit() {
 		
+	}
+	
+	Unit(String name, int health) {
+		this.name = name;
+		this.health = health;
 	}
 	
 	String getName() {
@@ -29,10 +30,6 @@ public class Unit {
 		this.health = health;
 	}
 	
-	void unitInfo() {
-		System.out.println("-----------------------");
-		System.out.println("┌ 유닛명 : " + name);
-		System.out.println("└ 체력 : " + health);
-	}
+	abstract void unitInfo();
 	
 }

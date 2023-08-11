@@ -9,12 +9,10 @@ public class UnitCharacter extends Unit {
 
 	private String birth;
 	private int attack;
-	private int maxPhysicalDamage;
-	private int minPhysicalDamage;
-	private int maxMagicalDamage;
-	private int minMagicalDamage;
+	private int maxDamage;
+	private int minDamage;
 	private int level = 0;
-	private int gold = 0;
+	// private int gold = 0;
 
 	UnitCharacter() {
 		super();
@@ -29,15 +27,13 @@ public class UnitCharacter extends Unit {
 		this.setName(inputName);
 		return this.getName();
 	}
-	
+
 	int getAttack() {
-		return this.attack; 
+		return this.attack;
 	}
 
 	void setAttack() {
-		if (this.birth.equals("퇴역군인") || this.birth.equals("도굴꾼")) {
-			//랜덤한 공격력???
-		}
+		this.attack = (int) (Math.random() * (maxDamage - minDamage) + minDamage);
 	}
 
 	void printAttack() {
@@ -50,35 +46,25 @@ public class UnitCharacter extends Unit {
 		String selectBirth = sc.next();
 		if (selectBirth.equals("퇴역군인")) {
 			this.setHealth(130);
-			this.maxPhysicalDamage = 25;
-			this.minPhysicalDamage = 15;
-			this.maxMagicalDamage = 3;
-			this.minMagicalDamage = 1;
+			this.maxDamage = 25;
+			this.minDamage = 15;
 		} else if (selectBirth.equals("도굴꾼")) {
 			this.setHealth(120);
-			this.maxPhysicalDamage = 30;
-			this.minPhysicalDamage = 10;
-			this.maxMagicalDamage = 3;
-			this.minMagicalDamage = 1;
+			this.maxDamage = 30;
+			this.minDamage = 10;
 		} else if (selectBirth.equals("망국의왕족")) {
 			this.setHealth(80);
-			this.maxPhysicalDamage = 3;
-			this.minPhysicalDamage = 1;
-			this.maxMagicalDamage = 30;
-			this.minMagicalDamage = 10;
+			this.maxDamage = 3;
+			this.minDamage = 1;
 		} else if (selectBirth.equals("역병의사")) {
 			this.setHealth(90);
 			;
-			this.maxPhysicalDamage = 3;
-			this.minPhysicalDamage = 1;
-			this.maxMagicalDamage = 25;
-			this.minMagicalDamage = 15;
+			this.maxDamage = 3;
+			this.minDamage = 1;
 		} else if (selectBirth.equals("못가진자")) {
 			this.setHealth(100);
-			this.maxPhysicalDamage = 11;
-			this.minPhysicalDamage = 11;
-			this.maxMagicalDamage = 11;
-			this.minMagicalDamage = 11;
+			this.maxDamage = 11;
+			this.minDamage = 11;
 		}
 	}
 
@@ -87,8 +73,9 @@ public class UnitCharacter extends Unit {
 		System.out.println("-----------------------");
 		System.out.println("┌ 캐릭터명 : " + this.getName());
 		System.out.println("│ 레벨 : " + level);
-		System.out.println("│ 체력 : " + this.getHealth());
-		System.out.println("└ 소지금 : " + gold);
+		System.out.println("└ 체력 : " + this.getHealth());
+		// System.out.println("└ 소지금 : " + gold);
+		System.out.println(this.getAttack());
 	}
 
 }

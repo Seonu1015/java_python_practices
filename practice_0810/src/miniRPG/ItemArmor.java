@@ -1,5 +1,5 @@
 package miniRPG;
 
-public class ItemArmor extends ItemEquip {
+public class ItemArmor extends Item {
 
 }
