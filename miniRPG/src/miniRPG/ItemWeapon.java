@@ -6,6 +6,7 @@ public class ItemWeapon extends Item {
 	private int minDamage;
 //	private String skill;
 //	private int skillDamage;
+	private static ItemWeapon instance;
 	
 	ItemWeapon () {
 		super("누군가 쓰다버린 검", "과거 잘나갔던 용병이 쓰던 검으로 시간이 지나 꽤 녹슬었다.");
@@ -28,6 +29,21 @@ public class ItemWeapon extends Item {
 //		this.skill = skill;
 //		this.skillDamage = skillDamage;
 	}
+	
+	int getMaxDamage() {
+		return maxDamage;
+	}
+	
+	int getMinDamage() {
+		return minDamage;
+	}
+	
+    public static ItemWeapon getInstance() {
+        if (instance == null) {
+            instance = new ItemWeapon();
+        }
+        return instance;
+    }
 	
 	@Override
 	void itemInfo() {		

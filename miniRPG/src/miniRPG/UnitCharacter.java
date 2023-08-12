@@ -63,9 +63,8 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 		System.out.println("-----------------------");
 		System.out.println("┌ 캐릭터명 : " + this.getName());
 		System.out.println("│ 레벨 : " + level);
-		System.out.println("└ 체력 : " + this.getHealth() + " / " + this.getMaxHealth());
-		
-		System.out.println("-----------------------");
+		System.out.println("│ 체력 : " + this.getHealth() + " / " + this.getMaxHealth());
+		// 장비 착용 여부 설정하기
 	}
 
 	double getExp() {
@@ -100,13 +99,12 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 
 	@Override
 	public void equip(Item item) {
-		
-	}
-
-	@Override
-	public void unequip(Item item) {
-		// TODO Auto-generated method stub
-		
+	    if (item instanceof ItemWeapon) {
+	        ItemWeapon weapon = (ItemWeapon) item;
+	        int newMinDamage = this.getAttack() + weapon.getMinDamage();
+	        int newMaxDamage = this.getAttack() + weapon.getMaxDamage();
+	        // 장비를 장착하면 캐릭터의 공격력이 반영되게끔 수정 필요함
+	    }
 	}
 
 	@Override

@@ -68,5 +68,51 @@ public class Battle {
         }
 	}
 	
-	// 보스 전투 부분 추가 필요 <- 보스와의 전투시 회피에 성공하면 한단계 아래층으로 이동하게끔
+    static void bossBattle(UnitCharacter character, UnitBoss boss) {
+        Scanner sc = new Scanner(System.in);
+
+        character.unitInfo();
+
+        System.out.println(boss.getName() + "와의 전투를 시작합니다.");
+        System.out.println("-----------------------");
+
+        int bossSkillUse = 3;
+        int bossSkillCount = 0;
+
+        while (character.getHealth() > 0 && boss.getHealth() > 0) {
+            System.out.println("공격(a), 회복(h) 중에 선택하세요.");
+            String selectAction = sc.next();
+
+            if (selectAction.equals("a")) {
+                if (bossSkillCount < bossSkillUse) {
+                    bossSkillCount++;
+                    if (bossSkillCount == bossSkillUse) {
+                        System.out.println(boss.getName() + "이(가) " + boss.getskill() + " 스킬을 시전합니다!");
+                        System.out.println("주사위를 굴려 스킬 회피 여부를 결정합니다.");
+                        int characterDice = (int) (Math.random()*6+1);
+                        int bossDice = (int) (Math.random()*6+1);
+                        System.out.println(character.getName() + "의 주사위 : " + characterDice + ", " + boss.getName() + "의 주사위 : " + bossDice);
+                        if(characterDice>=bossDice) {
+                        	System.out.println(character.getName() + "이(가) " + boss.getskill() + " 스킬을 회피했습니다!");
+                        } else {
+                        	System.out.println(boss.getName() + "의 " + boss.getskill() + " 스킬로 인해 " + boss.getSkillDamage() + "의 데미지를 받았습니다!");
+                            character.setHealth(character.getHealth() - boss.getSkillDamage());
+                        }
+                    }
+                }
+                battle(character, boss);
+            } else if (selectAction.equals("h")) {
+                ItemPotion.getInstance().itemInfo();
+                character.use();
+            }
+        }
+
+        if (character.getHealth() <= 0) {
+            System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");
+        } else {
+            System.out.println(boss.getName() + "을(를) 처치하였습니다!");
+            boss.dropItem(ItemWeapon.getInstance());
+        }
+    }
+
 }
