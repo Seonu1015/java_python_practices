@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class UnitCharacter extends Unit implements Interface_Equip {
+public class UnitCharacter extends Unit implements Interface_Equip, Interface_Use {
 
 	Scanner sc = new Scanner(System.in);
 
@@ -82,7 +82,7 @@ public class UnitCharacter extends Unit implements Interface_Equip {
 	double accumulateExp() {
 		this.exp += this.setExp();
 		if (this.exp >= 300) {
-			System.out.println("★ " + this.getName() + " LEVEL UP ★");
+			System.out.println("🎉 " + this.getName() + " LEVEL UP 🎉");
 			System.out.println(this.getName() + "의 공격력이 상승합니다. (+3)");
 			this.level++;
 			this.exp -= 300;
@@ -98,6 +98,12 @@ public class UnitCharacter extends Unit implements Interface_Equip {
 
 	@Override
 	public void unequip(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void use(Item item) {
 		// TODO Auto-generated method stub
 		
 	}
