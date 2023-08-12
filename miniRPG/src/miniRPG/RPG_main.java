@@ -21,7 +21,7 @@ public class RPG_main {
 		//Battle.repeatBattle(user, mob1);
 		// 해당 객체에서 메서드를 static으로 만들어버리면 클래스명 자체를 끌고와서 실행할 수 있다.
 
-        Dungeon dungeon = new Dungeon(user);
+        Dungeon_fix dungeon = new Dungeon_fix(user);
         dungeon.startDungeon();
 		
 		
