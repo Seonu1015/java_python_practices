@@ -3,28 +3,30 @@ package miniRPG;
 import java.util.ArrayList;
 
 public class UnitMonster extends Unit implements Interface_DropItem {
-
+	
 	private int attack;
 	private int maxDamage;
 	private int minDamage;
-
-	static ArrayList<UnitMonster> monsterList = new ArrayList<>();
 
 	UnitMonster(String name, int health, int maxDamage, int minDamage) {
 		super(name, health);
 		this.maxDamage = maxDamage;
 		this.minDamage = minDamage;
 		this.setAttack();
-		monsterList.add(this);
 	}
 
 	int getAttack() {
-		return this.attack;
+		return attack;
 	}
 
 	void setAttack() {
-		this.attack = (int) (Math.random() * (maxDamage - minDamage) + minDamage);
+		attack = (int) (Math.random() * (maxDamage - minDamage) + minDamage);
 	}
+	
+    public static UnitMonster createMonster(String name, int health, int maxDamage, int minDamage) {
+        UnitMonster monster = new UnitMonster(name, health, maxDamage, minDamage);
+        return monster;
+    }
 
 	@Override
 	void unitInfo() {
@@ -36,14 +38,16 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 	}
 
 	@Override
-	public void dropItem(Item portion) {		
-		if(portion instanceof ItemPortion) {
-			ItemPortion p = (ItemPortion) portion;
+	public void dropItem(Item potion) {		
+		if(potion instanceof ItemPotion) {
+			ItemPotion p = (ItemPotion) potion;
 			p.setQuantity((int) (Math.random()*3+1));
 			if (this.getHealth() <= 0) {
-				System.out.println(portion.getName() + "을(를) " + p.getQuantity() + "개 획득하였습니다.");
+				System.out.println(potion.getName() + "을(를) " + p.getQuantity() + "개 획득하였습니다.");
+				Interface_Use character = (Interface_Use) UnitCharacter.getInstance();
+                character.use(p);
 			}			
-		}		
+		}
 	}
 	
 	

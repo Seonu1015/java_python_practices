@@ -12,14 +12,14 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	private int level = 0;
 	private double exp = 0;
 	
-	static ArrayList<ItemPortion> portionBag = new ArrayList<>();
-	
-	
+	private ArrayList<ItemPotion> potionBag;
+	private static UnitCharacter instance = null; // 싱글톤 구현해봄
 
 	UnitCharacter() {
 		super();
 		this.setName();
 		this.setBirth();
+		potionBag = new ArrayList<>();
 	}
 
 	String setName() {
@@ -61,10 +61,6 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 		System.out.println("┌ 캐릭터명 : " + this.getName());
 		System.out.println("│ 레벨 : " + level);
 		System.out.println("└ 체력 : " + this.getHealth());
-		//System.out.println(this.getAttack());
-		
-		//무기를 장착했다면 장착한 무기 정보도 출력하게끔?
-		//포션 갯수 확인 가능하게
 		
 		System.out.println("-----------------------");
 	}
@@ -90,6 +86,17 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 		}
 		return this.getExp();
 	}
+	
+	void addPotionBag(ItemPotion potion) {
+		potionBag.add(potion);
+	}
+	
+    public static UnitCharacter getInstance() {
+        if (instance == null) {
+            instance = new UnitCharacter();
+        }
+        return instance;
+    }
 
 	@Override
 	public void equip(Item item) {
@@ -104,8 +111,36 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 
 	@Override
 	public void use(Item item) {
-		// TODO Auto-generated method stub
-		
+	    if (item instanceof ItemPotion) {
+	        ItemPotion potion = (ItemPotion) item;
+	        addPotionBag(potion);
+	        System.out.println(potion.getName() +  " 을(를) 사용하였습니다.");
+
+	        System.out.println("소지하고 있는 물약 목록: ");
+	        for (ItemPotion p : potionBag) {
+	            System.out.println(p.getName() + " (" + p.getHeal() + " 회복)");
+	        }
+	    }
 	}
+	
+    public void usePotion() {
+        if (potionBag.isEmpty()) {
+            System.out.println("소지한 물약이 없습니다.");
+            return;
+        }
+
+        System.out.println("사용할 물약을 선택하세요:");
+        for (int i = 0; i < potionBag.size(); i++) {
+            System.out.println(i + 1 + ". " + potionBag.get(i).getName());
+        }
+
+        int choice = sc.nextInt();
+        if (choice >= 1 && choice <= potionBag.size()) {
+            ItemPotion selectedPotion = potionBag.get(choice - 1);
+            use(selectedPotion);
+        } else {
+            System.out.println("잘못된 선택입니다.");
+        }
+    }
 
 }

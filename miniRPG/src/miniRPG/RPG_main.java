@@ -15,8 +15,14 @@ public class RPG_main {
 		
 //		ItemWeapon weapon1 = new ItemWeapon();
 //		weapon1.itemInfo();
+		
+		Item potion1 = new ItemPotion("회복약", "죽을 고비를 넘기게 해줍니다.", 40);
 
-		Battle.repeatBattle(user, mob1); // 해당 객체에서 메서드를 static으로 만들어버리면 클래스명 자체를 끌고와서 실행할 수 있다.
+		//Battle.repeatBattle(user, mob1);
+		// 해당 객체에서 메서드를 static으로 만들어버리면 클래스명 자체를 끌고와서 실행할 수 있다.
+
+        Dungeon dungeon = new Dungeon(user);
+        dungeon.startDungeon();
 		
 		
 	}
