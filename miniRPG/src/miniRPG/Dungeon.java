@@ -49,16 +49,19 @@ public class Dungeon {
             System.out.println(currentFloor + "층에 입장합니다.");
             boolean cleared = dungeon.battleFloor();
             
-            if (cleared) {
-                currentFloor++;
+            if (!cleared) {
+            	System.out.println(currentFloor + "층에서 패배하셨습니다.");
+                break;
             } else {
-                System.out.println(currentFloor + "층에서 패배하셨습니다.");
-                currentFloor = 1;
+                currentFloor++;
             }
         }
-
-        dungeon.checkBossBattle();
-        System.out.println("게임 오버!");
+        if (character.getHealth() <= 0) {
+            System.out.println("게임 오버!");
+        } else {
+            dungeon.checkBossBattle();
+            System.out.println("던전 탐험이 종료되었습니다.");
+        }
     }
 
     private boolean battleFloor() {
@@ -69,7 +72,10 @@ public class Dungeon {
             System.out.println(monster.getName() + " 이(가) 등장하였습니다.");
             Battle.repeatBattle(character, monster);
 
-            if (monster.getHealth() > 0) {
+            if (character.getHealth() <= 0) {
+                cleared = false;
+                break;
+            } else if (monster.getHealth() > 0) {
                 cleared = false;
                 break;
             } else {
@@ -92,8 +98,9 @@ public class Dungeon {
                 UnitBoss boss = bossPool.get(bossIndex);
                 System.out.println("보스와의 전투를 시작합니다!");
                 Battle.bossBattle(character, boss);
+                currentFloor++;
             }
-            currentFloor++;
+            
         }
     }
     

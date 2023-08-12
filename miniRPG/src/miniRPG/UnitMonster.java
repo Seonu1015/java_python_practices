@@ -14,16 +14,12 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 		super(name, health);
 		this.maxDamage = maxDamage;
 		this.minDamage = minDamage;
-		this.setAttack();
+		this.getAttack();
 		this.addMonster();
 	}
 
 	int getAttack() {
-		return attack;
-	}
-
-	void setAttack() {
-		attack = (int) (Math.random() * (maxDamage - minDamage) + minDamage);
+	    return (int) (Math.random() * (maxDamage - minDamage + 1) + minDamage);
 	}
 	
     public static ArrayList<UnitMonster> getMonsterList() {

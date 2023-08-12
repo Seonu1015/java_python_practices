@@ -42,30 +42,32 @@ public class Battle {
 	}
 	
 	static void repeatBattle(UnitCharacter character, UnitMonster monster) {
-        Scanner sc = new Scanner(System.in);
-        
-        character.unitInfo();
+	    Scanner sc = new Scanner(System.in);
 
-        System.out.println("전투를 시작합니다.");
-        System.out.println("-----------------------");
+	    character.unitInfo();
 
-        for(int i=0;i>=0; i++) {
-        	if(monster.getHealth() > 0) {
-        		System.out.println("공격(a), 회복(h) 중에 선택하세요.");
-                String selectAction = sc.next();
-                if (selectAction.equals("a")) {
-                    battle(character, monster);
-                } else if (selectAction.equals("h")) {
-                	ItemPotion.getInstance().itemInfo();
-                	character.use();
-                }
-        	} else if (monster.getHealth()<=0) {
-                break;
-        	} else {
-                System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");
-                break;
-            }
-        }
+	    System.out.println("전투를 시작합니다.");
+	    System.out.println("-----------------------");
+
+	    while (monster.getHealth() > 0 && character.getHealth() > 0) {
+	        System.out.println("공격(a), 회복(h) 중에 선택하세요.");
+	        String selectAction = sc.next();
+
+	        if (selectAction.equals("a")) {
+	            battle(character, monster);
+	            if (character.getHealth() <= 0) {
+	                System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");
+	                break;
+	            }
+	        } else if (selectAction.equals("h")) {
+	            ItemPotion.getInstance().itemInfo();
+	            character.use();
+	        }
+	    }
+	    
+	    if (monster.getHealth() <= 0) {
+	        System.out.println(monster.getName() + "을(를) 쓰러뜨렸습니다!");
+	    }
 	}
 	
     static void bossBattle(UnitCharacter character, UnitBoss boss) {
