@@ -23,10 +23,10 @@ public class Dungeon {
     private void generateMonsters() {
         int numMonsters = currentFloor * 2;
         for (int i = 0; i < numMonsters; i++) {
-            String monsterName = "몬스터 " + (i + 1); // 몬스터 이름 생성 방식
-            int monsterHealth = 100; // 몬스터 체력 생성 방식
-            int monsterMaxDamage = 20; // 몬스터 최대 데미지 생성 방식
-            int monsterMinDamage = 5; // 몬스터 최소 데미지 생성 방식
+            String monsterName = "몬스터 " + (i + 1);
+            int monsterHealth = 100;
+            int monsterMaxDamage = 20;
+            int monsterMinDamage = 5;
 
             UnitMonster monster = UnitMonster.createMonster(monsterName, monsterHealth, monsterMaxDamage, monsterMinDamage);
             addMonster(monster);
