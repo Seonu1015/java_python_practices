@@ -29,7 +29,7 @@ public class Battle {
 	                        + "만큼의 데미지를 주었습니다.");
 
 	                character.setHealth(character.getHealth() - monster.getAttack());
-	                System.out.println(character.getName() + "의 남은 체력 : " + character.getHealth());
+	                System.out.println(character.getName() + "의 남은 체력 : " + character.getHealth() + " / " + character.getMaxHealth());
 	            } else {
 	                System.out.println(monster.getName() + " 이(가) " + character.getName() + " 에게 " + monster.getAttack()
 	                        + "만큼의 데미지를 주었습니다.");
@@ -56,14 +56,10 @@ public class Battle {
                 if (selectAction.equals("a")) {
                     battle(character, monster);
                 } else if (selectAction.equals("h")) {
-                	// 소지한 물약에 대한 정보가 나와야함
-                	
-                	
-                	
+                	ItemPotion.getInstance().itemInfo();
                 	character.use();
                 }
         	} else if (monster.getHealth()<=0) {
-        		System.out.println(monster.getName() + "을(를) 격파했습니다!");
                 break;
         	} else {
                 System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");

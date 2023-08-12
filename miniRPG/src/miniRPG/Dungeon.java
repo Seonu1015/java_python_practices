@@ -17,7 +17,7 @@ public class Dungeon {
 
     private ArrayList<UnitMonster> generateMonsterPool() {
         ArrayList<UnitMonster> monsters = new ArrayList<>();
-        monsters.add(new UnitMonster("슬라임", 50, 10, 5));
+        monsters.add(new UnitMonster("슬라임", 70, 10, 5));
         monsters.add(new UnitMonster("광인", 100, 20, 5));
         monsters.add(new UnitMonster("거미", 70, 17, 7));
         monsters.add(new UnitMonster("구울", 90, 24, 8));
@@ -35,9 +35,9 @@ public class Dungeon {
         
         Dungeon dungeon = new Dungeon(character);
         
-        while (character.getHealth() > 0 && currentFloor <= dungeon.monsterPool.size()) {
-            System.out.println(currentFloor + "층에 입장합니다.");
-            boolean cleared = dungeon.battleMonstersOnFloor();
+        while (character.getHealth() > 0) {
+            System.out.println(currentFloor + "층에 입장합니다. 몬스터 " + (currentFloor) + "마리가 등장 합니다.");
+            boolean cleared = dungeon.battleFloor();
             
             if (cleared) {
                 currentFloor++;
@@ -49,20 +49,22 @@ public class Dungeon {
         System.out.println("게임 오버!");
     }
 
-    private static boolean battleMonstersOnFloor() {
+    private boolean battleFloor() {
         boolean cleared = true;
-        for (UnitMonster monster : monsterPool) {
-            System.out.println("현재 층 몬스터: " + monster.getName());
+        int numMonsters = currentFloor;
+        for (int i = 0; i < numMonsters; i++) {
+            UnitMonster monster = getRandomMonster();
+            System.out.println(monster.getName() + " 이(가) 등장하였습니다.");
             Battle.repeatBattle(character, monster);
 
             if (monster.getHealth() > 0) {
                 cleared = false;
                 break;
-            } else {
-                System.out.println(monster.getName() + "를 처치했습니다.");
             }
         }
+        System.out.println(currentFloor + "층을 클리어 하였습니다. 다음 층으로 이동합니다.");
         return cleared;
+        
     }
 
     private UnitMonster getRandomMonster() {

@@ -80,12 +80,12 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 
 	double accumulateExp() {
 		this.exp += this.setExp();
-		if (this.exp >= 300) {
+		if (this.exp >= 100) {
 			System.out.println("★ " + this.getName() + " LEVEL UP ★");
 			System.out.println(this.getName() + "의 공격력이 상승합니다. (+3)");
 			this.level++;
 			this.exp -= 300;
-			this.setAttack(3);
+			this.setAttack(this.getAttack() + 3);
 			this.maxHealth += 5;
 		}
 		return this.getExp();
@@ -122,7 +122,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 
 	        ItemPotion.getInstance().decreaseQuantity(1);
 	        System.out.println(this.getName() + "이(가) 회복 포션을 사용하여 " + healAmount + "만큼 회복합니다.");
-	        System.out.println("남은 체력: " + this.getHealth());
+	        System.out.println("남은 체력: " + this.getHealth() + " / " + this.getMaxHealth());
 	    } else {
 	        System.out.println("회복 포션이 없습니다.");
 	    }
