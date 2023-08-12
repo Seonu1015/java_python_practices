@@ -8,11 +8,14 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 	private int maxDamage;
 	private int minDamage;
 
+	private static final ArrayList<UnitMonster> monsterList = new ArrayList<>();
+	
 	UnitMonster(String name, int health, int maxDamage, int minDamage) {
 		super(name, health);
 		this.maxDamage = maxDamage;
 		this.minDamage = minDamage;
 		this.setAttack();
+		this.addMonster();
 	}
 
 	int getAttack() {
@@ -23,11 +26,14 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 		attack = (int) (Math.random() * (maxDamage - minDamage) + minDamage);
 	}
 	
-    public static UnitMonster createMonster(String name, int health, int maxDamage, int minDamage) {
-        UnitMonster monster = new UnitMonster(name, health, maxDamage, minDamage);
-        return monster;
+    public static ArrayList<UnitMonster> getMonsterList() {
+        return monsterList;
     }
-
+	
+	void addMonster() {
+		monsterList.add(this);
+	}
+	
 	@Override
 	void unitInfo() {
 		System.out.println("-----------------------");
@@ -38,16 +44,16 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 	}
 
 	@Override
-	public void dropItem(Item potion) {		
-		if(potion instanceof ItemPotion) {
-			ItemPotion p = (ItemPotion) potion;
-			p.setQuantity((int) (Math.random()*3+1));
-			if (this.getHealth() <= 0) {
-				System.out.println(potion.getName() + "을(를) " + p.getQuantity() + "개 획득하였습니다.");
-				Interface_Use character = (Interface_Use) UnitCharacter.getInstance();
-                character.use(p);
-			}			
-		}
+	public void dropItem(Item potion) {
+	    if (potion instanceof ItemPotion) {
+	        ItemPotion p = (ItemPotion) potion;
+	        int amount = (int) (Math.random() * 3 + 1);
+	        p.increaseQuantity(amount);
+	        
+	        if (this.getHealth() <= 0) {
+	            System.out.println(potion.getName() + "을(를) " + amount + "개 획득하였습니다.");
+	        }
+	    }
 	}
 	
 	

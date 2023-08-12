@@ -43,8 +43,9 @@ public class Battle {
 	
 	static void repeatBattle(UnitCharacter character, UnitMonster monster) {
         Scanner sc = new Scanner(System.in);
+        
+        character.unitInfo();
 
-        System.out.println(character.getName() + "이(가) " + monster.getName() + "을(를) 만났습니다.");
         System.out.println("전투를 시작합니다.");
         System.out.println("-----------------------");
 
@@ -55,7 +56,11 @@ public class Battle {
                 if (selectAction.equals("a")) {
                     battle(character, monster);
                 } else if (selectAction.equals("h")) {
-                	character.usePotion();
+                	// 소지한 물약에 대한 정보가 나와야함
+                	
+                	
+                	
+                	character.use();
                 }
         	} else if (monster.getHealth()<=0) {
         		System.out.println(monster.getName() + "을(를) 격파했습니다!");
@@ -66,4 +71,6 @@ public class Battle {
             }
         }
 	}
+	
+	// 보스 전투 부분 추가 필요 <- 보스와의 전투시 회피에 성공하면 한단계 아래층으로 이동하게끔
 }

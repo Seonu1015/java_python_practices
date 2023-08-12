@@ -6,31 +6,29 @@ import java.util.Scanner;
 
 public class UnitCharacter extends Unit implements Interface_Equip, Interface_Use {
 
-	Scanner sc = new Scanner(System.in);
+	private Scanner sc = new Scanner(System.in);
 
 	private String birth;
 	private int level = 0;
 	private double exp = 0;
+	private int maxHealth;
 	
-	private ArrayList<ItemPotion> potionBag;
-	private static UnitCharacter instance = null; // 싱글톤 구현해봄
+	private static UnitCharacter instance;
 
 	UnitCharacter() {
 		super();
 		this.setName();
 		this.setBirth();
-		potionBag = new ArrayList<>();
 	}
 
-	String setName() {
-		System.out.println("캐릭터명을 지어주세요.");
-		String inputName = sc.next();
-		this.setName(inputName);
-		return this.getName();
-	}
-
-	void printAttack() {
-		System.out.println(this.getAttack());
+    void setName() {
+        System.out.println("캐릭터명을 지어주세요.");
+        String inputName = sc.next();
+        this.setName(inputName);
+    }
+	
+	String getBirth() {
+		return birth;
 	}
 
 	void setBirth() {
@@ -53,6 +51,11 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 			this.setHealth(100);
 			this.setAttack(10);
 		}
+		this.maxHealth = this.getHealth();
+	}
+	
+	int getMaxHealth() {
+		return maxHealth;
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 		System.out.println("-----------------------");
 		System.out.println("┌ 캐릭터명 : " + this.getName());
 		System.out.println("│ 레벨 : " + level);
-		System.out.println("└ 체력 : " + this.getHealth());
+		System.out.println("└ 체력 : " + this.getHealth() + " / " + this.getMaxHealth());
 		
 		System.out.println("-----------------------");
 	}
@@ -70,7 +73,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	}
 
 	double setExp() {
-		exp = (double) (Math.random() * 90 + 20);
+		exp = Math.round((Math.random() * 90 + 20) * 100.00) / 100.00;
 		System.out.println(exp + "의 경험치를 획득하였습니다.");
 		return this.getExp();
 	}
@@ -83,12 +86,9 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 			this.level++;
 			this.exp -= 300;
 			this.setAttack(3);
+			this.maxHealth += 5;
 		}
 		return this.getExp();
-	}
-	
-	void addPotionBag(ItemPotion potion) {
-		potionBag.add(potion);
 	}
 	
     public static UnitCharacter getInstance() {
@@ -110,37 +110,23 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	}
 
 	@Override
-	public void use(Item item) {
-	    if (item instanceof ItemPotion) {
-	        ItemPotion potion = (ItemPotion) item;
-	        addPotionBag(potion);
-	        System.out.println(potion.getName() +  " 을(를) 사용하였습니다.");
+	public void use() {
+	    if (this.getHealth() >= this.getMaxHealth()) {
+	        System.out.println("이미 최대 체력입니다.");
+	        return;
+	    }
 
-	        System.out.println("소지하고 있는 물약 목록: ");
-	        for (ItemPotion p : potionBag) {
-	            System.out.println(p.getName() + " (" + p.getHeal() + " 회복)");
-	        }
+	    if (ItemPotion.getInstance().getQuantity() > 0) {
+	        int healAmount = ItemPotion.getInstance().getHeal();
+	        this.setHealth(Math.min(this.getHealth() + healAmount, this.getMaxHealth()));
+
+	        ItemPotion.getInstance().decreaseQuantity(1);
+	        System.out.println(this.getName() + "이(가) 회복 포션을 사용하여 " + healAmount + "만큼 회복합니다.");
+	        System.out.println("남은 체력: " + this.getHealth());
+	    } else {
+	        System.out.println("회복 포션이 없습니다.");
 	    }
 	}
-	
-    public void usePotion() {
-        if (potionBag.isEmpty()) {
-            System.out.println("소지한 물약이 없습니다.");
-            return;
-        }
 
-        System.out.println("사용할 물약을 선택하세요:");
-        for (int i = 0; i < potionBag.size(); i++) {
-            System.out.println(i + 1 + ". " + potionBag.get(i).getName());
-        }
-
-        int choice = sc.nextInt();
-        if (choice >= 1 && choice <= potionBag.size()) {
-            ItemPotion selectedPotion = potionBag.get(choice - 1);
-            use(selectedPotion);
-        } else {
-            System.out.println("잘못된 선택입니다.");
-        }
-    }
 
 }
