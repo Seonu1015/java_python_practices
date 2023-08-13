@@ -5,7 +5,6 @@ abstract class Unit {
 	private String name;
 	private int health;
 	private int attack;
-	private int randomAttack;
 	private int maxDamage;
 	private int minDamage;
 	

@@ -1,10 +1,9 @@
 package miniRPG;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
 
 public class Dungeon {
+	
     private static ArrayList<UnitMonster> monsterPool;
     private static ArrayList<UnitBoss> bossPool;
     private static int currentFloor=1;

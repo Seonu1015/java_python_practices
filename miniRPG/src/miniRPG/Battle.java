@@ -106,7 +106,7 @@ public class Battle {
         if (character.getHealth() <= 0) {
             System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");
         } else {            
-            ItemWeapon droppedWeapon = new ItemWeapon(boss.getName() + "의 무기", "강력한 보스의 무기입니다.", boss.getMaxDamage()-10, boss.getMinDamage()-10);
+            ItemWeapon droppedWeapon = new ItemWeapon(boss.getName() + "의 무기", "강력한 보스의 무기입니다.", boss.getMaxDamage()-10, boss.getMinDamage()-15);
             System.out.println("보스가 " + droppedWeapon.getName() + "을(를) 드랍했습니다!");
             character.equip(droppedWeapon);
         }

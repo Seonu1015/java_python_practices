@@ -1,7 +1,5 @@
 package miniRPG;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class UnitCharacter extends Unit implements Interface_Equip, Interface_Use {
@@ -89,7 +87,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 
 	double accumulateExp() {
 		this.exp += this.setExp();
-		if (this.exp >= 100) {
+		if (this.exp >= (100+ (this.level*50))) {
 			System.out.println("-----------------------");
 			System.out.println("★ " + this.getName() + " LEVEL UP ★");
 			System.out.println(this.getName() + "의 공격력이 상승합니다. (+3)");
