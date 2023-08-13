@@ -10,11 +10,14 @@ public class Dungeon {
     private static int currentFloor=1;
     private static UnitCharacter character;
     
+    private ArrayList<UnitMonster> copyMonsters;
+    
     public Dungeon(UnitCharacter character) {
         this.character = character;
         this.monsterPool = generateMonsterPool();
         this.bossPool = generateBossPool();
         this.currentFloor = 1;
+        this.copyMonsters = new ArrayList<>();
     }
 
     private ArrayList<UnitMonster> generateMonsterPool() { // 일반몹은 랜덤하게 나오도록
@@ -65,44 +68,62 @@ public class Dungeon {
     }
 
     private boolean battleFloor() {
+    	this.copyMonsters = new ArrayList<>();
         boolean cleared = true;
-        int numMonsters = 1;
-        for (int i = 0; i < numMonsters; i++) {
-            UnitMonster monster = getRandomMonster();
-            System.out.println(monster.getName() + " 이(가) 등장하였습니다.");
-            Battle.repeatBattle(character, monster);
 
-            if (character.getHealth() <= 0) {
-                cleared = false;
-                break;
-            } else if (monster.getHealth() > 0) {
-                cleared = false;
-                break;
-            } else {
-                System.out.println("-----------------------");
-                System.out.println(currentFloor + "층을 클리어 하였습니다. 다음 층으로 이동합니다.");
-            }
-        }
-        return cleared;
-    }
-
-    private UnitMonster getRandomMonster() {
-        int randomIndex = (int) (Math.random() * monsterPool.size());
-        return monsterPool.get(randomIndex);
-    }
-    
-    private void checkBossBattle() {
         if (currentFloor % 4 == 0) {
             int bossIndex = (currentFloor / 4) - 1;
             if (bossIndex >= 0 && bossIndex < bossPool.size()) {
                 UnitBoss boss = bossPool.get(bossIndex);
                 System.out.println("보스와의 전투를 시작합니다!");
                 Battle.bossBattle(character, boss);
-                currentFloor++;
+
+                if (character.getHealth() <= 0) {
+                    cleared = false;
+                }
             }
-            
+        } else {
+            int numMonsters = 1;
+            for (int i = 0; i < numMonsters; i++) {
+                UnitMonster monster = getRandomMonster();
+                System.out.println(monster.getName() + " 이(가) 등장하였습니다.");
+                Battle.repeatBattle(character, monster);
+
+                if (character.getHealth() <= 0) {
+                    cleared = false;
+                    break;
+                } else if (monster.getHealth() > 0) {
+                	UnitMonster copiedMonster = new UnitMonster(monster.getName(), monster.getHealth(), monster.getMaxDamage(), monster.getMinDamage());
+                    copyMonsters.add(copiedMonster);
+                }
+            }
+        }
+
+        System.out.println("-----------------------");
+        if (cleared) {
+            System.out.println(currentFloor + "층을 클리어 하였습니다. 다음 층으로 이동합니다.");
+        }
+
+        return cleared;
+    }
+
+    private UnitMonster getRandomMonster() {
+    	int randomIndex = (int) (Math.random() * monsterPool.size());
+        UnitMonster randomMonster = monsterPool.get(randomIndex);
+        return new UnitMonster(randomMonster.getName(), randomMonster.getHealth(), randomMonster.getMaxDamage(), randomMonster.getMinDamage());
+    }
+    
+    private void checkBossBattle() {
+        if (currentFloor > 0 && currentFloor % 4 == 0) {
+            int bossIndex = (currentFloor / 4) - 1;
+            if (bossIndex >= 0 && bossIndex < bossPool.size()) {
+                UnitBoss boss = bossPool.get(bossIndex);
+                System.out.println("보스와의 전투를 시작합니다!");
+                Battle.bossBattle(character, boss);
+            }
         }
     }
+    
     
     
 }

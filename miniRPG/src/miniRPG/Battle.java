@@ -108,7 +108,6 @@ public class Battle {
                 character.use();
             }
         }
-
         if (character.getHealth() <= 0) {
             System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");
         } else {

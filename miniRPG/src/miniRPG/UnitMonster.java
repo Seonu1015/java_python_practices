@@ -22,6 +22,14 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 	    return (int) (Math.random() * (maxDamage - minDamage + 1) + minDamage);
 	}
 	
+	int getMaxDamage() {
+		return maxDamage;
+	}
+	
+	int getMinDamage() {
+		return minDamage;
+	}
+	
     public static ArrayList<UnitMonster> getMonsterList() {
         return monsterList;
     }
