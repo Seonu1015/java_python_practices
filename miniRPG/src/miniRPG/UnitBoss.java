@@ -11,7 +11,6 @@ public class UnitBoss extends UnitMonster {
 		super(name, health, maxDamage, minDamage);
 		this.skill = skill;
 		this.skillDamage = skillDamage;
-		this.getAttack();
 	}
 
 	String getskill() {
