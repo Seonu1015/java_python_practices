@@ -18,10 +18,10 @@ public class Battle {
 	                System.out.println(character.getName() + " 이(가) " + monster.getName() + " 에게 " + character.getRandomAttack()
 	                        + "만큼의 데미지를 주었습니다.");
 	                System.out.println(character.getName() + " 이(가) " + monster.getName() + " 을(를) 쓰러뜨렸습니다.");
-
 	                monster.setHealth(monster.getHealth() - character.getRandomAttack());
 	                character.accumulateExp();
 	                monster.dropItem(ItemPotion.getInstance());
+	                break;
 	            }
 			} else if(i==1) {
 		        if (monster.getRandomAttack() < character.getHealth()) {
@@ -34,8 +34,8 @@ public class Battle {
 	                System.out.println(monster.getName() + " 이(가) " + character.getName() + " 에게 " + monster.getRandomAttack()
 	                        + "만큼의 데미지를 주었습니다.");
 	                System.out.println(monster.getName() + " 이(가) " + character.getName() + " 을(를) 쓰러뜨렸습니다.");
-
 	                character.setHealth(character.getHealth() - monster.getRandomAttack());
+	                break;
 	            }
 			}
 		}
@@ -43,7 +43,6 @@ public class Battle {
 	
 	static void repeatBattle(UnitCharacter character, UnitMonster monster) {
 	    Scanner sc = new Scanner(System.in);
-
 	    character.unitInfo();
 
 	    System.out.println("전투를 시작합니다.");
@@ -63,10 +62,6 @@ public class Battle {
 	            ItemPotion.getInstance().itemInfo();
 	            character.use();
 	        }
-	    }
-	    
-	    if (monster.getHealth() <= 0) {
-	        System.out.println(monster.getName() + "을(를) 쓰러뜨렸습니다!");
 	    }
 	}
 	
@@ -110,10 +105,8 @@ public class Battle {
         }
         if (character.getHealth() <= 0) {
             System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");
-        } else {
-            System.out.println(boss.getName() + "을(를) 처치하였습니다!");
-            
-            ItemWeapon droppedWeapon = new ItemWeapon(boss.getName() + "의 무기", "강력한 보스의 무기입니다.", boss.getMaxDamage(), boss.getMinDamage());
+        } else {            
+            ItemWeapon droppedWeapon = new ItemWeapon(boss.getName() + "의 무기", "강력한 보스의 무기입니다.", boss.getMaxDamage()-10, boss.getMinDamage()-10);
             System.out.println("보스가 " + droppedWeapon.getName() + "을(를) 드랍했습니다!");
             character.equip(droppedWeapon);
         }

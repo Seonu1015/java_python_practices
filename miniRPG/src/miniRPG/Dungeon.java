@@ -61,6 +61,7 @@ public class Dungeon {
         }
         if (character.getHealth() <= 0) {
             System.out.println("게임 오버!");
+            System.out.println("새로운 캐릭터로 다시 도전해보세요!");
         } else {
             dungeon.checkBossBattle();
             System.out.println("던전 탐험이 종료되었습니다.");
