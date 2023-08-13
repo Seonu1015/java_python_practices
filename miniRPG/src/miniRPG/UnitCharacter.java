@@ -12,6 +12,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	private int level = 0;
 	private double exp = 0;
 	private int maxHealth;
+	private ItemWeapon equippedWeapon;
 	
 	private static UnitCharacter instance;
 
@@ -19,6 +20,9 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 		super();
 		this.setName();
 		this.setBirth();
+		
+		ItemWeapon defaultWeapon = ItemWeapon.getInstance();
+	    this.equip(defaultWeapon);
 	}
 
     void setName() {
@@ -64,7 +68,13 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 		System.out.println("┌ 캐릭터명 : " + this.getName());
 		System.out.println("│ 레벨 : " + level);
 		System.out.println("│ 체력 : " + this.getHealth() + " / " + this.getMaxHealth());
-		// 장비 착용 여부 설정하기
+	    if (equippedWeapon != null) {
+	        System.out.println("│ 장착무기 : " + equippedWeapon.getName());
+	        System.out.println("└ 공격력 : " + (this.getAttack() + equippedWeapon.getMinDamage()) + " ~ " +
+	                           (this.getAttack() + equippedWeapon.getMaxDamage()));
+	    } else {
+	        System.out.println("└ 장착무기 : 없음");
+	    }
 	}
 
 	double getExp() {
@@ -106,7 +116,13 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	        ItemWeapon weapon = (ItemWeapon) item;
 	        int newMinDamage = this.getAttack() + weapon.getMinDamage();
 	        int newMaxDamage = this.getAttack() + weapon.getMaxDamage();
-	        // 장비를 장착하면 캐릭터의 공격력이 반영되게끔 수정 필요함
+	        
+	        this.setAttack((int)(Math.random()*(newMaxDamage-newMinDamage)+newMinDamage));
+	        
+	        System.out.println(weapon.getName() + "을(를) 장착했습니다.");
+	        System.out.println("새로운 공격력: " + newMinDamage + " ~ " + newMaxDamage);
+	        
+	        equippedWeapon = weapon;
 	    }
 	}
 

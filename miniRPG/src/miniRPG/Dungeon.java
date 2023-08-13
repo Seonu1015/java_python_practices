@@ -32,9 +32,9 @@ public class Dungeon {
     
     private ArrayList<UnitBoss> generateBossPool() { // 보스는 순서대로 나오게
         ArrayList<UnitBoss> boss = new ArrayList<>();
-        boss.add(new UnitBoss("트리가드", 150, 20, 10, "벼락치기", 30));
-        boss.add(new UnitBoss("방황하는 데몬", 200, 30, 15, "폭발찍기", 40));
-        boss.add(new UnitBoss("종의 가고일", 250, 35, 20, "브레스", 45));
+        boss.add(new UnitBoss("트리가드", 150, 30, 20, "벼락치기", 40));
+        boss.add(new UnitBoss("방황하는 데몬", 200, 40, 25, "폭발찍기", 50));
+        boss.add(new UnitBoss("종의 가고일", 250, 50, 30, "브레스", 60));
         return boss;
     }
 
