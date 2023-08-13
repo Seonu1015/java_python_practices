@@ -46,7 +46,7 @@ public class Battle {
 	    character.unitInfo();
 
 	    System.out.println("전투를 시작합니다.");
-	    System.out.println("-----------------------");
+	    System.out.println("-----------------------------------------");
 
 	    while (monster.getHealth() > 0 && character.getHealth() > 0) {
 	        System.out.println("공격(a), 회복(h) 중에 선택하세요.");
@@ -71,7 +71,7 @@ public class Battle {
         character.unitInfo();
 
         System.out.println(boss.getName() + "와의 전투를 시작합니다.");
-        System.out.println("-----------------------");
+        System.out.println("-----------------------------------------");
 
         int bossSkillUse = 3;
         int bossSkillCount = 0;

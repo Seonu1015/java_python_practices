@@ -49,12 +49,11 @@ public class ItemPotion extends Item {
 
 	@Override
 	void itemInfo() {
-		System.out.println("-----------------------");
+		System.out.println("-----------------------------------------");
 		System.out.println("💊 " + this.getName());
 		System.out.println("┌ 설명 : " + this.getDescription());
 		System.out.println("│ 개수 : " + this.getQuantity());
 		System.out.println("└ 회복량 : " + heal);
-		System.out.println("-----------------------");
 	}
 
 }

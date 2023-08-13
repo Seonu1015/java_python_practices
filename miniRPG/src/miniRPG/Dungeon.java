@@ -99,7 +99,7 @@ public class Dungeon {
             }
         }
 
-        System.out.println("-----------------------");
+        System.out.println("-----------------------------------------");
         if (cleared) {
             System.out.println(currentFloor + "층을 클리어 하였습니다. 다음 층으로 이동합니다.");
         }

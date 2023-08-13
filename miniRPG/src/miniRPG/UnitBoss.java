@@ -24,11 +24,11 @@ public class UnitBoss extends UnitMonster {
 
 	@Override
 	void unitInfo() {
-		System.out.println("-----------------------");
+		System.out.println("-----------------------------------------");
 		System.out.println("┌ 보스명 : " + this.getName());
 		System.out.println("│ 체력 : " + this.getHealth());
 		System.out.println("└ 스킬 : " + skill);
-		System.out.println("-----------------------");
+		System.out.println("-----------------------------------------");
 	}
 
 }
