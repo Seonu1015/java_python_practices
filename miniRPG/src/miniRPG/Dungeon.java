@@ -9,6 +9,8 @@ public class Dungeon {
     private static int currentFloor=1;
     private static UnitCharacter character;
     
+    private static final int maxFloor = 20;
+    
     private ArrayList<UnitMonster> copyMonsters;
     
     public Dungeon(UnitCharacter character) {
@@ -31,9 +33,11 @@ public class Dungeon {
     
     private ArrayList<UnitBoss> generateBossPool() { // 보스는 순서대로 나오게
         ArrayList<UnitBoss> boss = new ArrayList<>();
-        boss.add(new UnitBoss("트리가드", 150, 30, 20, "벼락치기", 40));
-        boss.add(new UnitBoss("방황하는 데몬", 200, 40, 25, "폭발찍기", 50));
+        boss.add(new UnitBoss("무명의 묘지기", 150, 30, 20, "낫 휘두르기", 40));
+        boss.add(new UnitBoss("방황하는 데몬", 200, 40, 25, "폭발 찍기", 50));
         boss.add(new UnitBoss("종의 가고일", 250, 50, 30, "브레스", 60));
+        boss.add(new UnitBoss("피의 군주", 300, 60, 40, "피의 해일", 70));
+        boss.add(new UnitBoss("만월의 여왕", 400, 70, 50, "고고한 밤", 80));
         return boss;
     }
 
@@ -48,6 +52,11 @@ public class Dungeon {
         Dungeon dungeon = new Dungeon(character);
         
         while (character.getHealth() > 0) {
+        	if (currentFloor > maxFloor) {
+                System.out.println("던전의 최상층을 클리어하셨습니다!");
+                break;
+            }
+        	
             System.out.println(currentFloor + "층에 입장합니다.");
             boolean cleared = dungeon.battleFloor();
             
@@ -98,12 +107,6 @@ public class Dungeon {
                 }
             }
         }
-
-        System.out.println("-----------------------------------------");
-        if (cleared) {
-            System.out.println(currentFloor + "층을 클리어 하였습니다. 다음 층으로 이동합니다.");
-        }
-
         return cleared;
     }
 
