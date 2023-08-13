@@ -4,46 +4,18 @@ import java.util.ArrayList;
 
 public class UnitMonster extends Unit implements Interface_DropItem {
 	
-	private int attack;
-	private int maxDamage;
-	private int minDamage;
-
-	private static final ArrayList<UnitMonster> monsterList = new ArrayList<>();
-	
-	UnitMonster(String name, int health, int maxDamage, int minDamage) {
-		super(name, health);
-		this.maxDamage = maxDamage;
-		this.minDamage = minDamage;
-		this.getAttack();
-		this.addMonster();
-	}
-
-	int getAttack() {
-	    return (int) (Math.random() * (maxDamage - minDamage + 1) + minDamage);
-	}
-	
-	int getMaxDamage() {
-		return maxDamage;
-	}
-	
-	int getMinDamage() {
-		return minDamage;
-	}
-	
-    public static ArrayList<UnitMonster> getMonsterList() {
-        return monsterList;
+    UnitMonster(String name, int health, int maxDamage, int minDamage) {
+        super(name, health, maxDamage, minDamage);
+        this.setAttack(this.getRandomAttack());
+        setMinDamage(minDamage);
+        setMaxDamage(maxDamage);
     }
-	
-	void addMonster() {
-		monsterList.add(this);
-	}
 	
 	@Override
 	void unitInfo() {
 		System.out.println("-----------------------");
 		System.out.println("┌ 몬스터명 : " + this.getName());
 		System.out.println("└ 체력 : " + this.getHealth());
-		//System.out.println(this.getAttack());
 		System.out.println("-----------------------");
 	}
 
@@ -53,12 +25,9 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 	        ItemPotion p = (ItemPotion) potion;
 	        int amount = (int) (Math.random() * 3 + 1);
 	        p.increaseQuantity(amount);
-	        
-	        if (this.getHealth() <= 0) {
-	            System.out.println(potion.getName() + "을(를) " + amount + "개 획득하였습니다.");
-	        }
+
+	        System.out.println(potion.getName() + "을(를) " + amount + "개 획득하였습니다.");
 	    }
 	}
-	
 	
 }

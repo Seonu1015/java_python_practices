@@ -13,6 +13,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	private double exp = 0;
 	private int maxHealth;
 	private ItemWeapon equippedWeapon;
+	private int baseAttack;
 	
 	private static UnitCharacter instance;
 
@@ -70,8 +71,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 		System.out.println("│ 체력 : " + this.getHealth() + " / " + this.getMaxHealth());
 	    if (equippedWeapon != null) {
 	        System.out.println("│ 장착무기 : " + equippedWeapon.getName());
-	        System.out.println("└ 공격력 : " + (this.getAttack() + equippedWeapon.getMinDamage()) + " ~ " +
-	                           (this.getAttack() + equippedWeapon.getMaxDamage()));
+	        System.out.println("└ 공격력 : " + this.getMinDamage() + " ~ " + this.getMaxDamage());
 	    } else {
 	        System.out.println("└ 장착무기 : 없음");
 	    }
@@ -97,7 +97,8 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 			System.out.println("-----------------------");
 			this.level++;
 			this.exp -= 100;
-			this.setAttack(this.getAttack() + 3);
+			this.setMinDamage(this.getMinDamage() + 3);
+			this.setMaxDamage(this.getMaxDamage() + 3);
 			this.maxHealth += 5;
 		}
 		return this.getExp();
@@ -114,15 +115,34 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	public void equip(Item item) {
 	    if (item instanceof ItemWeapon) {
 	        ItemWeapon weapon = (ItemWeapon) item;
-	        int newMinDamage = this.getAttack() + weapon.getMinDamage();
-	        int newMaxDamage = this.getAttack() + weapon.getMaxDamage();
+
+	        if (equippedWeapon != null) {
+	            unequip(equippedWeapon);
+	        }
 	        
-	        this.setAttack((int)(Math.random()*(newMaxDamage-newMinDamage)+newMinDamage));
-	        
-	        System.out.println(weapon.getName() + "을(를) 장착했습니다.");
-	        System.out.println("새로운 공격력: " + newMinDamage + " ~ " + newMaxDamage);
-	        
+	        this.baseAttack = this.getAttack();
+
+	        this.setMinDamage(this.baseAttack + weapon.getMinDamage());
+	        this.setMaxDamage(this.baseAttack + weapon.getMaxDamage());
+
 	        equippedWeapon = weapon;
+	        System.out.println(weapon.getName() + "을(를) 장착했습니다.");
+	        randomNewDamage();
+	    }
+	}
+	
+	private void randomNewDamage() {
+	    int randomDamage = (int) (Math.random() * (this.getMaxDamage() - this.getMinDamage())) + this.getMinDamage();
+	    setAttack(randomDamage);
+	}
+	
+	@Override
+	public void unequip(Item item) {
+	    if (equippedWeapon != null) {
+	        System.out.println(equippedWeapon.getName() + "을(를) 해제했습니다.");
+	        equippedWeapon = null;
+	    } else {
+	        System.out.println("장착한 무기가 없습니다.");
 	    }
 	}
 

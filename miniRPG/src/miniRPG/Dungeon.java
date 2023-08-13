@@ -22,11 +22,11 @@ public class Dungeon {
 
     private ArrayList<UnitMonster> generateMonsterPool() { // 일반몹은 랜덤하게 나오도록
         ArrayList<UnitMonster> monsters = new ArrayList<>();
-        monsters.add(new UnitMonster("슬라임", 70, 10, 5));
-        monsters.add(new UnitMonster("광인", 100, 15, 5));
-        monsters.add(new UnitMonster("거미", 70, 17, 7));
-        monsters.add(new UnitMonster("구울", 90, 18, 8));
-        monsters.add(new UnitMonster("광신도", 80, 21, 7));
+        monsters.add(new UnitMonster("슬라임", 70, 13, 9));
+        monsters.add(new UnitMonster("광인", 90, 15, 8));
+        monsters.add(new UnitMonster("거미", 70, 17, 6));
+        monsters.add(new UnitMonster("구울", 90, 18, 6));
+        monsters.add(new UnitMonster("광신도", 80, 21, 5));
         return monsters;
     }
     

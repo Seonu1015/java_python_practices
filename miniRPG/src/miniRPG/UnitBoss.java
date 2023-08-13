@@ -2,7 +2,7 @@ package miniRPG;
 
 import java.util.ArrayList;
 
-public class UnitBoss extends UnitMonster implements Interface_DropItem {
+public class UnitBoss extends UnitMonster {
 
 	private String skill;
 	private int skillDamage;
@@ -12,10 +12,6 @@ public class UnitBoss extends UnitMonster implements Interface_DropItem {
 		this.skill = skill;
 		this.skillDamage = skillDamage;
 		this.getAttack();
-	}
-
-	int getAttack() {
-		return (int) (Math.random() * (this.getMaxDamage() - this.getMinDamage()) + this.getMinDamage());
 	}
 
 	String getskill() {
@@ -32,20 +28,7 @@ public class UnitBoss extends UnitMonster implements Interface_DropItem {
 		System.out.println("┌ 보스명 : " + this.getName());
 		System.out.println("│ 체력 : " + this.getHealth());
 		System.out.println("└ 스킬 : " + skill);
-		//System.out.println(this.getAttack());
 		System.out.println("-----------------------");
-	}
-	
-	@Override
-	public void dropItem(Item weapon) {		
-		if(weapon instanceof ItemWeapon) {
-			ItemWeapon w = (ItemWeapon) weapon;
-			if (this.getHealth() <= 0) {
-				System.out.println(w.getName() + "을(를) 획득하였습니다.");
-			}
-			System.out.println("장착하시겠습니까?");
-			
-		}		
 	}
 
 }

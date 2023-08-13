@@ -8,34 +8,34 @@ public class Battle {
 	static void battle(UnitCharacter character, UnitMonster monster) {
 		for(int i = 0 ; i<2; i++) {
 			if(i==0) {
-				if (character.getAttack() < monster.getHealth()) {
-	                System.out.println(character.getName() + " 이(가) " + monster.getName() + "에게 " + character.getAttack()
+				if (character.getRandomAttack() < monster.getHealth()) {
+	                System.out.println(character.getName() + " 이(가) " + monster.getName() + "에게 " + character.getRandomAttack()
 	                        + "만큼의 데미지를 주었습니다.");
 
-	                monster.setHealth(monster.getHealth() - character.getAttack());
+	                monster.setHealth(monster.getHealth() - character.getRandomAttack());
 	                System.out.println(monster.getName() + "의 남은 체력 : " + monster.getHealth());
 	            } else {
-	                System.out.println(character.getName() + " 이(가) " + monster.getName() + " 에게 " + character.getAttack()
+	                System.out.println(character.getName() + " 이(가) " + monster.getName() + " 에게 " + character.getRandomAttack()
 	                        + "만큼의 데미지를 주었습니다.");
 	                System.out.println(character.getName() + " 이(가) " + monster.getName() + " 을(를) 쓰러뜨렸습니다.");
 
-	                monster.setHealth(monster.getHealth() - character.getAttack());
+	                monster.setHealth(monster.getHealth() - character.getRandomAttack());
 	                character.accumulateExp();
 	                monster.dropItem(ItemPotion.getInstance());
 	            }
 			} else if(i==1) {
-	            if (monster.getAttack() < character.getHealth()) {
-	                System.out.println(monster.getName() + " 이(가) " + character.getName() + "에게 " + monster.getAttack()
-	                        + "만큼의 데미지를 주었습니다.");
+		        if (monster.getRandomAttack() < character.getHealth()) {
+		            System.out.println(monster.getName() + " 이(가) " + character.getName() + "에게 " + monster.getRandomAttack()
+		                    + "만큼의 데미지를 주었습니다.");
 
-	                character.setHealth(character.getHealth() - monster.getAttack());
-	                System.out.println(character.getName() + "의 남은 체력 : " + character.getHealth() + " / " + character.getMaxHealth());
-	            } else {
-	                System.out.println(monster.getName() + " 이(가) " + character.getName() + " 에게 " + monster.getAttack()
+		            character.setHealth(character.getHealth() - monster.getRandomAttack());
+		            System.out.println(character.getName() + "의 남은 체력 : " + character.getHealth() + " / " + character.getMaxHealth());
+		        } else {
+	                System.out.println(monster.getName() + " 이(가) " + character.getName() + " 에게 " + monster.getRandomAttack()
 	                        + "만큼의 데미지를 주었습니다.");
 	                System.out.println(monster.getName() + " 이(가) " + character.getName() + " 을(를) 쓰러뜨렸습니다.");
 
-	                character.setHealth(character.getHealth() - monster.getAttack());
+	                character.setHealth(character.getHealth() - monster.getRandomAttack());
 	            }
 			}
 		}
@@ -112,7 +112,10 @@ public class Battle {
             System.out.println(character.getName() + "이(가) 전투에서 패배했습니다.");
         } else {
             System.out.println(boss.getName() + "을(를) 처치하였습니다!");
-            boss.dropItem(ItemWeapon.getInstance());
+            
+            ItemWeapon droppedWeapon = new ItemWeapon(boss.getName() + "의 무기", "강력한 보스의 무기입니다.", boss.getMaxDamage(), boss.getMinDamage());
+            System.out.println("보스가 " + droppedWeapon.getName() + "을(를) 드랍했습니다!");
+            character.equip(droppedWeapon);
         }
     }
 
