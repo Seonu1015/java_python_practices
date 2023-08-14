@@ -12,14 +12,11 @@ public class Dungeon {
 
 	private static final int maxFloor = 20;
 
-	private ArrayList<UnitMonster> copyMonsters;
-
 	public Dungeon(UnitCharacter character) {
 		this.character = character;
 		this.monsterPool = generateMonsterPool();
 		this.bossPool = generateBossPool();
 		this.currentFloor = 1;
-		this.copyMonsters = new ArrayList<>();
 	}
 
 	int getCurrentFloor() {
@@ -34,14 +31,6 @@ public class Dungeon {
 		monsters.add(new UnitMonster("구울", 90, 18, 6));
 		monsters.add(new UnitMonster("광신도", 80, 21, 5));
 		return monsters;
-	}
-
-	void upgradeMonsters() {
-		if(currentFloor == 5 || currentFloor ==6 || currentFloor==7) {
-			for (int i = 0; i < maxFloor / 4; i++) {
-				
-			}
-		}
 	}
 
 	private ArrayList<UnitBoss> generateBossPool() { // 보스는 순서대로 나오게
@@ -98,7 +87,7 @@ public class Dungeon {
 	}
 
 	private boolean battleFloor() {
-		this.copyMonsters = new ArrayList<>();
+		ArrayList<UnitMonster> copyMonsters = new ArrayList<>();
 		boolean cleared = true;
 
 		if (currentFloor % 4 == 0) {
@@ -119,9 +108,22 @@ public class Dungeon {
 					cleared = false;
 					break;
 				} else if (monster.getHealth() > 0) {
-					UnitMonster copiedMonster = new UnitMonster(monster.getName(), monster.getHealth(),
-							monster.getMaxDamage(), monster.getMinDamage());
-					copyMonsters.add(copiedMonster);
+					int CF = 5;
+					for (int j = 0; j < maxFloor / 4; j++) {
+						for (int k = 0; k < 3; k++) {
+							if (this.currentFloor == CF + k + (j * 4)) {
+								UnitMonster copiedMonster = new UnitMonster(monster.getName(),
+										(int) (monster.getHealth() * 1.5), (int) (monster.getMaxDamage() * 1.3),
+										(int) (monster.getMinDamage() * 1.3));
+								copyMonsters.add(copiedMonster);
+								break;
+							} else {
+								UnitMonster copiedMonster = new UnitMonster(monster.getName(), monster.getHealth(),
+										monster.getMaxDamage(), monster.getMinDamage());
+								copyMonsters.add(copiedMonster);
+							}
+						}
+					}
 				}
 			}
 		}
