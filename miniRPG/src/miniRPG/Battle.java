@@ -9,7 +9,7 @@ public class Battle {
 			if (i == 0) {
 				battleUnit(character, monster);
 				if (monster.getHealth() <= 0) {
-					System.out.println(character.getName() + " 이(가) " + monster.getName() + " 을(를) 쓰러뜨렸습니다.");
+					dieUnit(character, monster);
 					character.accumulateExp();
 					monster.dropItem(ItemPotion.getInstance());
 					break;
@@ -17,7 +17,7 @@ public class Battle {
 			} else if (i == 1) {
 				battleUnit(monster, character);
 				if (character.getHealth() <= 0) {
-					System.out.println(monster.getName() + " 이(가) " + character.getName() + " 을(를) 쓰러뜨렸습니다.");
+					dieUnit(monster, character);
 					break;
 				}
 			}
@@ -30,6 +30,10 @@ public class Battle {
 				unit1.getName() + " 이(가) " + unit2.getName() + "에게 " + unit1.getRandomAttack() + "만큼의 데미지를 주었습니다.");
 		unit2.setHealth(unit2.getHealth() - unit1.getRandomAttack());
 		System.out.println(unit2.getName() + "의 남은 체력 : " + unit2.getHealth() + " / " + unit2.getMaxHealth());
+	}
+	
+	static void dieUnit(Unit unit1, Unit unit2 ) {
+		System.out.println(unit1.getName() + " 이(가) " + unit2.getName() + " 을(를) 쓰러뜨렸습니다.");
 	}
 
 	static void repeatBattle(UnitCharacter character, UnitMonster monster) {
@@ -58,7 +62,6 @@ public class Battle {
 
 	static void bossBattle(UnitCharacter character, UnitBoss boss) {
 		Scanner sc = new Scanner(System.in);
-
 		character.unitInfo();
 
 		System.out.println(boss.getName() + "와의 전투를 시작합니다.");
@@ -88,7 +91,7 @@ public class Battle {
 									+ boss.getSkillDamage() + "의 데미지를 받았습니다!");
 							character.setHealth(character.getHealth() - boss.getSkillDamage());
 							if (character.getHealth() <= 0) {
-								System.out.println(boss.getName() + " 이(가) " + character.getName() + " 을(를) 쓰러뜨렸습니다.");
+								dieUnit(boss, character);
 								break;
 							}
 						}

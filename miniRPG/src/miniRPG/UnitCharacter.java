@@ -79,14 +79,14 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 
 	double accumulateExp() {
 		this.exp += this.setExp();
-		if (this.exp >= (100 + (this.level * 50))) {
+		if (this.exp >= (100 + ((this.level - 1) * 50))) {
 			System.out.println("-----------------------------------------");
 			System.out.println("★ " + this.getName() + " LEVEL UP ★");
 			System.out.println(this.getName() + "의 공격력이 상승합니다. (+3)");
-			System.out.println(this.getName() + "의 최대 체력이 상승합니다. (+5)");
+			System.out.println(this.getName() + "의 최대 체력이 상승합니다. (+10)");
 			System.out.println("-----------------------------------------");
 			this.level++;
-			this.exp -= 100;
+			this.exp -= 100 + ((this.level - 1) * 50);
 			this.setMinDamage(this.getMinDamage() + 3);
 			this.setMaxDamage(this.getMaxDamage() + 3);
 			this.setMaxHealth(this.getMaxHealth() + 10);
