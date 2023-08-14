@@ -25,8 +25,9 @@ public class Battle {
 	}
 
 	static void battleUnit(Unit unit1, Unit unit2) {
+		unit1.setRandomAttack();
 		System.out.println(
-				unit1.getName() + " 이(가) " + unit2.getName() + "에게 " + unit1.setRandomAttack() + "만큼의 데미지를 주었습니다.");
+				unit1.getName() + " 이(가) " + unit2.getName() + "에게 " + unit1.getRandomAttack() + "만큼의 데미지를 주었습니다.");
 		unit2.setHealth(unit2.getHealth() - unit1.getRandomAttack());
 		System.out.println(unit2.getName() + "의 남은 체력 : " + unit2.getHealth() + " / " + unit2.getMaxHealth());
 	}
