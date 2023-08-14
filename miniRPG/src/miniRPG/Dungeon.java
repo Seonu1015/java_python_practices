@@ -108,22 +108,9 @@ public class Dungeon {
 					cleared = false;
 					break;
 				} else if (monster.getHealth() > 0) {
-					int CF = 5;
-					for (int j = 0; j < maxFloor / 4; j++) {
-						for (int k = 0; k < 3; k++) {
-							if (this.currentFloor == CF + k + (j * 4)) {
-								UnitMonster copiedMonster = new UnitMonster(monster.getName(),
-										(int) (monster.getHealth() * 1.5), (int) (monster.getMaxDamage() * 1.3),
-										(int) (monster.getMinDamage() * 1.3));
-								copyMonsters.add(copiedMonster);
-								break;
-							} else {
-								UnitMonster copiedMonster = new UnitMonster(monster.getName(), monster.getHealth(),
-										monster.getMaxDamage(), monster.getMinDamage());
-								copyMonsters.add(copiedMonster);
-							}
-						}
-					}
+					UnitMonster copiedMonster = new UnitMonster(monster.getName(), monster.getHealth(),
+							monster.getMaxDamage(), monster.getMinDamage());
+					copyMonsters.add(copiedMonster);
 				}
 			}
 		}
@@ -133,8 +120,23 @@ public class Dungeon {
 	private UnitMonster getRandomMonster() {
 		int randomIndex = (int) (Math.random() * monsterPool.size());
 		UnitMonster randomMonster = monsterPool.get(randomIndex);
-		return new UnitMonster(randomMonster.getName(), randomMonster.getHealth(), randomMonster.getMaxDamage(),
-				randomMonster.getMinDamage());
+		
+		int CF = 5;
+		for (int j = 0; j < maxFloor / 4; j++) {
+			for (int k = 0; k < 3; k++) {
+				if (this.currentFloor == CF + k + (j * 4)) {
+					return new UnitMonster(randomMonster.getName(), (int)(randomMonster.getHealth()*1.3), (int)(randomMonster.getMaxDamage()*1.3),
+							(int)(randomMonster.getMinDamage()*1.3));
+				} else {
+					return new UnitMonster(randomMonster.getName(), randomMonster.getHealth(), randomMonster.getMaxDamage(),
+							randomMonster.getMinDamage());
+				}
+			}
+		}
+		return randomMonster;
+		
+//		return new UnitMonster(randomMonster.getName(), randomMonster.getHealth(), randomMonster.getMaxDamage(),
+//				randomMonster.getMinDamage());
 	}
 
 	private void checkBossBattle() {
