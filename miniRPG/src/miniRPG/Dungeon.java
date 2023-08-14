@@ -21,7 +21,7 @@ public class Dungeon {
 		this.currentFloor = 1;
 		this.copyMonsters = new ArrayList<>();
 	}
-	
+
 	int getCurrentFloor() {
 		return currentFloor;
 	}
@@ -34,6 +34,14 @@ public class Dungeon {
 		monsters.add(new UnitMonster("구울", 90, 18, 6));
 		monsters.add(new UnitMonster("광신도", 80, 21, 5));
 		return monsters;
+	}
+
+	void upgradeMonsters() {
+		if(currentFloor == 5 || currentFloor ==6 || currentFloor==7) {
+			for (int i = 0; i < maxFloor / 4; i++) {
+				
+			}
+		}
 	}
 
 	private ArrayList<UnitBoss> generateBossPool() { // 보스는 순서대로 나오게
@@ -77,12 +85,12 @@ public class Dungeon {
 			System.out.println("게임 오버!");
 			System.out.println("새로운 캐릭터로 다시 도전해보시겠습니까? y/n");
 			String retry = sc.next();
-			if(retry.equals("y")) {
+			if (retry.equals("y")) {
 				Dungeon.startDungeon();
 			} else {
 				System.out.println("게임을 종료합니다.");
 			}
-			
+
 		} else {
 			dungeon.checkBossBattle();
 			System.out.println("던전 탐험이 완료되었습니다.");
@@ -99,12 +107,6 @@ public class Dungeon {
 				UnitBoss boss = bossPool.get(bossIndex);
 				System.out.println("보스와의 전투를 시작합니다!");
 				Battle.bossBattle(character, boss);
-
-//				if (character.getHealth() <= 0) {
-//					cleared = false;
-//				} else {
-//					// 여기에 공격력 및 체력이 증가하는 메서드를 넣으면 될꺼 같은데....
-//				}
 			}
 		} else {
 			int numMonsters = 1;

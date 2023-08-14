@@ -7,7 +7,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	private Scanner sc = new Scanner(System.in);
 
 	private String birth;
-	private int level = 0;
+	private int level = 1;
 	private double exp = 0;
 	private ItemWeapon equippedWeapon;
 	private int baseAttack;

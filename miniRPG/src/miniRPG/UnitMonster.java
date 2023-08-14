@@ -11,11 +11,11 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 		setMaxHealth(this.getHealth());
 	}
 	
-	void upgradeMonster(Dungeon dungeon) {
-		this.setMinDamage((int) (getMinDamage()*1.3));
-		this.setMaxDamage((int) (getMaxDamage()*1.3));
-		this.setHealth((int) (getHealth()*1.5));
-	}
+//	void upgradeMonster(Dungeon dungeon) {
+//		this.setMinDamage((int) (getMinDamage()*1.3));
+//		this.setMaxDamage((int) (getMaxDamage()*1.3));
+//		this.setHealth((int) (getHealth()*1.5));
+//	}
 
 	@Override
 	void unitInfo() {
