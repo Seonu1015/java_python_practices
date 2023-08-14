@@ -1,7 +1,5 @@
 package miniRPG;
 
-import java.util.ArrayList;
-
 public class UnitBoss extends UnitMonster {
 
 	private String skill;

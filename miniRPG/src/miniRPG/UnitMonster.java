@@ -1,7 +1,5 @@
 package miniRPG;
 
-import java.util.ArrayList;
-
 public class UnitMonster extends Unit implements Interface_DropItem {
 
 	UnitMonster(String name, int health, int maxDamage, int minDamage) {
@@ -10,12 +8,6 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 		setMaxDamage(maxDamage);
 		setMaxHealth(this.getHealth());
 	}
-	
-//	void upgradeMonster(Dungeon dungeon) {
-//		this.setMinDamage((int) (getMinDamage()*1.3));
-//		this.setMaxDamage((int) (getMaxDamage()*1.3));
-//		this.setHealth((int) (getHealth()*1.5));
-//	}
 
 	@Override
 	void unitInfo() {

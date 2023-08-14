@@ -125,7 +125,7 @@ public class Dungeon {
 		for (int j = 0; j < maxFloor / 4; j++) {
 			for (int k = 0; k < 3; k++) {
 				if (this.currentFloor == CF + k + (j * 4)) {
-					return new UnitMonster(randomMonster.getName(), (int)(randomMonster.getHealth()*1.3), (int)(randomMonster.getMaxDamage()*1.3),
+					return new UnitMonster(randomMonster.getName(), (int)(randomMonster.getHealth()*1.4), (int)(randomMonster.getMaxDamage()*1.3),
 							(int)(randomMonster.getMinDamage()*1.3));
 				} else {
 					return new UnitMonster(randomMonster.getName(), randomMonster.getHealth(), randomMonster.getMaxDamage(),
@@ -134,9 +134,6 @@ public class Dungeon {
 			}
 		}
 		return randomMonster;
-		
-//		return new UnitMonster(randomMonster.getName(), randomMonster.getHealth(), randomMonster.getMaxDamage(),
-//				randomMonster.getMinDamage());
 	}
 
 	private void checkBossBattle() {

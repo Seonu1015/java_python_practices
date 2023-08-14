@@ -89,7 +89,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 			this.exp -= 100;
 			this.setMinDamage(this.getMinDamage() + 3);
 			this.setMaxDamage(this.getMaxDamage() + 3);
-			this.setMaxHealth(this.getMaxHealth() + 5);
+			this.setMaxHealth(this.getMaxHealth() + 10);
 		}
 		return this.getExp();
 	}
