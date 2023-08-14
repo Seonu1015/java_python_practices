@@ -6,6 +6,7 @@ abstract class Unit {
 	private int health;
 	private int maxHealth;
 	private int attack;
+	private int randomAttack;
 	private int maxDamage;
 	private int minDamage;
 
@@ -55,7 +56,11 @@ abstract class Unit {
 	}
 
 	int getRandomAttack() {
-		return (int) (Math.random() * (maxDamage - minDamage + 1) + minDamage);
+		return randomAttack;
+	}
+	
+	void setRandomAttack() {
+		this.randomAttack = (int) (Math.random() * (maxDamage - minDamage + 1) + minDamage);
 	}
 
 	int getMinDamage() {

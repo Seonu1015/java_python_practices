@@ -16,8 +16,6 @@ public class UnitMonster extends Unit implements Interface_DropItem {
 		this.setMaxDamage((int) (getMaxDamage()*1.3));
 		this.setHealth((int) (getHealth()*1.5));
 	}
-	
-	
 
 	@Override
 	void unitInfo() {

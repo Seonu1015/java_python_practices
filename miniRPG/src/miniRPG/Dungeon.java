@@ -100,9 +100,11 @@ public class Dungeon {
 				System.out.println("보스와의 전투를 시작합니다!");
 				Battle.bossBattle(character, boss);
 
-				if (character.getHealth() <= 0) {
-					cleared = false;
-				}
+//				if (character.getHealth() <= 0) {
+//					cleared = false;
+//				} else {
+//					// 여기에 공격력 및 체력이 증가하는 메서드를 넣으면 될꺼 같은데....
+//				}
 			}
 		} else {
 			int numMonsters = 1;
