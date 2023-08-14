@@ -1,6 +1,7 @@
 package miniRPG;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Dungeon {
 
@@ -19,6 +20,10 @@ public class Dungeon {
 		this.bossPool = generateBossPool();
 		this.currentFloor = 1;
 		this.copyMonsters = new ArrayList<>();
+	}
+	
+	int getCurrentFloor() {
+		return currentFloor;
 	}
 
 	private ArrayList<UnitMonster> generateMonsterPool() { // 일반몹은 랜덤하게 나오도록
@@ -42,7 +47,8 @@ public class Dungeon {
 	}
 
 	public static void startDungeon() {
-		UnitCharacter character = UnitCharacter.getInstance();
+		Scanner sc = new Scanner(System.in);
+		UnitCharacter character = new UnitCharacter();
 
 		System.out.println("던전에 오신 것을 환영합니다!");
 
@@ -69,10 +75,17 @@ public class Dungeon {
 		}
 		if (character.getHealth() <= 0) {
 			System.out.println("게임 오버!");
-			System.out.println("새로운 캐릭터로 다시 도전해보세요!");
+			System.out.println("새로운 캐릭터로 다시 도전해보시겠습니까? y/n");
+			String retry = sc.next();
+			if(retry.equals("y")) {
+				Dungeon.startDungeon();
+			} else {
+				System.out.println("게임을 종료합니다.");
+			}
+			
 		} else {
 			dungeon.checkBossBattle();
-			System.out.println("던전 탐험이 종료되었습니다.");
+			System.out.println("던전 탐험이 완료되었습니다.");
 		}
 	}
 

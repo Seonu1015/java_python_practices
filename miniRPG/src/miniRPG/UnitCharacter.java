@@ -9,17 +9,13 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 	private String birth;
 	private int level = 0;
 	private double exp = 0;
-	private int maxHealth;
 	private ItemWeapon equippedWeapon;
 	private int baseAttack;
-
-	private static UnitCharacter instance;
 
 	UnitCharacter() {
 		super();
 		this.setName();
 		this.setBirth();
-
 		ItemWeapon defaultWeapon = ItemWeapon.getInstance();
 		this.equip(defaultWeapon);
 	}
@@ -54,11 +50,7 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 			this.setHealth(100);
 			this.setAttack(10);
 		}
-		this.maxHealth = this.getHealth();
-	}
-
-	int getMaxHealth() {
-		return maxHealth;
+		this.setMaxHealth(this.getHealth());
 	}
 
 	@Override
@@ -97,16 +89,9 @@ public class UnitCharacter extends Unit implements Interface_Equip, Interface_Us
 			this.exp -= 100;
 			this.setMinDamage(this.getMinDamage() + 3);
 			this.setMaxDamage(this.getMaxDamage() + 3);
-			this.maxHealth += 5;
+			this.setMaxHealth(this.getMaxHealth() + 5);
 		}
 		return this.getExp();
-	}
-
-	public static UnitCharacter getInstance() {
-		if (instance == null) {
-			instance = new UnitCharacter();
-		}
-		return instance;
 	}
 
 	@Override

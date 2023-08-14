@@ -4,6 +4,7 @@ abstract class Unit {
 
 	private String name;
 	private int health;
+	private int maxHealth;
 	private int attack;
 	private int maxDamage;
 	private int minDamage;
@@ -26,11 +27,23 @@ abstract class Unit {
 	}
 
 	int getHealth() {
-		return health;
+		if (health <= 0) {
+			return health = 0;
+		} else {
+			return health;
+		}
 	}
 
 	void setHealth(int health) {
 		this.health = health;
+	}
+
+	int getMaxHealth() {
+		return maxHealth;
+	}
+
+	void setMaxHealth(int health) {
+		this.maxHealth = health;
 	}
 
 	int getAttack() {
