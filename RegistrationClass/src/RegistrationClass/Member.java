@@ -24,8 +24,8 @@ public class Member {
 		this.name = name;
     	this.phone = phone;
 		this.major = major;
-		this.setMajorNum(generateMajorNumber());
 		setMajorList();
+		this.setMajorNum(generateMajorNumber());
 	}
 	
 	String getName() {
@@ -59,8 +59,14 @@ public class Member {
 	}
 
 	private int generateMajorNumber() {
-		int baseNumber = 111000 + (majorList.size() * 1000);
-		return baseNumber;
-	}
+        int baseNumber = 110;
+        int majorIndex = majorList.indexOf(major);
+
+        if (majorIndex != -1) {
+            baseNumber += (majorIndex + 1);
+        }
+
+        return baseNumber;
+    }
 	
 }
