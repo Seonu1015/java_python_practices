@@ -4,6 +4,7 @@ public class MemberStudent23 extends MemberStudent implements InterfaceEnroll {
 
 	private int studentNum;
 	private static int studentNumInit = 23;
+	private String studentPassword;
 	
 	MemberStudent23(String name, String phone, String major) {
         super(name, phone, major);
@@ -26,6 +27,16 @@ public class MemberStudent23 extends MemberStudent implements InterfaceEnroll {
             }
         }
         return count;
+    }
+    
+    String getStudentPassword() {
+    	return studentPassword;
+    }
+    
+    void setStudentPassword() {
+    	String pNum = super.getPhone();
+    	String lastFourDigit = pNum.substring(pNum.length()-4);
+    	this.studentPassword = this.getStudentNum() + "p" + lastFourDigit;
     }
 
 	@Override

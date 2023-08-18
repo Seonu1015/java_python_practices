@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Main {
 	public static void main(String[] args) {
 
-		ManagementSystem.Output();
+		ManagementSystem.management();
 		
 		MemberStudent23 student1 = new MemberStudent23("A", "123-456-7890", "국문과");
         MemberStudent23 student2 = new MemberStudent23("B", "987-654-3210", "수학과");

@@ -6,6 +6,7 @@ public class MemberProfessor extends Member implements InterfaceTeach {
 
 	private int professorNum;
 	private static int profNumInit = 9000000;
+	private String profPassword;
 	
 	static ArrayList<MemberProfessor> profList = new ArrayList<>();
 	
@@ -31,6 +32,16 @@ public class MemberProfessor extends Member implements InterfaceTeach {
             }
         }
         return count;
+    }
+    
+    String getProfPassword() {
+    	return profPassword;
+    }
+    
+    void setProfPassword() {
+    	String pNum = super.getPhone();
+    	String lastFourDigit = pNum.substring(pNum.length()-4);
+    	this.profPassword = this.getProfNum() + "p" + lastFourDigit;
     }
 
 	@Override
