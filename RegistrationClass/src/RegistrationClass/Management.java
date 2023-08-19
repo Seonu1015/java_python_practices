@@ -35,7 +35,7 @@ public class Management{
 	    String profPW = sc.next();
 	    line();
 
-	    MemberProfessor professor = findProfessorNumber(profNum);
+	    MemberProfessor professor = findProfNumber(profNum);
 	    if (professor != null) {
 	        boolean loginSuccess = professor.login(profNum, profPW);
 	        if (loginSuccess) {
@@ -45,7 +45,7 @@ public class Management{
 	    }
 	}
 	
-	static MemberProfessor findProfessorNumber(int profNum) {
+	static MemberProfessor findProfNumber(int profNum) {
         for (MemberProfessor professor : MemberProfessor.profList) {
             if (professor.getProfNum() == profNum) {
                 return professor;
@@ -55,6 +55,9 @@ public class Management{
         return null;
     }
 	
+	
+	// 학번에 따른 학생 클래스가 추가될 때를 상정해서 loginStudent, findStudNumber 코드 수정 필요함
+	
 	static void loginStudent() {
 		System.out.print("학  번 : ");
 	    int studentNum = sc.nextInt();
@@ -62,7 +65,7 @@ public class Management{
 	    String studentPW = sc.next();
 	    line();
 
-	    MemberStudent23 student = findStudentNumber(studentNum);
+	    MemberStudent23 student = findStudNumber(studentNum);
 	    if (student != null) {
 	        boolean loginSuccess = student.login(studentNum, studentPW);
 	        if (loginSuccess) {
@@ -72,7 +75,7 @@ public class Management{
 	    }
 	}
 	
-	static MemberStudent23 findStudentNumber(int studentNum) {
+	static MemberStudent23 findStudNumber(int studentNum) {
 	    ArrayList<MemberStudent> studentList = MemberStudent23.getStudentList();
 	    for (MemberStudent student : studentList) {
 	        if (student instanceof MemberStudent23) {

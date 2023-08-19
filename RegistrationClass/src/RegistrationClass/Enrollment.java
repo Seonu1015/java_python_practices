@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Enrollment implements InterfaceEnroll {
+	
+	Scanner sc = new Scanner(System.in);
 
 	private MemberStudent student;
-	private ArrayList<CourseInfo> availableCourses;
-	private ArrayList<CourseInfo> enrolledCourses;
+	private ArrayList<CourseInfo> availableCourse;
+	private ArrayList<CourseInfo> enrolledCourse;
 
-    Enrollment(MemberStudent student, ArrayList<CourseInfo> availableCourses) {
+    Enrollment(MemberStudent student, ArrayList<CourseInfo> availableCourse) {
         this.student = student;
-        this.availableCourses = availableCourses;
-        this.enrolledCourses = new ArrayList<>();
+        this.availableCourse = availableCourse;
+        this.enrolledCourse = new ArrayList<>();
     }
     
     void managementEnroll() {
-    	Scanner sc = new Scanner(System.in);
     	
     	System.out.println("1. 수강신청 | 2. 수강취소 | 3. 수강목록 확인 | 4. 로그아웃");
     	line();
@@ -30,11 +31,12 @@ public class Enrollment implements InterfaceEnroll {
     		managementEnroll();
     		break;
     	case 2:
-    		System.out.println("취소하고자 하는 과목의 번호를 입력해주세요.");
+    		dropCourse();
     		managementEnroll();
     		break;
     	case 3:
-    		System.out.println("현재 신청된 과목의 목록입니다.");
+    		listEnrolledCourse();
+    		line();
     		managementEnroll();
     		break;
     	case 4:
@@ -47,26 +49,52 @@ public class Enrollment implements InterfaceEnroll {
     	}
     }
     
-    private static void listAllCourses(ArrayList<CourseInfo> availableCourses) {
-        System.out.println("강의 목록:");
-        for (int i = 0; i < availableCourses.size(); i++) {
-            CourseInfo course = availableCourses.get(i);
+    private static void listAllCourse(ArrayList<CourseInfo> availableCourse) {
+        System.out.println("강의 목록");
+        for (int i = 0; i < availableCourse.size(); i++) {
+            CourseInfo course = availableCourse.get(i);
             System.out.println(i + 1 + ". " + course.getCourseName() + " (교수: " + course.getProfessor().getName() + ")");
         }
     }
     
+    private void listEnrolledCourse() {
+        if (enrolledCourse.isEmpty()) {
+            System.out.println("신청된 강의가 없습니다.");
+        } else {
+            System.out.println("신청된 강의 목록:");
+            for (int i = 0; i < enrolledCourse.size(); i++) {
+                CourseInfo course = enrolledCourse.get(i);
+                System.out.println(i + 1 + ". " + course.getCourseName() + " (교수: " + course.getProfessor().getName() + ")");
+            }
+        }
+    }
+    
 	@Override
-	public boolean enrollCourse() {
-		listAllCourses(availableCourses);
+	public void enrollCourse() {
+		listAllCourse(availableCourse);
 		line();
-		System.out.println("신청하고자 하는 과목의 번호를 입력해주세요.");
-		return false;
+		System.out.println("신청하고자 하는 강의의 번호를 입력해주세요.");
+		int selectCourseNum = sc.nextInt();
+		enrolledCourse.add(availableCourse.get(selectCourseNum-1));
+		System.out.println(availableCourse.get(selectCourseNum-1).getCourseName() + " 강의의 수강신청이 완료되었습니다.");
+		line();
 	}
 	
 	@Override
-	public boolean dropCourse() {
-		// TODO Auto-generated method stub
-		return false;
+	public void dropCourse() {
+		listEnrolledCourse();
+		line();
+		System.out.println("취소하고자 하는 강의의 번호를 입력해주세요.");
+		int selectCourseNum = sc.nextInt();
+		
+		if (selectCourseNum < 1 || selectCourseNum > enrolledCourse.size()) {
+	        System.out.println("유효하지 않은 번호입니다. 취소 작업을 종료합니다.");
+	        return;
+	    }
+		
+		enrolledCourse.remove(selectCourseNum-1);
+		System.out.println(enrolledCourse.get(selectCourseNum-1).getCourseName() + " 강의의 수강신청이 취소되었습니다.");
+		line();
 	}
 	
 	public static void line() {

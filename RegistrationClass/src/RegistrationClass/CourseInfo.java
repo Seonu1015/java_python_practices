@@ -51,12 +51,8 @@ public class CourseInfo implements InterfaceTeach {
             managementCourse(professor);
             break;
         case 3:
-            System.out.println("교수 " + professor.getName() + "님의 강의 목록:");
-            for (CourseInfo c : courseList) {
-                if (c.getProfessor().equals(professor)) {
-                    System.out.println(c.getCourseName());
-                }
-            }
+            listAllCourse();
+            line();
             managementCourse(professor);
             break;
         case 4:
@@ -69,28 +65,41 @@ public class CourseInfo implements InterfaceTeach {
         }
     }
     
+    private void listAllCourse() {
+        if (courseList.isEmpty()) {
+            System.out.println("등록된 강의가 없습니다.");
+        } else {
+        	System.out.println("교수 " + professor.getName() + "님의 강의 목록");
+            for (int i = 0; i < courseList.size(); i++) {
+                CourseInfo course = courseList.get(i);
+                System.out.println(i + 1 + ". " + course.getCourseName());
+            }
+        }
+    }
+    
     @Override
     public void addCourse() {
     	System.out.print("강의명을 입력하세요: ");
         String courseName = sc.next();
         courseList.add(new CourseInfo(courseName, this.professor));
         System.out.println("강의가 등록되었습니다.");
+        line();
     }
     
     @Override
     public void removeCourse() {
-        System.out.print("삭제할 강의명을 입력하세요: ");
-        String courseDelete = sc.next();
-        Iterator<CourseInfo> iterator = courseList.iterator();
-        while (iterator.hasNext()) {
-            CourseInfo course = iterator.next();
-            if (course.getCourseName().equals(courseDelete)) {
-                iterator.remove();
-                System.out.println("강의가 삭제되었습니다.");
-                return;
-            }
+    	listAllCourse();
+        System.out.print("삭제할 강의 번호를 입력하세요: ");
+        int courseToDelete = sc.nextInt();
+
+        if (courseToDelete >= 1 && courseToDelete <= getCourseList().size()) {
+            String deletedCourseName = getCourseList().get(courseToDelete - 1).getCourseName();
+            getCourseList().remove(courseToDelete - 1);
+            System.out.println(deletedCourseName + " 강의 등록이 취소되었습니다.");
+        } else {
+            System.out.println("유효하지 않은 번호입니다. 취소 작업을 종료합니다.");
         }
-        System.out.println("해당 강의를 찾을 수 없습니다.");
+        line();
     }
     
     public static void line() {

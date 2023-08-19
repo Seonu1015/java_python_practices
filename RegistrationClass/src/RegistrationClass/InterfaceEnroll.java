@@ -2,7 +2,7 @@ package RegistrationClass;
 
 public interface InterfaceEnroll {
 
-    boolean enrollCourse();
-    boolean dropCourse();
+    abstract void enrollCourse();
+    abstract void dropCourse();
     
 }
