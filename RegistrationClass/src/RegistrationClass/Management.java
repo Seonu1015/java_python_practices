@@ -3,7 +3,7 @@ package RegistrationClass;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ManagementSystem{
+public class Management{
 	
 	public static Scanner sc = new Scanner(System.in);
 	
@@ -39,10 +39,10 @@ public class ManagementSystem{
 	    if (professor != null) {
 	        boolean loginSuccess = professor.login(profNum, profPW);
 	        if (loginSuccess) {
-	            CourseInfo.managementCourse(professor);
+	            CourseInfo courseInfo = new CourseInfo(professor);
+	            courseInfo.managementCourse(professor);
 	        }
 	    }
-        
 	}
 	
 	static MemberProfessor findProfessorNumber(int profNum) {
@@ -66,7 +66,8 @@ public class ManagementSystem{
 	    if (student != null) {
 	        boolean loginSuccess = student.login(studentNum, studentPW);
 	        if (loginSuccess) {
-	            Enrollment.managementEnroll();
+	        	Enrollment enrollment = new Enrollment(student, CourseInfo.getCourseList());
+	            enrollment.managementEnroll();
 	        }
 	    }
 	}

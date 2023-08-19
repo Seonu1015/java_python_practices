@@ -48,7 +48,7 @@ public class MemberProfessor extends Member implements InterfaceLogin {
 	@Override
 	public boolean login(int ID, String password) {
 		if (ID == this.professorNum && password.equals(this.profPassword)) {
-            System.out.println("Login successful.");
+            System.out.println(this.getName() + " 교수님 환영합니다.");
             line();
             return true;
         } else {

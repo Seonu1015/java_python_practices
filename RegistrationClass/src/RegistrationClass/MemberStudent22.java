@@ -2,15 +2,15 @@ package RegistrationClass;
 
 import java.util.ArrayList;
 
-public class MemberStudent23 extends MemberStudent implements InterfaceLogin {
+public class MemberStudent22 extends MemberStudent implements InterfaceLogin {
 
 	private int studentNum;
-	private static int studentNumInit = 23;
+	private static int studentNumInit = 22;
 	private String studentPassword;
 	
 	private static ArrayList<MemberStudent> studentList = new ArrayList<>();
 	
-	MemberStudent23(String name, String phone, String major) {
+	MemberStudent22(String name, String phone, String major) {
         super(name, phone, major);
         setStudentNum();
         setStudentPassword();
@@ -56,7 +56,7 @@ public class MemberStudent23 extends MemberStudent implements InterfaceLogin {
 	@Override
 	public boolean login(int ID, String password) {
 		if (ID == this.studentNum && password.equals(this.studentPassword)) {
-            System.out.println(this.getName() + "님 환영합니다.");
+            System.out.println("Login successful.");
             line();
             return true;
         } else {
