@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args) {
-
-		ManagementSystem.management();
 		
 		MemberStudent23 student1 = new MemberStudent23("A", "123-456-7890", "국문과");
         MemberStudent23 student2 = new MemberStudent23("B", "987-654-3210", "수학과");
@@ -28,25 +26,24 @@ public class Main {
         MemberStudent23 student19 = new MemberStudent23("S", "777-888-9999", "통계학과");
         MemberStudent23 student20 = new MemberStudent23("T", "888-999-0000", "무용과");
 
-//        System.out.println(student1.getName() + "의 전공 : " + student1.getMajor() + ", 학번 : " + student1.getStudentNum());
-//        System.out.println(student2.getName() + "의 전공 : " + student2.getMajor() + ", 학번 : "  + student2.getStudentNum());
-//        System.out.println(student3.getName() + "의 전공 : " + student3.getMajor() + ", 학번 : "  + student3.getStudentNum());
-//        System.out.println(student4.getName() + "의 전공 : " + student4.getMajor() + ", 학번 : "  + student4.getStudentNum());
-//        System.out.println(student5.getName() + "의 전공 : " + student5.getMajor() + ", 학번 : "  + student5.getStudentNum());
-//        System.out.println(student6.getName() + "의 전공 : " + student6.getMajor() + ", 학번 : "  + student6.getStudentNum());
-//        System.out.println(student7.getName() + "의 전공 : " + student7.getMajor() + ", 학번 : "  + student7.getStudentNum());
-//        System.out.println(student8.getName() + "의 전공 : " + student8.getMajor() + ", 학번 : "  + student8.getStudentNum());
-//        System.out.println(student9.getName() + "의 전공 : " + student9.getMajor() + ", 학번 : "  + student9.getStudentNum());
-//        System.out.println(student10.getName() + "의 전공 : " + student10.getMajor() + ", 학번 : "  + student10.getStudentNum());
-//        System.out.println(student11.getName() + "의 전공 : " + student11.getMajor() + ", 학번 : "  + student11.getStudentNum());
-//        System.out.println(student12.getName() + "의 전공 : " + student12.getMajor() + ", 학번 : "  + student12.getStudentNum());
-//        System.out.println(student13.getName() + "의 전공 : " + student13.getMajor() + ", 학번 : "  + student13.getStudentNum());
-//        System.out.println(student14.getName() + "의 전공 : " + student14.getMajor() + ", 학번 : "  + student14.getStudentNum());
-//        System.out.println(student15.getName() + "의 전공 : " + student15.getMajor() + ", 학번 : "  + student15.getStudentNum());
-//        System.out.println(student16.getName() + "의 전공 : " + student16.getMajor() + ", 학번 : "  + student16.getStudentNum());
-//        System.out.println(student17.getName() + "의 전공 : " + student17.getMajor() + ", 학번 : "  + student17.getStudentNum());
-//        System.out.println(student18.getName() + "의 전공 : " + student18.getMajor() + ", 학번 : "  + student18.getStudentNum());
-//        System.out.println(student19.getName() + "의 전공 : " + student19.getMajor() + ", 학번 : "  + student19.getStudentNum());
-//        System.out.println(student20.getName() + "의 전공 : " + student20.getMajor() + ", 학번 : "  + student20.getStudentNum());
+        MemberProfessor prof1 = new MemberProfessor("홍길동", "123-456-7890", "국문과");
+        MemberProfessor prof2 = new MemberProfessor("김철수", "987-654-3210", "법학과");
+        MemberProfessor prof3 = new MemberProfessor("이영희", "555-123-4567", "수학과");
+        MemberProfessor prof4 = new MemberProfessor("박영수", "777-888-9999", "무용과");
+        MemberProfessor prof5 = new MemberProfessor("최지영", "444-333-2222", "통계학과");
+        MemberProfessor prof6 = new MemberProfessor("정민우", "111-222-3333", "국문과");
+        MemberProfessor prof7 = new MemberProfessor("송지현", "999-888-7777", "법학과");
+        MemberProfessor prof8 = new MemberProfessor("강민석", "666-555-4444", "수학과");
+        MemberProfessor prof9 = new MemberProfessor("윤서영", "333-222-1111", "국문과");
+        MemberProfessor prof10 = new MemberProfessor("장영미", "222-333-4444", "무용과");
+                
+        System.out.println("student1 : " + student1.getStudentNum() + " 비밀번호 : " + student1.getStudentPassword());
+        System.out.println("student2 : " + student2.getStudentNum() + " 비밀번호 : " + student2.getStudentPassword());
+        System.out.println("student7 : " + student7.getStudentNum() + " 비밀번호 : " + student7.getStudentPassword());
+        System.out.println("student18 : " + student18.getStudentNum() + " 비밀번호 : " + student18.getStudentPassword());
+        System.out.println("prof1 : " + prof1.getProfNum() + " 비밀번호 : " + prof1.getProfPassword());
+        System.out.println("prof7 : " + prof7.getProfNum() + " 비밀번호 : " + prof7.getProfPassword());
+		ManagementSystem.management();
+        
 	}
 }
