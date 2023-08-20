@@ -40,6 +40,9 @@ public class Management {
 			if (loginSuccess) {
 				CourseInfo courseInfo = new CourseInfo(professor);
 				courseInfo.managementCourse(professor);
+			} else {
+				System.out.println("교번과 비밀번호를 다시 입력해주세요.");
+				loginProf();
 			}
 		}
 	}
@@ -67,6 +70,9 @@ public class Management {
 			if (loginSuccess) {
 				Enrollment enrollment = new Enrollment(student, CourseInfo.getCourseList());
 				enrollment.managementEnroll();
+			} else {
+				System.out.println("학번과 비밀번호를 다시 입력해주세요.");
+				loginStudent();
 			}
 		}
 	}

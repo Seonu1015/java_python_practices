@@ -45,6 +45,7 @@ public class Main {
 		System.out.println("student18 : " + student18.getStudentNum() + " 비밀번호 : " + student18.getStudentPassword());
 		System.out.println("prof1 : " + prof1.getProfNum() + " 비밀번호 : " + prof1.getProfPassword());
 		System.out.println("prof7 : " + prof7.getProfNum() + " 비밀번호 : " + prof7.getProfPassword());
+		
 		Management.management();
 
 	}
