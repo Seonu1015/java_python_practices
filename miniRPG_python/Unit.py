@@ -1,5 +1,7 @@
 import random
 from abc import ABC, abstractmethod
+from Interface import Line
+
 
 class Unit(ABC):
     def __init__(self, name, health, max_damage, min_damage):
@@ -41,7 +43,7 @@ class Unit(ABC):
     def get_min_damage(self):
         return self._min_damage
 
-    def set_min_damage(self,min_damage):
+    def set_min_damage(self, min_damage):
         self._min_damage = min_damage
 
     def get_max_damage(self):
@@ -54,6 +56,7 @@ class Unit(ABC):
     def unit_info(self):
         pass
 
+
 class Character(Unit):
     def __init__(self):
         super().__init__("", 0, 0, 0)
@@ -65,7 +68,7 @@ class Character(Unit):
         self._base_attack = 0
         self.set_name()
         self.set_birth()
-        default_weapon = ItemWeapon.get_instance()
+        default_weapon = Weapon.get_instance()
         self.equip(default_weapon)
 
     def set_name(self):
@@ -97,3 +100,36 @@ class Character(Unit):
             self.set_attack(10)
         self.set_max_hp(self.get_hp())
 
+    def unit_info(self):
+        # 구분선 넣기
+        Line.line_one()
+        print("┌ 캐릭터명 : " + self.get_name())
+        print("│ 체력 : " + str(self.get_hp()) + " / " + str(self.get_max_hp()))
+        if self.equipped_weapon:
+            print("└ 장착무기 : " + self.equipped_weapon.get_name())
+            print("└ 공격력 : " + str(self.get_min_damage()) + " ~ " + str(self.get_max_damage()))
+        else:
+            print("└ 장착무기 : 없음")
+        # 구분선 넣기
+
+    def get_exp(self):
+        return self._exp
+
+    def set_exp(self):
+        self._exp = round((random.random() * 90 + 20) * 100.00) / 100.00
+        print(str(self._exp) + "의 경험치를 획득하였습니다.")
+
+    def accumulate_exp(self):
+        self._exp += self.set_exp()
+        full_exp = 100 + ((self._level - 1) * 50)
+        if self._exp >= full_exp:
+            # 구분선 넣기
+            print(f"★ {self.get_name()} LEVEL UP ★")
+            print(f"{self.get_name()}의 공격력이 상승합니다. (+3)")
+            print(f"{self.get_name()}의 최대 체력이 상승합니다. (+10)")
+            # 구분선 넣기
+            self._level += 1
+            self._exp -= full_exp
+            self.set_min_damage(self.get_min_damage() + 3)
+            self.set_max_damage(self.get_max_damage() + 3)
+            self.set_max_hp(self.get_max_hp() + 10)
