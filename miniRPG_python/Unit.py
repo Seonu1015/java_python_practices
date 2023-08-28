@@ -1,6 +1,7 @@
 import random
 from abc import ABC, abstractmethod
-from Interface import Line
+from Interface import *
+from Item import *
 
 
 class Unit(ABC):
@@ -57,7 +58,7 @@ class Unit(ABC):
         pass
 
 
-class Character(Unit):
+class Character(Unit, EquipableItem):
     def __init__(self):
         super().__init__("", 0, 0, 0)
         self._sc = input
@@ -68,13 +69,12 @@ class Character(Unit):
         self._base_attack = 0
         self.set_name()
         self.set_birth()
-        default_weapon = Weapon.get_instance()
+        default_weapon = Weapon()
         self.equip(default_weapon)
 
     def set_name(self):
-        print("캐릭터명을 지어주세요. : ")
-        input_name = input()  # Replace this with actual user input method
-        self.set_name(input_name)
+        input_name = str(input("캐릭터명을 지어주세요. : "))  # Replace this with actual user input method
+        self._name = input_name
 
     def get_birth(self):
         return self._birth
@@ -101,16 +101,15 @@ class Character(Unit):
         self.set_max_hp(self.get_hp())
 
     def unit_info(self):
-        # 구분선 넣기
-        Line.line_one()
+        Line.line_star()
         print("┌ 캐릭터명 : " + self.get_name())
         print("│ 체력 : " + str(self.get_hp()) + " / " + str(self.get_max_hp()))
-        if self.equipped_weapon:
-            print("└ 장착무기 : " + self.equipped_weapon.get_name())
+        if self._equipped_weapon:
+            print("│ 장착무기 : " + self._equipped_weapon.get_name())
             print("└ 공격력 : " + str(self.get_min_damage()) + " ~ " + str(self.get_max_damage()))
         else:
             print("└ 장착무기 : 없음")
-        # 구분선 넣기
+        Line.line_star()
 
     def get_exp(self):
         return self._exp
@@ -123,13 +122,49 @@ class Character(Unit):
         self._exp += self.set_exp()
         full_exp = 100 + ((self._level - 1) * 50)
         if self._exp >= full_exp:
-            # 구분선 넣기
+            Line.line_one()
             print(f"★ {self.get_name()} LEVEL UP ★")
             print(f"{self.get_name()}의 공격력이 상승합니다. (+3)")
             print(f"{self.get_name()}의 최대 체력이 상승합니다. (+10)")
-            # 구분선 넣기
+            Line.line_one()
             self._level += 1
             self._exp -= full_exp
             self.set_min_damage(self.get_min_damage() + 3)
             self.set_max_damage(self.get_max_damage() + 3)
             self.set_max_hp(self.get_max_hp() + 10)
+
+    def equip(self, weapon):
+        if not self._equipped_weapon == None:
+            self.unequip()
+
+        self._base_attack = self.get_attack()
+
+        self.set_min_damage(self._base_attack + weapon.get_min_damage())
+        self.set_max_damage(self._base_attack + weapon.get_max_damage())
+
+        self._equipped_weapon = weapon
+        if self._equipped_weapon.get_name() == "누군가 쓰다버린 검":
+            return
+        else:
+            print(f"{self._equipped_weapon.get_name()}을(를) 장착했습니다.")
+        self.new_random_damage()
+
+    def new_random_damage(self):
+        super().set_rand_attack(random.randint(self._min_damage, self._max_damage + 1))
+        self.set_attack(super().get_rand_attack)
+
+    def unequip(self):
+        if not self._equipped_weapon == None:
+            print(f"{self._equipped_weapon.get_name()}을(를) 해제했습니다.")
+            self._equipped_weapon = None
+        else:
+            print("장착한 무기가 없습니다.")
+
+    # def use(self):
+    #     if self.get_hp() >= self.get_max_hp():
+    #         print("이미 최대 체력입니다.")
+    #         return
+    #     if
+
+char = Character()
+char.unit_info()

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from Interface import Line
 
 
 class Item(ABC):
@@ -58,12 +59,12 @@ class Potion(Item):
 
     @abstractmethod
     def item_info(self):
-        print("-----------------------------------------")
+        Line.line_star()
         print("💊 " + self.get_name())
         print("┌ 설명 : " + self.get_description())
         print("│ 개수 : " + str(self.get_quantity()))
         print("└ 회복량 : " + str(self._heal))
-        print("-----------------------------------------")
+        Line.line_star()
 
 
 class Weapon(Item):
@@ -78,15 +79,12 @@ class Weapon(Item):
     def get_min_damage(self):
         return self._min_damage
 
-    @staticmethod
-    def get_instance():
-        if Weapon.instance is None:
-            Weapon.instance = Weapon()
-        return Weapon.instance
-
     def item_info(self):
-        print("-----------------------------------------")
+        Line.line_star()
         print("🗡", self.get_name())
         print("┌ 설명 :", self.get_description())
         print("└ 공격력 :", self._min_damage, "~", self._max_damage)
-        print("-----------------------------------------")
+        Line.line_star()
+
+# weapon = Weapon()
+# weapon.item_info()

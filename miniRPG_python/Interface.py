@@ -10,10 +10,14 @@ class Line:
     def line_two():
         print("=========================================")
 
+    @staticmethod
+    def line_star():
+        print("*****************************************")
+
 
 class EquipableItem(ABC):
     @abstractmethod
-    def equip(self):
+    def equip(self, item):
         pass
 
     @abstractmethod
