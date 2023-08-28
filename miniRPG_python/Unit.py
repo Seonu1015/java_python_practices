@@ -54,6 +54,12 @@ class Unit(ABC):
     def set_max_damage(self, max_damage):
         self._max_damage = max_damage
 
+    def is_alive(self):
+        return self._hp > 0
+
+    def take_damage(self, damage):
+        self._hp = max(0, self._hp - damage)
+
     @abstractmethod
     def unit_info(self):
         pass
@@ -126,13 +132,13 @@ class Character(Unit, EquipableItem):
             Line.line_one()
             print(f"★ {self.get_name()} LEVEL UP ★")
             print(f"{self.get_name()}의 공격력이 상승합니다. (+3)")
-            print(f"{self.get_name()}의 최대 체력이 상승합니다. (+10)")
+            print(f"{self.get_name()}의 최대 체력이 상승합니다. (+20)")
             Line.line_one()
             self._level += 1
             self._exp -= full_exp
             self.set_min_damage(self.get_min_damage() + 3)
             self.set_max_damage(self.get_max_damage() + 3)
-            self.set_max_hp(self.get_max_hp() + 10)
+            self.set_max_hp(self.get_max_hp() + 20)
             # self.new_random_damage()
 
     def equip(self, weapon):
