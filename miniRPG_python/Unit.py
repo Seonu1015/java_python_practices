@@ -1,3 +1,4 @@
+import csv
 import random
 from abc import ABC, abstractmethod
 from Interface import *
@@ -5,12 +6,12 @@ from Item import *
 
 
 class Unit(ABC):
-    def __init__(self, name, health, max_damage, min_damage):
+    def __init__(self, name, hp, min_damage, max_damage):
         self._name = name
-        self._health = health
-        self._max_health = health
+        self._hp = hp
+        self._max_hp = hp
         self._attack = 0
-        self._random_attack = 0
+        self._rand_attack = 0
         self._max_damage = max_damage
         self._min_damage = min_damage
 
@@ -38,7 +39,7 @@ class Unit(ABC):
     def get_rand_attack(self):
         return self._rand_attack
 
-    def set_rand_attack(self, rand_attack):
+    def set_rand_attack(self):
         self._rand_attack = random.randint(self._min_damage, self._max_damage + 1)
 
     def get_min_damage(self):
@@ -132,6 +133,7 @@ class Character(Unit, EquipableItem):
             self.set_min_damage(self.get_min_damage() + 3)
             self.set_max_damage(self.get_max_damage() + 3)
             self.set_max_hp(self.get_max_hp() + 10)
+            # self.new_random_damage()
 
     def equip(self, weapon):
         if not self._equipped_weapon == None:
@@ -150,7 +152,7 @@ class Character(Unit, EquipableItem):
         self.new_random_damage()
 
     def new_random_damage(self):
-        super().set_rand_attack(random.randint(self._min_damage, self._max_damage + 1))
+        super().set_rand_attack()
         self.set_attack(super().get_rand_attack)
 
     def unequip(self):
@@ -160,11 +162,91 @@ class Character(Unit, EquipableItem):
         else:
             print("장착한 무기가 없습니다.")
 
-    # def use(self):
-    #     if self.get_hp() >= self.get_max_hp():
-    #         print("이미 최대 체력입니다.")
-    #         return
-    #     if
+    def use(self):
+        if self.get_hp() >= self.get_max_hp():
+            print("이미 최대 체력입니다.")
+            return
+        if Potion.get_instance().get_quantity() > 0:
+            heal_amount = Potion.get_instance().get_heal()
+            self.set_hp(min(self.get_hp() + heal_amount, self.get_max_hp()))
+            Potion.get_instance().decrease_quantity(1)
+            print(self.get_name() + "이(가) 회복 포션을 사용하여 " + str(heal_amount) + "만큼 회복합니다.")
+            print("남은 체력: " + str(self.get_hp()) + " / " + str(self.get_max_hp()))
+        else:
+            print("회복 포션이 없습니다.")
 
-char = Character()
-char.unit_info()
+
+class Monster(Unit, DropItem):
+    def __init__(self, name, hp, min_damage, max_damage):
+        super().__init__(name, hp, min_damage, max_damage)
+
+    def unit_info(self):
+        Line.line_star()
+        print(f"┌ 몬스터명 : {self.get_name()}")
+        print(f"│ 체력 :  : {self.get_hp()}")
+        print(f"└ 공격력 :  : {self.get_min_damage()} ~ {self.get_max_damage()}")
+        Line.line_star()
+
+    def drop(self):
+        potion = Potion.get_instance()
+        amount = random.randint(1,3)
+        potion.increase_quantity(amount)
+        print(f"{self.get_name()}이(가) 회복 포션 {amount}개를 드랍했습니다.")
+
+    @classmethod
+    def read_csv_file(cls, csv_file):
+        monsters = []
+
+        with open(csv_file, mode='r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            next(reader)
+
+            for row in reader:
+                name, hp, min_attack, max_attack = row
+                monster = cls(name, int(hp), int(min_attack), int(max_attack))
+                monsters.append(monster)
+
+        return monsters
+
+monsters = Monster.read_csv_file("unit_monster.csv")
+for monster in monsters:
+    monster.unit_info()
+
+class Boss(Unit):
+    def __init__(self, name, hp, min_damage, max_damage, skill, skill_damage):
+        super().__init__(name, hp, min_damage, max_damage)
+        self._skill = skill
+        self._skill_damage = skill_damage
+
+    def get_skill(self):
+        return self._skill
+
+    def get_skill_damage(self):
+        return self._skill_damage
+
+    def unit_info(self):
+        Line.line_star()
+        print(f"┌ 보스명 : {self.get_name()}")
+        print(f"│ 체력 : {self.get_hp()}")
+        print(f"│ 스킬 : {self._skill}")
+        print(f"└ 공격력 :  : {self.get_min_damage()} ~ {self.get_max_damage()}")
+        Line.line_star()
+
+    @classmethod
+    def read_csv_file(cls, csv_file):
+        bosses = []
+
+        with open(csv_file, mode='r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            next(reader)
+
+            for row in reader:
+                name, hp, min_attack, max_attack, skill, skill_damage = row
+                boss = cls(name, int(hp), int(min_attack), int(max_attack), skill, int(skill_damage))
+                bosses.append(boss)
+
+        return bosses
+
+# bosses = Boss.read_csv_file("unit_boss.csv")
+# for boss in bosses:
+#     boss.unit_info()
