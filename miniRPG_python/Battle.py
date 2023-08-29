@@ -3,6 +3,7 @@ from Unit import *
 from Item import *
 from Interface import *
 
+
 class Battle:
     @staticmethod
     def battle(character, enemy):
@@ -96,3 +97,15 @@ class Battle:
         )
         print(f"보스가 {dropped_weapon.get_name()}을(를) 드랍했습니다!")
         character.equip(dropped_weapon)
+
+
+class Dungeon: # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처치시 해당층 클리어
+    max_floor = 100
+
+    def __init__(self):
+        self._current_floor = 1
+    @classmethod
+    def start_dungeon(self):
+        character = Character()
+        Line.line_two()
+        print("던전에 오신 것을 환영합니다.")

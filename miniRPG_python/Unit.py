@@ -78,18 +78,26 @@ class Character(Unit, EquipableItem):
         self.set_birth()
         default_weapon = Weapon()
         self.equip(default_weapon)
+        self.unit_info()
 
     def set_name(self):
-        input_name = str(input("캐릭터명을 지어주세요. : "))  # Replace this with actual user input method
-        self._name = input_name
+        Line.line_one()
+        input_name = str(input("캐릭터명을 지어주세요. : "))
+        double_check = str(input(f"{input_name}으로 진행하시겠습니까? (y/n) : "))
+        if double_check == 'y':
+            self._name = input_name
+            Line.line_one()
+        else:
+            self.set_name()
 
     def get_birth(self):
         return self._birth
 
-    def set_birth(self):
+    def set_birth(self): # 예외처리 추가 예정
         print("태생을 선택하세요. 선택한 태생에 따라 기본 스탯이 달라집니다.")
         print("퇴역군인 | 도굴꾼 | 망국의왕족 | 역병의사 | 못가진자")
         select_birth = input()
+        Line.line_one()
         if select_birth == "퇴역군인":
             self.set_hp(130)
             self.set_attack(27)
@@ -214,9 +222,19 @@ class Monster(Unit, DropItem):
 
         return monsters
 
-monsters = Monster.read_csv_file("unit_monster.csv")
-for monster in monsters:
-    monster.unit_info()
+    @classmethod
+    def random_monster(self):
+        monster_pool = self.read_csv_file("unit_monster.csv")
+        rand_monster = random.choice(monster_pool)
+        return rand_monster
+
+# monsters = Monster.read_csv_file("unit_monster.csv")
+# for monster in monsters:
+#     monster.unit_info()
+
+# rand_monster = Monster.random_monster()
+# rand_monster.unit_info()
+
 
 class Boss(Unit):
     def __init__(self, name, hp, min_damage, max_damage, skill, skill_damage):
