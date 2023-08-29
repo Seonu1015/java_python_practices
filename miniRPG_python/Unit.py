@@ -65,10 +65,9 @@ class Unit(ABC):
         pass
 
 
-class Character(Unit, EquipableItem):
+class Character(Unit, EquipableItem, ConsumableItem):
     def __init__(self):
         super().__init__("", 0, 0, 0)
-        self._sc = input
         self._birth = ""
         self._level = 1
         self._exp = 0
@@ -78,7 +77,6 @@ class Character(Unit, EquipableItem):
         self.set_birth()
         default_weapon = Weapon()
         self.equip(default_weapon)
-        self.unit_info()
 
     def set_name(self):
         Line.line_one()
@@ -93,7 +91,7 @@ class Character(Unit, EquipableItem):
     def get_birth(self):
         return self._birth
 
-    def set_birth(self): # 예외처리 추가 예정
+    def set_birth(self):  # 예외처리 추가 예정
         print("태생을 선택하세요. 선택한 태생에 따라 기본 스탯이 달라집니다.")
         print("퇴역군인 | 도굴꾼 | 망국의왕족 | 역병의사 | 못가진자")
         select_birth = input()
@@ -134,7 +132,8 @@ class Character(Unit, EquipableItem):
         print(str(self._exp) + "의 경험치를 획득하였습니다.")
 
     def accumulate_exp(self):
-        self._exp += self.set_exp()
+        gain_exp = self.get_exp()
+        self._exp += gain_exp
         full_exp = 100 + ((self._level - 1) * 50)
         if self._exp >= full_exp:
             Line.line_one()
@@ -150,7 +149,7 @@ class Character(Unit, EquipableItem):
             # self.new_random_damage()
 
     def equip(self, weapon):
-        if not self._equipped_weapon == None:
+        if not self._equipped_weapon is None:
             self.unequip()
 
         self._base_attack = self.get_attack()
@@ -170,7 +169,7 @@ class Character(Unit, EquipableItem):
         self.set_attack(super().get_rand_attack)
 
     def unequip(self):
-        if not self._equipped_weapon == None:
+        if not self._equipped_weapon is None:
             print(f"{self._equipped_weapon.get_name()}을(를) 해제했습니다.")
             self._equipped_weapon = None
         else:
@@ -180,14 +179,31 @@ class Character(Unit, EquipableItem):
         if self.get_hp() >= self.get_max_hp():
             print("이미 최대 체력입니다.")
             return
-        if Potion.get_instance().get_quantity() > 0:
-            heal_amount = Potion.get_instance().get_heal()
-            self.set_hp(min(self.get_hp() + heal_amount, self.get_max_hp()))
-            Potion.get_instance().decrease_quantity(1)
-            print(self.get_name() + "이(가) 회복 포션을 사용하여 " + str(heal_amount) + "만큼 회복합니다.")
-            print("남은 체력: " + str(self.get_hp()) + " / " + str(self.get_max_hp()))
+
+        print("사용할 회복 물약을 선택하세요.")
+        print("1. 일반 포션")
+        print("2. 특별 포션")
+
+        choice = int(input("선택 : "))
+
+        if choice == 1:
+            regular_potion = RegularPotion()
+            regular_potion.item_info()
+            sel = str(input("일반 포션을 사용하시겠습니까? y/n : "))
+            if sel == 'y':
+                regular_potion.use(self)
+            else:
+                Character.use(self)
+        elif choice == 2:
+            special_potion = SpecialPotion()
+            special_potion.item_info()
+            sel = str(input("특별 포션을 사용하시겠습니까? y/n : "))
+            if sel == 'y':
+                special_potion.use(self)
+            else:
+                Character.use(self)
         else:
-            print("회복 포션이 없습니다.")
+            print("잘못된 선택입니다.")
 
 
 class Monster(Unit, DropItem):
@@ -202,10 +218,18 @@ class Monster(Unit, DropItem):
         Line.line_star()
 
     def drop(self):
-        potion = Potion.get_instance()
-        amount = random.randint(1,3)
-        potion.increase_quantity(amount)
-        print(f"{self.get_name()}이(가) 회복 포션 {amount}개를 드랍했습니다.")
+        amount = random.randint(1, 3)
+        special_drop_rate = 0.3
+        is_special_drop = random.random() <= special_drop_rate
+
+        if is_special_drop:
+            potion = SpecialPotion()
+            potion.increase_quantity(1)
+            print(f"{self.get_name()}이(가) 특별 포션 1개를 드랍했습니다.")
+        else:
+            potion = RegularPotion()
+            potion.increase_quantity(amount)
+            print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
 
     @classmethod
     def read_csv_file(cls, csv_file):
@@ -223,10 +247,11 @@ class Monster(Unit, DropItem):
         return monsters
 
     @classmethod
-    def random_monster(self):
-        monster_pool = self.read_csv_file("unit_monster.csv")
-        rand_monster = random.choice(monster_pool)
+    def random_monster(cls):
+        monster_lst = cls.read_csv_file("unit_monster.csv")
+        rand_monster = random.choice(monster_lst)
         return rand_monster
+
 
 # monsters = Monster.read_csv_file("unit_monster.csv")
 # for monster in monsters:
@@ -270,6 +295,11 @@ class Boss(Unit):
                 bosses.append(boss)
 
         return bosses
+
+    @classmethod
+    def planned_boss(cls):
+        boss_lst = cls.read_csv_file("unit_boss.csv")
+        return boss_lst
 
 # bosses = Boss.read_csv_file("unit_boss.csv")
 # for boss in bosses:
