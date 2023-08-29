@@ -15,6 +15,12 @@ class Line:
         print("*****************************************")
 
 
+class DropItem(ABC):
+    @abstractmethod
+    def drop(self):
+        pass
+
+
 class EquipableItem(ABC):
     @abstractmethod
     def equip(self, item):
