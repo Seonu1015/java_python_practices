@@ -15,6 +15,9 @@ class Unit(ABC):
         self._max_damage = max_damage
         self._min_damage = min_damage
 
+        self._regular_potion = RegularPotion()
+        self._special_potion = SpecialPotion()
+
     def get_name(self):
         return self._name
 
@@ -122,6 +125,7 @@ class Character(Unit, EquipableItem, ConsumableItem):
             print("└ 공격력 : " + str(self.get_min_damage()) + " ~ " + str(self.get_max_damage()))
         else:
             print("└ 장착무기 : 없음")
+        self._regular_potion.item_info()
         Line.line_star()
 
     def get_exp(self):
@@ -187,19 +191,17 @@ class Character(Unit, EquipableItem, ConsumableItem):
         choice = int(input("선택 : "))
 
         if choice == 1:
-            regular_potion = RegularPotion()
-            regular_potion.item_info()
+            self._regular_potion.item_info()
             sel = str(input("일반 포션을 사용하시겠습니까? y/n : "))
             if sel == 'y':
-                regular_potion.use(self)
+                self._regular_potion.use(self)
             else:
                 Character.use(self)
         elif choice == 2:
-            special_potion = SpecialPotion()
-            special_potion.item_info()
+            self._special_potion.item_info()
             sel = str(input("특별 포션을 사용하시겠습니까? y/n : "))
             if sel == 'y':
-                special_potion.use(self)
+                self._special_potion.use(self)
             else:
                 Character.use(self)
         else:
@@ -223,12 +225,10 @@ class Monster(Unit, DropItem):
         is_special_drop = random.random() <= special_drop_rate
 
         if is_special_drop:
-            potion = SpecialPotion()
-            potion.increase_quantity(1)
+            self._special_potion.increase_quantity(1)
             print(f"{self.get_name()}이(가) 특별 포션 1개를 드랍했습니다.")
         else:
-            potion = RegularPotion()
-            potion.increase_quantity(amount)
+            self._regular_potion.increase_quantity(amount)
             print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
 
     @classmethod

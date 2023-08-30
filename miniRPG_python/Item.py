@@ -25,7 +25,7 @@ class Item(ABC):
         pass
 
 
-class Potion(Item):
+class Potion(Item, ABC):
     def __init__(self, name, description, heal, quantity):
         super().__init__(name, description)
         self._heal = heal
@@ -37,14 +37,13 @@ class Potion(Item):
     def get_quantity(self):
         return self._quantity
 
+    @abstractmethod
     def increase_quantity(self, amount):
-        self._quantity += amount
+        pass
 
+    @abstractmethod
     def decrease_quantity(self, amount):
-        if self._quantity >= amount:
-            self._quantity -= amount
-        else:
-            print("수량이 부족합니다.")
+        pass
 
 
 class RegularPotion(Potion):
@@ -61,6 +60,15 @@ class RegularPotion(Potion):
         print("이 포션은 체력을 30% 회복시킵니다.")
         print(f"현재 소지량 : {self.get_quantity()}")
 
+    def increase_quantity(self, amount):
+        self._quantity += amount
+
+    def decrease_quantity(self, amount):
+        if self._quantity >= amount:
+            self._quantity -= amount
+        else:
+            print("수량이 부족합니다.")
+
 
 class SpecialPotion(Potion):
     def __init__(self):
@@ -76,13 +84,7 @@ class SpecialPotion(Potion):
         else:
             print(f"{character.get_name()}이(가) 특별 포션을 사용하여 체력을 완전히 회복했습니다.")
             character.set_hp(character.get_max_hp())
-        self.decrease_special_quantity()
-
-    def decrease_special_quantity(self):
-        if self._quantity > 0:
-            self._quantity -= 1
-        else:
-            print("포션이 모두 소진되었습니다.")
+        self.decrease_quantity(1)
 
     def item_info(self):
         Line.line_star()
@@ -90,6 +92,16 @@ class SpecialPotion(Potion):
         print("┌ 설명 : " + self.get_description())
         print("└ 소지 : " + str(self.get_quantity()))
         Line.line_star()
+
+    def increase_quantity(self, amount):
+        self._quantity += amount
+        return self._quantity
+
+    def decrease_quantity(self, amount):
+        if self._quantity >= amount:
+            self._quantity -= amount
+        else:
+            print("포션이 모두 소진되었습니다.")
 
 # sp = SpecialPotion()
 # sp.item_info()
