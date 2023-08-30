@@ -25,7 +25,7 @@ class Item(ABC):
         pass
 
 
-class Potion(Item, ABC):
+class Potion(Item):
     def __init__(self, name, description, heal, quantity):
         super().__init__(name, description)
         self._heal = heal
