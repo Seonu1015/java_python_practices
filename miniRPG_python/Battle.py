@@ -37,6 +37,7 @@ class Battle:
     def repeat_battle(character, enemy):
         character.unit_info()
         print(f"{enemy.get_name()}을(를) 마주쳤습니다. 전투를 시작합니다.")
+        enemy.unit_info()
         Line.line_two()
 
         while enemy.is_alive() and character.is_alive():
@@ -55,6 +56,7 @@ class Battle:
     def boss_battle(character, boss):
         character.unit_info()
         print(f"{boss.get_name()}와의 전투를 시작합니다.")
+        boss.unit_info()
         Line.line_one()
 
         boss_skill_use = 3

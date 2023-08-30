@@ -63,6 +63,7 @@ class RegularPotion(Potion):
 
 
 class SpecialPotion(Potion):
+
     def __init__(self):
         super().__init__("특별 회복 포션", "체력을 100% 회복시키지만 중독에 걸릴 수 있습니다.", 1, 1)
 
@@ -90,6 +91,7 @@ class SpecialPotion(Potion):
         print("┌ 설명 : " + self.get_description())
         print("└ 소지 : " + str(self.get_quantity()))
         Line.line_star()
+
 
 # sp = SpecialPotion()
 # sp.item_info()
