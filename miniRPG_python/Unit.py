@@ -187,19 +187,21 @@ class Character(Unit, EquipableItem):
         choice = int(input("선택 : "))
 
         if choice == 1:
-            regular_potion = SpecialPotion()
-            regular_potion.item_info()
+            potion = RegularPotion()
+            potion.item_info()
             sel = str(input("일반 포션을 사용하시겠습니까? y/n : "))
             if sel == 'y':
-                Character.use_potion(self)
+                potion.use(self)
+                print("현재 수량 : " + str(potion.get_quantity()))
             else:
-                self.use_potion()
+                Character.use_potion(self)
         elif choice == 2:
-            special_potion = SpecialPotion()
-            special_potion.item_info()
+            potion = SpecialPotion()
+            potion.item_info()
             sel = str(input("특별 포션을 사용하시겠습니까? y/n : "))
             if sel == 'y':
-                special_potion.use(self)
+                potion.use(self)
+                print("현재 수량 : " + str(potion.get_quantity()))
             else:
                 Character.use_potion(self)
         else:
@@ -230,6 +232,7 @@ class Monster(Unit, DropItem):
             potion = RegularPotion()
             potion.increase_quantity(amount)
             print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
+            print("현재 수량 : " + str(potion.get_quantity()))
 
     @classmethod
     def read_csv_file(cls, csv_file):

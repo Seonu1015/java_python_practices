@@ -21,7 +21,7 @@ class EquipableItem(ABC):
         pass
 
     @abstractmethod
-    def unequip(self):
+    def un_equip(self):
         pass
 
 

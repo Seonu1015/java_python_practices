@@ -25,40 +25,34 @@ class Item(ABC):
         pass
 
 
-class Potion(Item):
-    def __init__(self, name, description, heal, quantity):
+class Potion(Item, ABC):
+    quantity = 3
+    def __init__(self, name, description, heal):
         super().__init__(name, description)
         self._heal = heal
-        self._quantity = quantity
-        self._regular_potion = RegularPotion()
-        self._special_potion = SpecialPotion()
 
     def get_heal(self):
         return self._heal
 
-    def get_quantity(self):
-        return self._quantity
+    @staticmethod
+    def get_quantity():
+        return Potion.quantity
 
-    def increase_quantity(self, amount):
-        self._quantity += amount
+    @staticmethod
+    def increase_quantity(amount):
+        Potion.quantity += amount
 
-    def decrease_quantity(self, amount):
-        if self._quantity >= amount:
-            self._quantity -= amount
+    @staticmethod
+    def decrease_quantity(amount):
+        if Potion.quantity >= amount:
+            Potion.quantity -= amount
         else:
             print("수량이 부족합니다.")
 
 
-    def get_regular_potion(self):
-        return self._regular_potion
-
-    def get_special_potion(self):
-        return self._special_potion
-
-
 class RegularPotion(Potion, ConsumableItem, DropItem):
     def __init__(self):
-        super().__init__("일반 회복 포션", "체력을 30% 회복시킵니다.", 1, 3)
+        super().__init__("일반 회복 포션", "체력을 30% 회복시킵니다.", 1)
 
     def use(self, character):
         recovered_hp = int(character.get_max_hp() * 0.3)
@@ -72,14 +66,17 @@ class RegularPotion(Potion, ConsumableItem, DropItem):
         print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
 
     def item_info(self):
-        print("이 포션은 체력을 30% 회복시킵니다.")
-        print(f"현재 소지량 : {self.get_quantity()}")
+        Line.line_star()
+        print(self.get_name())
+        print("┌ 설명 : " + self.get_description())
+        print("└ 소지 : " + str(self.get_quantity()))
+        Line.line_star()
 
 
 class SpecialPotion(Potion, ConsumableItem, DropItem):
 
     def __init__(self):
-        super().__init__("특별 회복 포션", "체력을 100% 회복시키지만 중독에 걸릴 수 있습니다.", 1, 1)
+        super().__init__("특별 회복 포션", "체력을 100% 회복시키지만 중독에 걸릴 수 있습니다.", 1)
 
     def use(self, character):
         is_poisoned = random.random() <= 0.2
@@ -91,13 +88,8 @@ class SpecialPotion(Potion, ConsumableItem, DropItem):
         else:
             print(f"{character.get_name()}이(가) 특별 포션을 사용하여 체력을 완전히 회복했습니다.")
             character.set_hp(character.get_max_hp())
-        self.decrease_special_quantity()
+        self.decrease_quantity(1)
 
-    def decrease_special_quantity(self):
-        if self._quantity > 0:
-            self._quantity -= 1
-        else:
-            print("포션이 모두 소진되었습니다.")
 
     def drop(self):
         special_drop_rate = 0.3
@@ -132,7 +124,7 @@ class Weapon(Item):
 
     def item_info(self):
         Line.line_star()
-        print("🗡", self.get_name())
+        print(self.get_name())
         print("┌ 설명 :", self.get_description())
         print("└ 공격력 :", self._min_damage, "~", self._max_damage)
         Line.line_star()
