@@ -15,9 +15,6 @@ class Unit(ABC):
         self._max_damage = max_damage
         self._min_damage = min_damage
 
-        self._regular_potion = RegularPotion()
-        self._special_potion = SpecialPotion()
-
     def get_name(self):
         return self._name
 
@@ -68,7 +65,7 @@ class Unit(ABC):
         pass
 
 
-class Character(Unit, EquipableItem, ConsumableItem):
+class Character(Unit, EquipableItem):
     def __init__(self):
         super().__init__("", 0, 0, 0)
         self._birth = ""
@@ -125,7 +122,6 @@ class Character(Unit, EquipableItem, ConsumableItem):
             print("└ 공격력 : " + str(self.get_min_damage()) + " ~ " + str(self.get_max_damage()))
         else:
             print("└ 장착무기 : 없음")
-        self._regular_potion.item_info()
         Line.line_star()
 
     def get_exp(self):
@@ -154,7 +150,7 @@ class Character(Unit, EquipableItem, ConsumableItem):
 
     def equip(self, weapon):
         if not self._equipped_weapon is None:
-            self.unequip()
+            self.un_equip()
 
         self._base_attack = self.get_attack()
 
@@ -172,14 +168,14 @@ class Character(Unit, EquipableItem, ConsumableItem):
         super().set_rand_attack()
         self.set_attack(super().get_rand_attack)
 
-    def unequip(self):
+    def un_equip(self):
         if not self._equipped_weapon is None:
             print(f"{self._equipped_weapon.get_name()}을(를) 해제했습니다.")
             self._equipped_weapon = None
         else:
             print("장착한 무기가 없습니다.")
 
-    def use(self):
+    def use_potion(self):
         if self.get_hp() >= self.get_max_hp():
             print("이미 최대 체력입니다.")
             return
@@ -191,19 +187,21 @@ class Character(Unit, EquipableItem, ConsumableItem):
         choice = int(input("선택 : "))
 
         if choice == 1:
-            self._regular_potion.item_info()
+            regular_potion = SpecialPotion()
+            regular_potion.item_info()
             sel = str(input("일반 포션을 사용하시겠습니까? y/n : "))
             if sel == 'y':
-                self._regular_potion.use(self)
+                Character.use_potion(self)
             else:
-                Character.use(self)
+                self.use_potion()
         elif choice == 2:
-            self._special_potion.item_info()
+            special_potion = SpecialPotion()
+            special_potion.item_info()
             sel = str(input("특별 포션을 사용하시겠습니까? y/n : "))
             if sel == 'y':
-                self._special_potion.use(self)
+                special_potion.use(self)
             else:
-                Character.use(self)
+                Character.use_potion(self)
         else:
             print("잘못된 선택입니다.")
 
@@ -225,10 +223,12 @@ class Monster(Unit, DropItem):
         is_special_drop = random.random() <= special_drop_rate
 
         if is_special_drop:
-            self._special_potion.increase_quantity(1)
+            potion = SpecialPotion()
+            potion.increase_quantity(1)
             print(f"{self.get_name()}이(가) 특별 포션 1개를 드랍했습니다.")
         else:
-            self._regular_potion.increase_quantity(amount)
+            potion = RegularPotion()
+            potion.increase_quantity(amount)
             print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
 
     @classmethod

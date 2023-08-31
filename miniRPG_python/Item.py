@@ -1,6 +1,6 @@
 import random
 from abc import ABC, abstractmethod
-from Interface import Line
+from Interface import *
 
 
 class Item(ABC):
@@ -30,35 +30,14 @@ class Potion(Item):
         super().__init__(name, description)
         self._heal = heal
         self._quantity = quantity
+        self._regular_potion = RegularPotion()
+        self._special_potion = SpecialPotion()
 
     def get_heal(self):
         return self._heal
 
     def get_quantity(self):
         return self._quantity
-
-    @abstractmethod
-    def increase_quantity(self, amount):
-        pass
-
-    @abstractmethod
-    def decrease_quantity(self, amount):
-        pass
-
-
-class RegularPotion(Potion):
-    def __init__(self):
-        super().__init__("일반 회복 포션", "체력을 30% 회복시킵니다.", 1, 3)
-
-    def use(self, character):
-        recovered_hp = int(character.get_max_hp() * 0.3)
-        character.set_hp(character.get_hp() + recovered_hp)
-        print(f"{character.get_name()}이(가) 일반 포션을 사용하여 {recovered_hp}만큼 체력을 회복했습니다.")
-        self.decrease_quantity(1)
-
-    def item_info(self):
-        print("이 포션은 체력을 30% 회복시킵니다.")
-        print(f"현재 소지량 : {self.get_quantity()}")
 
     def increase_quantity(self, amount):
         self._quantity += amount
@@ -70,7 +49,35 @@ class RegularPotion(Potion):
             print("수량이 부족합니다.")
 
 
-class SpecialPotion(Potion):
+    def get_regular_potion(self):
+        return self._regular_potion
+
+    def get_special_potion(self):
+        return self._special_potion
+
+
+class RegularPotion(Potion, ConsumableItem, DropItem):
+    def __init__(self):
+        super().__init__("일반 회복 포션", "체력을 30% 회복시킵니다.", 1, 3)
+
+    def use(self, character):
+        recovered_hp = int(character.get_max_hp() * 0.3)
+        character.set_hp(character.get_hp() + recovered_hp)
+        print(f"{character.get_name()}이(가) 일반 포션을 사용하여 {recovered_hp}만큼 체력을 회복했습니다.")
+        self.decrease_quantity(1)
+
+    def drop(self):
+        amount = random.randint(1, 3)
+        self.increase_quantity(amount)
+        print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
+
+    def item_info(self):
+        print("이 포션은 체력을 30% 회복시킵니다.")
+        print(f"현재 소지량 : {self.get_quantity()}")
+
+
+class SpecialPotion(Potion, ConsumableItem, DropItem):
+
     def __init__(self):
         super().__init__("특별 회복 포션", "체력을 100% 회복시키지만 중독에 걸릴 수 있습니다.", 1, 1)
 
@@ -84,7 +91,21 @@ class SpecialPotion(Potion):
         else:
             print(f"{character.get_name()}이(가) 특별 포션을 사용하여 체력을 완전히 회복했습니다.")
             character.set_hp(character.get_max_hp())
-        self.decrease_quantity(1)
+        self.decrease_special_quantity()
+
+    def decrease_special_quantity(self):
+        if self._quantity > 0:
+            self._quantity -= 1
+        else:
+            print("포션이 모두 소진되었습니다.")
+
+    def drop(self):
+        special_drop_rate = 0.3
+        rand_special_drop_rate = random.random()
+
+        if rand_special_drop_rate <= special_drop_rate:
+            self.increase_quantity(1)
+            print(f"{self.get_name()}이(가) 특별 포션 1개를 드랍했습니다.")
 
     def item_info(self):
         Line.line_star()
@@ -93,15 +114,6 @@ class SpecialPotion(Potion):
         print("└ 소지 : " + str(self.get_quantity()))
         Line.line_star()
 
-    def increase_quantity(self, amount):
-        self._quantity += amount
-        return self._quantity
-
-    def decrease_quantity(self, amount):
-        if self._quantity >= amount:
-            self._quantity -= amount
-        else:
-            print("포션이 모두 소진되었습니다.")
 
 # sp = SpecialPotion()
 # sp.item_info()
