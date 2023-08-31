@@ -142,7 +142,7 @@ class Character(Unit, EquipableItem):
         self._exp = round((random.random() * 90 + 20) * 100.00) / 100.00
         print(str(self._exp) + "의 경험치를 획득하였습니다.")
 
-    def accumulate_exp(self):
+    def accumulate_exp(self): # 게임 진행시 경험치가 반영되고 있지 않음
         gain_exp = self.get_exp()
         self._exp += gain_exp
         full_exp = 100 + ((self._level - 1) * 50)
@@ -238,7 +238,7 @@ class Monster(Unit, DropItem):
         print(f"└ 공격력 :  : {self.get_min_damage()} ~ {self.get_max_damage()}")
         Line.line_star()
 
-    def drop(self):
+    def drop(self): # 특별 회복 물약 드랍 오류 수정 필요
         amount = random.randint(1, 3)
         special_drop_rate = 0.3
         is_special_drop = random.random() <= special_drop_rate
