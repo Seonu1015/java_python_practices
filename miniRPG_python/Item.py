@@ -48,6 +48,7 @@ class Potion(Item):
         else:
             print("수량이 부족합니다.")
 
+
     def get_regular_potion(self):
         return self._regular_potion
 

@@ -49,7 +49,7 @@ class Battle:
                     print(f"{character.get_name()}이(가) 전투에서 패배했습니다.")
                     break
             elif select_action == "h":
-                character.use()
+                character.use_potion()
             Line.line_one()
 
     @staticmethod
@@ -72,7 +72,7 @@ class Battle:
                         Battle.use_boss_skill(character, boss)
                 Battle.battle(character, boss)
             elif select_action == "h":
-                character.use()
+                character.use_potion()
 
         if not boss.is_alive():
             Battle.defeat_boss(character, boss)
