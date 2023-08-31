@@ -91,11 +91,21 @@ class Character(Unit, EquipableItem):
     def get_birth(self):
         return self._birth
 
-    def set_birth(self):  # 예외처리 추가 예정
+    def set_birth(self):
         print("태생을 선택하세요. 선택한 태생에 따라 기본 스탯이 달라집니다.")
         print("퇴역군인 | 도굴꾼 | 망국의왕족 | 역병의사 | 못가진자")
-        select_birth = input()
-        Line.line_one()
+
+        while True:
+            select_birth = input()
+            Line.line_one()
+
+            births = ["퇴역군인", "도굴꾼", "망국의왕족", "역병의사", "못가진자"]
+
+            if select_birth in births:
+                break
+            else:
+                print("ERROR : 유효하지 않은 태생입니다. 다시 선택하세요.")
+
         if select_birth == "퇴역군인":
             self.set_hp(130)
             self.set_attack(27)
@@ -112,10 +122,11 @@ class Character(Unit, EquipableItem):
             self.set_hp(100)
             self.set_attack(10)
         self.set_max_hp(self.get_hp())
+        self._birth = select_birth
 
     def unit_info(self):
         Line.line_star()
-        print("┌ 캐릭터명 : " + self.get_name())
+        print(f"┌ 캐릭터명 : {self.get_name()} ({self.get_birth()})")
         print("│ 체력 : " + str(self.get_hp()) + " / " + str(self.get_max_hp()))
         if self._equipped_weapon:
             print("│ 장착무기 : " + self._equipped_weapon.get_name())
@@ -180,32 +191,40 @@ class Character(Unit, EquipableItem):
             print("이미 최대 체력입니다.")
             return
 
-        print("사용할 회복 물약을 선택하세요.")
-        print("1. 일반 포션")
-        print("2. 특별 포션")
+        while True:
+            try:
+                Line.line_one()
+                print("사용할 회복 물약을 선택하세요.")
+                print("1. 일반 포션")
+                print("2. 특별 포션")
+                choice = int(input("선택 : "))
 
-        choice = int(input("선택 : "))
-
-        if choice == 1:
-            potion = RegularPotion()
-            potion.item_info()
-            sel = str(input("일반 포션을 사용하시겠습니까? y/n : "))
-            if sel == 'y':
-                potion.use(self)
-                print("현재 수량 : " + str(potion.get_quantity()))
-            else:
-                Character.use_potion(self)
-        elif choice == 2:
-            potion = SpecialPotion()
-            potion.item_info()
-            sel = str(input("특별 포션을 사용하시겠습니까? y/n : "))
-            if sel == 'y':
-                potion.use(self)
-                print("현재 수량 : " + str(potion.get_quantity()))
-            else:
-                Character.use_potion(self)
-        else:
-            print("잘못된 선택입니다.")
+                if choice == 1:
+                    potion = RegularPotion()
+                    potion.item_info()
+                    sel = str(input("일반 포션을 사용하시겠습니까? y/n : "))
+                    if sel == 'y':
+                        potion.use(self)
+                        print("현재 수량 : " + str(potion.get_quantity()))
+                    else:
+                        Character.use_potion(self)
+                    break
+                elif choice == 2:
+                    potion = SpecialPotion()
+                    potion.item_info()
+                    sel = str(input("특별 포션을 사용하시겠습니까? y/n : "))
+                    if sel == 'y':
+                        potion.use(self)
+                        print("현재 수량 : " + str(potion.get_quantity()))
+                    else:
+                        Character.use_potion(self)
+                    break
+                else:
+                    print("ERROR : 입력이 잘못되었습니다. 다시 입력해주세요.")
+            except ValueError:
+                print("ERROR : 올바른 숫자를 입력하세요.")
+            except Exception as e:
+                print("ERROR : 오류가 발생했습니다:", e)
 
 
 class Monster(Unit, DropItem):
@@ -238,14 +257,20 @@ class Monster(Unit, DropItem):
     def read_csv_file(cls, csv_file):
         monsters = []
 
-        with open(csv_file, mode='r', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            next(reader)
+        try:
+            with open(csv_file, mode='r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                next(reader)
 
-            for row in reader:
-                name, hp, min_attack, max_attack = row
-                monster = cls(name, int(hp), int(min_attack), int(max_attack))
-                monsters.append(monster)
+                for row in reader:
+                    name, hp, min_attack, max_attack = row
+                    monster = cls(name, int(hp), int(min_attack), int(max_attack))
+                    monsters.append(monster)
+
+        except FileNotFoundError:
+            print("파일을 찾을 수 없습니다.")
+        except UnicodeDecodeError:
+            print("파일 읽기 오류: 올바른 인코딩을 사용하세요.")
 
         return monsters
 
@@ -288,14 +313,20 @@ class Boss(Unit):
     def read_csv_file(cls, csv_file):
         bosses = []
 
-        with open(csv_file, mode='r', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            next(reader)
+        try:
+            with open(csv_file, mode='r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                next(reader)  # 첫 줄을 건너뛰기
 
-            for row in reader:
-                name, hp, min_attack, max_attack, skill, skill_damage = row
-                boss = cls(name, int(hp), int(min_attack), int(max_attack), skill, int(skill_damage))
-                bosses.append(boss)
+                for row in reader:
+                    name, hp, min_attack, max_attack, skill, skill_damage = row
+                    boss = cls(name, int(hp), int(min_attack), int(max_attack), skill, int(skill_damage))
+                    bosses.append(boss)
+
+        except FileNotFoundError:
+            print("파일을 찾을 수 없습니다.")
+        except UnicodeDecodeError:
+            print("파일 읽기 오류: 올바른 인코딩을 사용하세요.")
 
         return bosses
 

@@ -55,8 +55,16 @@ class RegularPotion(Potion, ConsumableItem, DropItem):
         super().__init__("일반 회복 포션", "체력을 30% 회복시킵니다.", 1)
 
     def use(self, character):
-        recovered_hp = int(character.get_max_hp() * 0.3)
-        character.set_hp(character.get_hp() + recovered_hp)
+        max_hp = character.get_max_hp()
+        current_hp = character.get_hp()
+
+        recovered_hp = int(max_hp * 0.3)
+        remaining_hp_space = max_hp - current_hp
+
+        if recovered_hp > remaining_hp_space:
+            recovered_hp = remaining_hp_space
+
+        character.set_hp(current_hp + recovered_hp)
         print(f"{character.get_name()}이(가) 일반 포션을 사용하여 {recovered_hp}만큼 체력을 회복했습니다.")
         self.decrease_quantity(1)
 

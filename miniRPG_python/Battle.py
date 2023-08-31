@@ -49,7 +49,15 @@ class Battle:
                     print(f"{character.get_name()}이(가) 전투에서 패배했습니다.")
                     break
             elif select_action == "h":
-                character.use_potion()
+                try:
+                    character.use_potion()
+                except ValueError:
+                    print("ERROR: 잘못된 입력입니다. a 또는 h를 입력하세요.")
+                except Exception as e:
+                    print("ERROR: 예외가 발생했습니다:", e)
+            else:
+                print("ERROR: a 또는 h를 입력하세요.")
+
             Line.line_one()
 
     @staticmethod
@@ -63,16 +71,22 @@ class Battle:
         boss_skill_count = 0
 
         while character.is_alive() and boss.is_alive():
-            select_action = input("공격(a), 회복(h) 중에 선택하세요: ")
+            try:
+                select_action = input("공격(a), 회복(h) 중에 선택하세요: ")
 
-            if select_action == "a":
-                if boss_skill_count < boss_skill_use:
-                    boss_skill_count += 1
-                    if boss_skill_count == boss_skill_use:
-                        Battle.use_boss_skill(character, boss)
-                Battle.battle(character, boss)
-            elif select_action == "h":
-                character.use_potion()
+                if select_action == "a":
+                    if boss_skill_count < boss_skill_use:
+                        boss_skill_count += 1
+                        if boss_skill_count == boss_skill_use:
+                            Battle.use_boss_skill(character, boss)
+                    Battle.battle(character, boss)
+                elif select_action == "h":
+                    character.use_potion()
+                else:
+                    print("ERROR: a 또는 h를 입력하세요.")
+
+            except Exception as e:
+                print("ERROR: 예외가 발생했습니다:", e)
 
         if not boss.is_alive():
             Battle.defeat_boss(character, boss)
