@@ -15,12 +15,6 @@ class Line:
         print("*****************************************")
 
 
-class DropItem(ABC):
-    @abstractmethod
-    def drop(self):
-        pass
-
-
 class EquipableItem(ABC):
     @abstractmethod
     def equip(self, item):
@@ -33,5 +27,11 @@ class EquipableItem(ABC):
 
 class ConsumableItem(ABC):
     @abstractmethod
-    def use(self):
+    def use(self, unit):
+        pass
+
+
+class DropItem(ABC):
+    @abstractmethod
+    def drop(self):
         pass

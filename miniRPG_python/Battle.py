@@ -149,7 +149,8 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
             if self.current_floor <= Dungeon.max_floor:
                 print("다음 층으로 이동합니다.")
 
-    def battle_normal_monsters(self, character):
+    @staticmethod
+    def battle_normal_monsters(character):
         cleared = True
 
         for i in range(10):

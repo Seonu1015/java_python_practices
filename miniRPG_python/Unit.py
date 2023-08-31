@@ -175,7 +175,7 @@ class Character(Unit, EquipableItem, ConsumableItem):
         else:
             print("장착한 무기가 없습니다.")
 
-    def use(self):
+    def use(self, potion):
         if self.get_hp() >= self.get_max_hp():
             print("이미 최대 체력입니다.")
             return
@@ -187,13 +187,13 @@ class Character(Unit, EquipableItem, ConsumableItem):
         choice = int(input("선택 : "))
 
         if choice == 1:
-            regular_potion = RegularPotion()
-            regular_potion.item_info()
+
+            Potion.get_regular_potion(potion).item_info()
             sel = str(input("일반 포션을 사용하시겠습니까? y/n : "))
             if sel == 'y':
-                regular_potion.use(self)
+                potion.use()
             else:
-                Character.use(self)
+                Character.use(self, potion)
         elif choice == 2:
             special_potion = SpecialPotion()
             special_potion.item_info()
