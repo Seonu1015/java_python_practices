@@ -26,8 +26,6 @@ class Item(ABC):
 
 
 class Potion(Item, ABC):
-    quantity = 3
-
     def __init__(self, name, description, heal):
         super().__init__(name, description)
         self._heal = heal
@@ -35,25 +33,36 @@ class Potion(Item, ABC):
     def get_heal(self):
         return self._heal
 
-    @staticmethod
-    def get_quantity():
-        return Potion.quantity
+    @abstractmethod
+    def get_quantity(self):
+        pass
 
-    @staticmethod
-    def increase_quantity(amount):
-        Potion.quantity += amount
+    @abstractmethod
+    def increase_quantity(self, amount):
+        pass
 
-    @staticmethod
-    def decrease_quantity(amount):
-        if Potion.quantity >= amount:
-            Potion.quantity -= amount
-        else:
-            print("수량이 부족합니다.")
+    @abstractmethod
+    def decrease_quantity(self, amount):
+        pass
 
 
 class RegularPotion(Potion, ConsumableItem, DropItem):
+    quantity = 3
+
     def __init__(self):
         super().__init__("일반 회복 포션", "체력을 30% 회복시킵니다.", 1)
+
+    def get_quantity(self):
+        return RegularPotion.quantity
+
+    def increase_quantity(self, amount):
+        RegularPotion.quantity += amount
+
+    def decrease_quantity(self, amount):
+        if RegularPotion.quantity >= amount:
+            RegularPotion.quantity -= amount
+        else:
+            print("수량이 부족합니다.")
 
     def use(self, character):
         max_hp = character.get_max_hp()
@@ -83,9 +92,22 @@ class RegularPotion(Potion, ConsumableItem, DropItem):
 
 
 class SpecialPotion(Potion, ConsumableItem, DropItem):
+    quantity = 3
 
     def __init__(self):
         super().__init__("특별 회복 포션", "체력을 100% 회복시키지만 중독에 걸릴 수 있습니다.", 1)
+
+    def get_quantity(self):
+        return SpecialPotion.quantity
+
+    def increase_quantity(self, amount):
+        SpecialPotion.quantity += amount
+
+    def decrease_quantity(self, amount):
+        if SpecialPotion.quantity >= amount:
+            SpecialPotion.quantity -= amount
+        else:
+            print("수량이 부족합니다.")
 
     def use(self, character):
         is_poisoned = random.random() <= 0.2
