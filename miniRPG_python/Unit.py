@@ -238,7 +238,7 @@ class Monster(Unit, DropItem):
         print(f"└ 공격력 :  : {self.get_min_damage()} ~ {self.get_max_damage()}")
         Line.line_star()
 
-    def drop(self): # 특별 회복 물약 드랍 오류 수정 필요
+    def drop(self): # 일반 물약이 드랍되는 경우 특별물약도 수량이 1개씩 증가하는 현상 수정 필요
         amount = random.randint(1, 3)
         special_drop_rate = 0.3
         is_special_drop = random.random() <= special_drop_rate
