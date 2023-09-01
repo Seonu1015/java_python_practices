@@ -126,7 +126,7 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
 
     @classmethod
     def start_dungeon(cls):
-        Dungeon_instance = cls()
+        Dungeon_instance = cls() # 이 부분 뭔가 이상하다
         character = Character()
         Line.line_two()
         print("던전에 오신 것을 환영합니다.")
@@ -150,7 +150,7 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
         else:
             print("게임을 종료합니다.")
 
-    def battle_floor(self, character):
+    def battle_floor(self, character): # cleard 없이 처리해보자
         cleared = self.battle_normal_monsters(character)
 
         if cleared and (self.current_floor <= Dungeon.max_floor):

@@ -27,6 +27,7 @@ class Item(ABC):
 
 class Potion(Item, ABC):
     quantity = 3
+
     def __init__(self, name, description, heal):
         super().__init__(name, description)
         self._heal = heal
@@ -97,7 +98,6 @@ class SpecialPotion(Potion, ConsumableItem, DropItem):
             print(f"{character.get_name()}이(가) 특별 포션을 사용하여 체력을 완전히 회복했습니다.")
             character.set_hp(character.get_max_hp())
         self.decrease_quantity(1)
-
 
     def drop(self):
         special_drop_rate = 0.3
