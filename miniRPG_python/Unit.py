@@ -141,10 +141,10 @@ class Character(Unit, EquipableItem):
     def set_exp(self):
         self._exp = round((random.random() * 90 + 20) * 100.00) / 100.00
         print(str(self._exp) + "의 경험치를 획득하였습니다.")
+        return self._exp
 
-    def accumulate_exp(self): # 게임 진행시 경험치가 반영되고 있지 않음
-        gain_exp = self.get_exp()
-        self._exp += gain_exp
+    def accumulate_exp(self):
+        self._exp += self.set_exp()
         full_exp = 100 + ((self._level - 1) * 50)
         if self._exp >= full_exp:
             Line.line_one()
