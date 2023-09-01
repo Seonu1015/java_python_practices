@@ -238,7 +238,7 @@ class Monster(Unit, DropItem):
         print(f"└ 공격력 :  : {self.get_min_damage()} ~ {self.get_max_damage()}")
         Line.line_star()
 
-    def drop(self): # 일반 물약이 드랍되는 경우 특별물약도 수량이 1개씩 증가하는 현상 수정 필요
+    def drop(self):
         amount = random.randint(1, 3)
         special_drop_rate = 0.3
         is_special_drop = random.random() <= special_drop_rate
@@ -251,7 +251,6 @@ class Monster(Unit, DropItem):
             potion = RegularPotion()
             potion.increase_quantity(amount)
             print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
-            print("현재 수량 : " + str(potion.get_quantity()))
 
     @classmethod
     def read_csv_file(cls, csv_file):
@@ -270,7 +269,7 @@ class Monster(Unit, DropItem):
         except FileNotFoundError:
             print("파일을 찾을 수 없습니다.")
         except UnicodeDecodeError:
-            print("파일 읽기 오류: 올바른 인코딩을 사용하세요.")
+            print("파일 읽기 오류")
 
         return monsters
 
@@ -279,6 +278,9 @@ class Monster(Unit, DropItem):
         monster_lst = cls.read_csv_file("unit_monster.csv")
         rand_monster = random.choice(monster_lst)
         return rand_monster
+
+    def upgrade_monster(self):
+        self._hp *= 1.3
 
 
 # monsters = Monster.read_csv_file("unit_monster.csv")
@@ -316,7 +318,7 @@ class Boss(Unit):
         try:
             with open(csv_file, mode='r', encoding='utf-8') as f:
                 reader = csv.reader(f)
-                next(reader)  # 첫 줄을 건너뛰기
+                next(reader)
 
                 for row in reader:
                     name, hp, min_attack, max_attack, skill, skill_damage = row

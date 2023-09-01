@@ -65,7 +65,7 @@ class Battle:
         character.unit_info()
         print(f"{boss.get_name()}와의 전투를 시작합니다.")
         boss.unit_info()
-        Line.line_one()
+        Line.line_two()
 
         boss_skill_use = 3
         boss_skill_count = 0
@@ -79,20 +79,22 @@ class Battle:
                         boss_skill_count += 1
                         if boss_skill_count == boss_skill_use:
                             Battle.use_boss_skill(character, boss)
+                            boss_skill_count = 0
                     Battle.battle(character, boss)
                 elif select_action == "h":
                     character.use_potion()
                 else:
                     print("ERROR: a 또는 h를 입력하세요.")
-
             except Exception as e:
                 print("ERROR: 예외가 발생했습니다:", e)
+            Line.line_one()
 
         if not boss.is_alive():
             Battle.defeat_boss(character, boss)
 
     @staticmethod
     def use_boss_skill(character, boss):
+        Line.line_one()
         print(f"{boss.get_name()}이(가) {boss.get_skill()} 스킬을 시전합니다!")
         print("주사위를 굴려 스킬 회피 여부를 결정합니다.")
         character_dice = random.randint(1, 6)
@@ -106,6 +108,7 @@ class Battle:
             character.take_damage(damage)
             if character.get_hp() <= 0:
                 Battle.victory(boss, character)
+        Line.line_one()
 
     @staticmethod
     def defeat_boss(character, boss):
@@ -115,8 +118,10 @@ class Battle:
             boss.get_max_damage() - 10,
             boss.get_min_damage() - 15,
         )
+        Line.line_one()
         print(f"보스가 {dropped_weapon.get_name()}을(를) 드랍했습니다!")
         character.equip(dropped_weapon)
+        Line.line_one()
 
 
 class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처치시 해당층 클리어
@@ -126,20 +131,20 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
 
     @classmethod
     def start_dungeon(cls):
-        Dungeon_instance = cls() # 이 부분 뭔가 이상하다
+        dungeon_instance = Dungeon()
         character = Character()
         Line.line_two()
         print("던전에 오신 것을 환영합니다.")
         Line.line_two()
 
         while character.is_alive():
-            if Dungeon_instance.current_floor > cls.max_floor:
+            if dungeon_instance.current_floor > cls.max_floor:
                 print("던전의 최상층을 클리어하셨습니다!")
                 break
-            Dungeon_instance.battle_floor(character)
+            dungeon_instance.battle_floor(character)
 
         if not character.is_alive():
-            Dungeon_instance.restart_dungeon()
+            dungeon_instance.restart_dungeon()
 
     @classmethod
     def restart_dungeon(cls):
@@ -150,22 +155,20 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
         else:
             print("게임을 종료합니다.")
 
-    def battle_floor(self, character): # cleard 없이 처리해보자
-        cleared = self.battle_normal_monsters(character)
+    def battle_floor(self, character):  # cleard 없이 처리해보자
+        self.battle_normal_monsters(character)
 
-        if cleared and (self.current_floor <= Dungeon.max_floor):
+        if character.is_alive() and self.current_floor <= Dungeon.max_floor:
             print("해당 층의 모든 몬스터를 처치했습니다.")
             print("보스가 등장합니다.")
-            cleared = self.battle_boss_monster(character)
-            if cleared:
+            self.battle_boss_monster(character)
+            if character.is_alive():
                 self.current_floor += 1
                 if self.current_floor <= Dungeon.max_floor:
                     print("다음 층으로 이동합니다.")
 
     @staticmethod
     def battle_normal_monsters(character):
-        cleared = True
-
         for i in range(2):  # 테스트를 위해 2로 줄여둔 상태 나중에 10으로 변경 필요
             encounter_monster = Monster.random_monster()
             print(f"해당 층의 남은 몬스터 : {2 - i} / {2}")
@@ -173,10 +176,7 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
 
             if not character.is_alive():
                 print("캐릭터가 사망하여 던전을 클리어하지 못했습니다.")
-                cleared = False
                 break
-
-        return cleared
 
     @staticmethod
     def battle_boss_monster(character):
