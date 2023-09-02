@@ -77,6 +77,7 @@ class Character(Unit, EquipableItem):
         self.set_birth()
         default_weapon = Weapon()
         self.equip(default_weapon)
+        self._max_exp = 100
 
     def set_name(self):
         Line.line_one()
@@ -87,6 +88,9 @@ class Character(Unit, EquipableItem):
             Line.line_one()
         else:
             self.set_name()
+
+    def get_level(self):
+        return self._level
 
     def get_birth(self):
         return self._birth
@@ -127,37 +131,40 @@ class Character(Unit, EquipableItem):
     def unit_info(self):
         Line.line_star()
         print(f"┌ 캐릭터명 : {self.get_name()} ({self.get_birth()})")
-        print("│ 체력 : " + str(self.get_hp()) + " / " + str(self.get_max_hp()))
+        print(f"│ 레벨 : {self.get_level()}")
+        print(f"│ 체력 : {str(self.get_hp())} / {str(self.get_max_hp())}")
         if self._equipped_weapon:
-            print("│ 장착무기 : " + self._equipped_weapon.get_name())
-            print("└ 공격력 : " + str(self.get_min_damage()) + " ~ " + str(self.get_max_damage()))
+            print(f"│ 장착무기 : {self._equipped_weapon.get_name()}")
+            print(f"└ 공격력 : {str(self.get_min_damage())} ~ {str(self.get_max_damage())}")
         else:
             print("└ 장착무기 : 없음")
         Line.line_star()
 
-    def get_exp(self):
+    def set_exp(self, is_boss=False):
+        exp = round((random.random() * 70 + 40) * 100.00) / 100.00
+        self._exp = exp
+        print(f"{str(exp)}의 경험치를 획득하였습니다.")
+        print(f"현재 누적 경험치 : {self._exp} / {self._max_exp}")
         return self._exp
 
-    def set_exp(self):
-        self._exp = round((random.random() * 90 + 20) * 100.00) / 100.00
-        print(str(self._exp) + "의 경험치를 획득하였습니다.")
-        return self._exp
+    def full_exp(self):
+        self._max_exp = 100 + ((self._level - 1) * 50)
+        return self._max_exp
 
     def accumulate_exp(self):
         self._exp += self.set_exp()
-        full_exp = 100 + ((self._level - 1) * 50)
-        if self._exp >= full_exp:
-            Line.line_one()
+        self.full_exp()
+        if self._exp >= self._max_exp:
+            Line.line_two()
             print(f"★ {self.get_name()} LEVEL UP ★")
             print(f"{self.get_name()}의 공격력이 상승합니다. (+3)")
             print(f"{self.get_name()}의 최대 체력이 상승합니다. (+20)")
-            Line.line_one()
+            Line.line_two()
             self._level += 1
-            self._exp -= full_exp
+            self._exp -= self._max_exp
             self.set_min_damage(self.get_min_damage() + 3)
             self.set_max_damage(self.get_max_damage() + 3)
             self.set_max_hp(self.get_max_hp() + 20)
-            # self.new_random_damage()
 
     def equip(self, weapon):
         if not self._equipped_weapon is None:
@@ -223,18 +230,18 @@ class Character(Unit, EquipableItem):
                     print("ERROR : 입력이 잘못되었습니다. 다시 입력해주세요.")
             except ValueError:
                 print("ERROR : 올바른 숫자를 입력하세요.")
-            except Exception as e:
-                print("ERROR : 오류가 발생했습니다:", e)
 
 
 class Monster(Unit, DropItem):
+    monsters = []
+
     def __init__(self, name, hp, min_damage, max_damage):
         super().__init__(name, hp, min_damage, max_damage)
 
     def unit_info(self):
         Line.line_star()
         print(f"┌ 몬스터명 : {self.get_name()}")
-        print(f"│ 체력 :  : {self.get_hp()}")
+        print(f"│ 체력 :  : {self.get_hp()} / {self.get_max_hp()}")
         print(f"└ 공격력 :  : {self.get_min_damage()} ~ {self.get_max_damage()}")
         Line.line_star()
 
@@ -253,45 +260,51 @@ class Monster(Unit, DropItem):
             print(f"{self.get_name()}이(가) 일반 포션 {amount}개를 드랍했습니다.")
 
     @classmethod
-    def read_csv_file(cls, csv_file):
-        monsters = []
+    def read_csv_file(cls):
 
         try:
-            with open(csv_file, mode='r', encoding='utf-8') as f:
+            with open("unit_monster.csv", mode='r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 next(reader)
 
                 for row in reader:
                     name, hp, min_attack, max_attack = row
-                    monster = cls(name, int(hp), int(min_attack), int(max_attack))
-                    monsters.append(monster)
+                    mob = cls(name, int(hp), int(min_attack), int(max_attack))
+                    cls.monsters.append(mob)
 
         except FileNotFoundError:
             print("파일을 찾을 수 없습니다.")
         except UnicodeDecodeError:
             print("파일 읽기 오류")
 
-        return monsters
+        return cls.monsters
 
     @classmethod
     def random_monster(cls):
-        monster_lst = cls.read_csv_file("unit_monster.csv")
-        rand_monster = random.choice(monster_lst)
+        rand_monster = random.choice(cls.monsters)
         return rand_monster
 
     def upgrade_monster(self):
-        self._hp *= 1.3
+        self.set_hp(int(self.get_hp() * 1.3))
+        self.set_max_hp(int(self.get_max_hp() * 1.3))
+        self.set_min_damage(int(self.get_min_damage() * 1.2))
+        self.set_max_damage(int(self.get_max_damage() * 1.2))
+
+    @classmethod
+    def upgrade_monster_lst(cls):
+        for mob in cls.monsters:
+            mob.upgrade_monster()
+        return cls.monsters
 
 
-# monsters = Monster.read_csv_file("unit_monster.csv")
-# for monster in monsters:
+# Monster.read_csv_file()
+# Monster.upgrade_monster_lst()
+#
+# for monster in Monster.monsters:
 #     monster.unit_info()
 
-# rand_monster = Monster.random_monster()
-# rand_monster.unit_info()
 
-
-class Boss(Unit):
+class Boss(Unit, DropItem):
     def __init__(self, name, hp, min_damage, max_damage, skill, skill_damage):
         super().__init__(name, hp, min_damage, max_damage)
         self._skill = skill
@@ -306,7 +319,7 @@ class Boss(Unit):
     def unit_info(self):
         Line.line_star()
         print(f"┌ 보스명 : {self.get_name()}")
-        print(f"│ 체력 : {self.get_hp()}")
+        print(f"│ 체력 : {self.get_hp()} / {self.get_max_hp()}")
         print(f"│ 스킬 : {self._skill}")
         print(f"└ 공격력 :  : {self.get_min_damage()} ~ {self.get_max_damage()}")
         Line.line_star()
@@ -336,6 +349,24 @@ class Boss(Unit):
     def planned_boss(cls):
         boss_lst = cls.read_csv_file("unit_boss.csv")
         return boss_lst
+
+    def drop(self):
+        if not self.is_alive():
+            dropped_weapon = Weapon(
+                f"{self.get_name()}의 무기",
+                "강력한 보스의 무기입니다.",
+                self.get_max_damage() - 10,
+                self.get_min_damage() - 15,
+            )
+            return dropped_weapon
+
+    def defeat_boss(self, character):
+        boss_weapon = Boss.drop(self)
+        print(f"보스가 {boss_weapon.get_name()}을(를) 드랍했습니다!")
+        select = str(input("보스 무기를 장착하시겠습니까? y/n : "))
+        if select == 'y':
+            character.equip(boss_weapon)
+        Line.line_one()
 
 # bosses = Boss.read_csv_file("unit_boss.csv")
 # for boss in bosses:

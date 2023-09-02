@@ -112,10 +112,11 @@ class SpecialPotion(Potion, ConsumableItem, DropItem):
     def use(self, character):
         is_poisoned = random.random() <= 0.2
         if is_poisoned:
-            print(f"{character.get_name()}이(가) 특별 포션을 사용하였으나 중독에 걸렸습니다!")
-            for _ in range(5):
-                character.take_damage(10)
-                print(f"{character.get_name()}의 체력이 10만큼 줄었습니다. 현재 체력: {character.get_hp()}")
+            print(f"{character.get_name()}이(가) 특별 포션을 사용하여 체력을 완전히 회복했지만, 중독에 걸렸습니다!")
+            character.set_hp(character.get_max_hp())
+            # for _ in range(3):
+            #     character.take_damage(10)
+            #     print(f"{character.get_name()}의 체력이 10만큼 줄었습니다. 현재 체력: {character.get_hp()}")
         else:
             print(f"{character.get_name()}이(가) 특별 포션을 사용하여 체력을 완전히 회복했습니다.")
             character.set_hp(character.get_max_hp())

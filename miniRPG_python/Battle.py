@@ -31,6 +31,7 @@ class Battle:
 
     @staticmethod
     def victory(victor, loser):
+        Line.line_two()
         print(f"{victor.get_name()} 이(가) {loser.get_name()} 을(를) 쓰러뜨렸습니다.")
 
     @staticmethod
@@ -90,7 +91,7 @@ class Battle:
             Line.line_one()
 
         if not boss.is_alive():
-            Battle.defeat_boss(character, boss)
+            Boss.defeat_boss(boss, character)
 
     @staticmethod
     def use_boss_skill(character, boss):
@@ -110,27 +111,15 @@ class Battle:
                 Battle.victory(boss, character)
         Line.line_one()
 
-    @staticmethod
-    def defeat_boss(character, boss):
-        dropped_weapon = Weapon(
-            f"{boss.get_name()}의 무기",
-            "강력한 보스의 무기입니다.",
-            boss.get_max_damage() - 10,
-            boss.get_min_damage() - 15,
-        )
-        Line.line_one()
-        print(f"보스가 {dropped_weapon.get_name()}을(를) 드랍했습니다!")
-        character.equip(dropped_weapon)
-        Line.line_one()
 
-
-class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처치시 해당층 클리어
+class Dungeon:
     max_floor = 10
     current_floor = 1
     bosses = []
 
     @classmethod
     def start_dungeon(cls):
+        Monster.read_csv_file()
         dungeon_instance = Dungeon()
         character = Character()
         Line.line_two()
@@ -155,7 +144,7 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
         else:
             print("게임을 종료합니다.")
 
-    def battle_floor(self, character):  # cleard 없이 처리해보자
+    def battle_floor(self, character):
         self.battle_normal_monsters(character)
 
         if character.is_alive() and self.current_floor <= Dungeon.max_floor:
@@ -163,15 +152,16 @@ class Dungeon:  # 일반 몬스터 10번 잡으면 보스몬스터 등장 -> 처
             print("보스가 등장합니다.")
             self.battle_boss_monster(character)
             if character.is_alive():
+                Monster.upgrade_monster_lst()
                 self.current_floor += 1
                 if self.current_floor <= Dungeon.max_floor:
-                    print("다음 층으로 이동합니다.")
+                    print(f"{self.current_floor + 1} 층으로 이동합니다.")
 
     @staticmethod
     def battle_normal_monsters(character):
-        for i in range(2):  # 테스트를 위해 2로 줄여둔 상태 나중에 10으로 변경 필요
+        for i in range(10):  # 테스트를 위해 2로 줄여둔 상태 나중에 10으로 변경 필요
             encounter_monster = Monster.random_monster()
-            print(f"해당 층의 남은 몬스터 : {2 - i} / {2}")
+            print(f"해당 층의 남은 몬스터 : {10 - i} / {10}")
             Battle.repeat_normal_battle(character, encounter_monster)
 
             if not character.is_alive():
