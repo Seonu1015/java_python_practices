@@ -22,7 +22,7 @@ class Battle:
                     break
 
     @staticmethod
-    def character_turn(character, enemy):
+    def take_turn(character, enemy):
         character.set_rand_attack()
         attack_damage = character.get_rand_attack()
         print(f"{character.get_name()} 이(가) {enemy.get_name()}에게 {attack_damage}만큼의 데미지를 주었습니다.")
@@ -172,7 +172,7 @@ class Dungeon:
 
     @staticmethod
     def battle_normal_monsters(character):
-        for i in range(10):  # 테스트를 위해 2로 줄여둔 상태 나중에 10으로 변경 필요
+        for i in range(10):
             encounter_monster = Monster.random_monster()
             print(f"해당 층의 남은 몬스터 : {10 - i} / {10}")
             Battle.repeat_normal_battle(character, encounter_monster)
