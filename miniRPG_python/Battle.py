@@ -9,25 +9,36 @@ class Battle:
     def battle(character, enemy):
         for i in range(2):
             if i == 0:
-                Battle.take_turn(character, enemy)
+                Battle.character_turn(character, enemy)
                 if enemy.get_hp() <= 0:
                     Battle.victory(character, enemy)
                     character.accumulate_exp()
                     enemy.drop()
                     break
             elif i == 1:
-                Battle.take_turn(enemy, character)
+                Battle.monster_turn(enemy, character)
                 if character.get_hp() <= 0:
                     print(f"{character.get_name()}이(가) 전투에서 패배했습니다.")
                     break
 
     @staticmethod
-    def take_turn(attacker, defender):
-        attacker.set_rand_attack()
-        attack_damage = attacker.get_rand_attack()
-        print(f"{attacker.get_name()} 이(가) {defender.get_name()}에게 {attack_damage}만큼의 데미지를 주었습니다.")
-        defender.take_damage(attack_damage)
-        print(f"{defender.get_name()}의 남은 체력: {defender.get_hp()} / {defender.get_max_hp()}")
+    def character_turn(character, enemy):
+        character.set_rand_attack()
+        attack_damage = character.get_rand_attack()
+        print(f"{character.get_name()} 이(가) {enemy.get_name()}에게 {attack_damage}만큼의 데미지를 주었습니다.")
+        enemy.take_damage(attack_damage)
+        print(f"{enemy.get_name()}의 남은 체력: {enemy.get_hp()} / {enemy.get_max_hp()}")
+
+    @staticmethod
+    def monster_turn(enemy, character):
+        enemy.set_rand_attack()
+        attack_damage = enemy.get_rand_attack()
+        print(f"{enemy.get_name()} 이(가) {character.get_name()}에게 {attack_damage}만큼의 데미지를 주었습니다.")
+        character.take_damage(attack_damage)
+        print(f"{character.get_name()}의 남은 체력: {character.get_hp()} / {character.get_max_hp()}")
+
+        if character.get_poisoned():
+            character.apply_poison(character)
 
     @staticmethod
     def victory(victor, loser):
@@ -78,7 +89,9 @@ class Battle:
                 if select_action == "a":
                     if boss_skill_count < boss_skill_use:
                         boss_skill_count += 1
-                        if boss_skill_count == boss_skill_use:
+                        if boss_skill_count == 2:
+                            print("곧 보스가 스킬을 시전합니다. 대비하세요!!")
+                        elif boss_skill_count == boss_skill_use:
                             Battle.use_boss_skill(character, boss)
                             boss_skill_count = 0
                     Battle.battle(character, boss)

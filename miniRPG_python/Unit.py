@@ -78,6 +78,8 @@ class Character(Unit, EquipableItem):
         default_weapon = Weapon()
         self.equip(default_weapon)
         self._max_exp = 100
+        self._poisoned = False
+        self._poison_turn = 0
 
     def set_name(self):
         Line.line_one()
@@ -230,6 +232,21 @@ class Character(Unit, EquipableItem):
                     print("ERROR : 입력이 잘못되었습니다. 다시 입력해주세요.")
             except ValueError:
                 print("ERROR : 올바른 숫자를 입력하세요.")
+
+    def get_poisoned(self):
+        return self._poisoned
+
+    def set_poisoned(self, poisoned):
+        self._poisoned = poisoned
+
+    def apply_poison(self, character):
+        if self.get_poisoned():
+            character.take_damage(10)
+            print(f"{character.get_name()}이(가) 중독상태로 체력이 10만큼 줄었습니다. 현재 체력: {character.get_hp()}")
+            self._poison_turn -= 1
+            if self._poison_turn == 0:
+                print(f"{character.get_name()}이(가) 중독상태에서 벗어났습니다.")
+                self._poisoned = False
 
 
 class Monster(Unit, DropItem):
