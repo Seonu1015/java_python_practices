@@ -1,7 +1,4 @@
 import csv
-import random
-from abc import ABC, abstractmethod
-from Interface import *
 from Item import *
 
 
@@ -142,7 +139,7 @@ class Character(Unit, EquipableItem):
             print("└ 장착무기 : 없음")
         Line.line_star()
 
-    def set_exp(self, is_boss=False):
+    def set_exp(self):
         exp = round((random.random() * 70 + 40) * 100.00) / 100.00
         self._exp = exp
         print(f"{str(exp)}의 경험치를 획득하였습니다.")
