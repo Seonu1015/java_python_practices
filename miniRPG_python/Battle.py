@@ -127,8 +127,12 @@ class Battle:
 
 class Dungeon:
     max_floor = 10
+    max_normal_monsters = 10
     current_floor = 1
     bosses = []
+
+    def __init__(self):
+        self._monster_defeated = 0
 
     @classmethod
     def start_dungeon(cls):
@@ -158,17 +162,21 @@ class Dungeon:
             print("게임을 종료합니다.")
 
     def battle_floor(self, character):
-        self.battle_normal_monsters(character)
-
-        if character.is_alive() and self.current_floor <= Dungeon.max_floor:
-            print("해당 층의 모든 몬스터를 처치했습니다.")
-            print("보스가 등장합니다.")
-            self.battle_boss_monster(character)
-            if character.is_alive():
-                Monster.upgrade_monster_lst()
-                self.current_floor += 1
-                if self.current_floor <= Dungeon.max_floor:
-                    print(f"{self.current_floor + 1} 층으로 이동합니다.")
+        if self.current_floor <= Dungeon.max_floor:
+            remaining_monsters = Dungeon.max_normal_monsters - self._monster_defeated
+            if remaining_monsters > 0:
+                self.battle_normal_monsters(character)
+                self._monster_defeated += 1
+            else:
+                print("해당 층의 모든 몬스터를 처치했습니다.")
+                print("보스가 등장합니다.")
+                self.battle_boss_monster(character)
+                if character.is_alive():
+                    Monster.upgrade_monster_lst()
+                    self.current_floor += 1
+                    if self.current_floor <= Dungeon.max_floor:
+                        self._monster_defeated = 0
+                        print(f"{self.current_floor + 1} 층으로 이동합니다.")
 
     @staticmethod
     def battle_normal_monsters(character):
