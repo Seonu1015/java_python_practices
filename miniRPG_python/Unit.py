@@ -141,10 +141,10 @@ class Character(Unit, EquipableItem):
         Line.line_star()
 
     def set_exp(self):
-        exp = round((random.random() * 70 + 40) * 100.00) / 100.00
-        self._exp = exp
-        print(f"{str(exp)}의 경험치를 획득하였습니다.")
-        print(f"현재 누적 경험치 : {self._exp} / {self._max_exp}")
+        exp = random.random() * 70 + 40
+        self._exp += exp
+        print(f"{str(round(exp,2))}의 경험치를 획득하였습니다.")
+        print(f"현재 누적 경험치 : {round(self._exp, 2)} / {self._max_exp}")
         return self._exp
 
     def full_exp(self):
@@ -152,7 +152,7 @@ class Character(Unit, EquipableItem):
         return self._max_exp
 
     def accumulate_exp(self):
-        self._exp += self.set_exp()
+        self.set_exp()
         self.full_exp()
         if self._exp >= self._max_exp:
             Line.line_two()
@@ -161,12 +161,14 @@ class Character(Unit, EquipableItem):
             print(f"{self.get_name()}의 최대 체력이 상승합니다. (+20)")
             print(f"{self.get_name()}의 체력이 모두 회복됩니다.")
             Line.line_two()
-            self._level += 1
             self._exp -= self._max_exp
+            self._level += 1
+            self.full_exp()
             self.set_min_damage(self.get_min_damage() + 3)
             self.set_max_damage(self.get_max_damage() + 3)
             self.set_max_hp(self.get_max_hp() + 20)
             self.set_hp(self.get_max_hp())
+            # print(f"현재 누적 경험치 : {self._exp} / {self._max_exp}")
 
     def equip(self, weapon):
         if not self._equipped_weapon is None:
