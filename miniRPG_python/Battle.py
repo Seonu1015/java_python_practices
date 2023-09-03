@@ -161,7 +161,7 @@ class Dungeon:
         else:
             print("게임을 종료합니다.")
 
-    def battle_floor(self, character):
+    def battle_floor(self, character):  # 보스전이 진행되고 있지 않음!!! 갑자기 왜!!!!
         if self.current_floor <= Dungeon.max_floor:
             remaining_monsters = Dungeon.max_normal_monsters - self._monster_defeated
             if remaining_monsters > 0:
@@ -180,11 +180,12 @@ class Dungeon:
 
     @staticmethod
     def battle_normal_monsters(character):
-        monster_lst = Monster.monsters
         for i in range(10):
-            rand_monster = random.choice(monster_lst)
+            rand_monster = random.choice(Monster.monsters)
+            encounter_monster = Monster(rand_monster.get_name(), rand_monster.get_hp(), rand_monster.get_min_damage(),
+                                        rand_monster.get_max_damage())
             print(f"해당 층의 남은 몬스터 : {10 - i} / {10}")
-            Battle.repeat_normal_battle(character, rand_monster)
+            Battle.repeat_normal_battle(character, encounter_monster)
 
             if not character.is_alive():
                 print("캐릭터가 사망하여 던전을 클리어하지 못했습니다.")
@@ -194,9 +195,9 @@ class Dungeon:
     def battle_boss_monster(character):
         bosses = Boss.planned_boss()
 
-        for i in range(len(bosses)):
+        for i, boss in enumerate(bosses):
             if i == Dungeon.current_floor - 1:
-                Battle.repeat_boss_battle(character, bosses[i])
+                Battle.repeat_boss_battle(character, boss)
 
                 if not character.is_alive():
                     print(f"보스 {bosses[i].get_name()}와(과)의 전투에서 캐릭터가 사망하였습니다.")
