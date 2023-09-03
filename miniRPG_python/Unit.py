@@ -159,12 +159,14 @@ class Character(Unit, EquipableItem):
             print(f"★ {self.get_name()} LEVEL UP ★")
             print(f"{self.get_name()}의 공격력이 상승합니다. (+3)")
             print(f"{self.get_name()}의 최대 체력이 상승합니다. (+20)")
+            print(f"{self.get_name()}의 체력이 모두 회복됩니다.")
             Line.line_two()
             self._level += 1
             self._exp -= self._max_exp
             self.set_min_damage(self.get_min_damage() + 3)
             self.set_max_damage(self.get_max_damage() + 3)
             self.set_max_hp(self.get_max_hp() + 20)
+            self.set_hp(self.get_max_hp())
 
     def equip(self, weapon):
         if not self._equipped_weapon is None:
