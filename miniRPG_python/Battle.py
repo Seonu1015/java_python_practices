@@ -22,7 +22,7 @@ class Battle:
                     break
 
     @staticmethod
-    def take_turn(character, enemy):
+    def character_turn(character, enemy):
         character.set_rand_attack()
         attack_damage = character.get_rand_attack()
         print(f"{character.get_name()} 이(가) {enemy.get_name()}에게 {attack_damage}만큼의 데미지를 주었습니다.")

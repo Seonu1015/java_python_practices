@@ -1,5 +1,6 @@
 import random
 from Interface import *
+from abc import ABC, abstractmethod
 
 
 class Item(ABC):
