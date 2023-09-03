@@ -252,6 +252,10 @@ class Character(Unit, EquipableItem):
 class Monster(Unit, DropItem):
     monsters = []
 
+    # 몬스터의 레벨업을 위해 초기화 하지 않도록 클래스 변수 생성
+    # 문제는 몬스터 정보가 초기화 되지 않아 같은 몬스터가 불러와졌을 때 몬스터 체력이 0이어서
+    # 전투를 건너뛰는 현상 발견
+
     def __init__(self, name, hp, min_damage, max_damage):
         super().__init__(name, hp, min_damage, max_damage)
 
