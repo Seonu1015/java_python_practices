@@ -180,10 +180,11 @@ class Dungeon:
 
     @staticmethod
     def battle_normal_monsters(character):
+        monster_lst = Monster.monsters
         for i in range(10):
-            encounter_monster = Monster.random_monster()
+            rand_monster = random.choice(monster_lst)
             print(f"해당 층의 남은 몬스터 : {10 - i} / {10}")
-            Battle.repeat_normal_battle(character, encounter_monster)
+            Battle.repeat_normal_battle(character, rand_monster)
 
             if not character.is_alive():
                 print("캐릭터가 사망하여 던전을 클리어하지 못했습니다.")

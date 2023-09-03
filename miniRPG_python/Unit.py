@@ -300,10 +300,10 @@ class Monster(Unit, DropItem):
 
         return cls.monsters
 
-    @classmethod
-    def random_monster(cls):
-        rand_monster = random.choice(cls.monsters)
-        return rand_monster
+    # @classmethod
+    # def random_monster(cls):
+    #     rand_monster = random.choice(cls.monsters)
+    #     return rand_monster
 
     def upgrade_monster(self):
         self.set_hp(int(self.get_hp() * 1.3))
