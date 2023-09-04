@@ -38,19 +38,19 @@ class Unit(ABC):
         return self._rand_attack
 
     def set_rand_attack(self):
-        self._rand_attack = random.randint(self._min_damage, self._max_damage + 1)
+        self._rand_attack = random.randint(self._min_damage, self._max_damage)
 
     def get_min_damage(self):
         return self._min_damage
 
     def set_min_damage(self, min_damage):
-        self._min_damage = min_damage
+        self._min_damage = self.get_min_damage() + min_damage
 
     def get_max_damage(self):
         return self._max_damage
 
     def set_max_damage(self, max_damage):
-        self._max_damage = max_damage
+        self._max_damage = self.get_max_damage() + max_damage
 
     def is_alive(self):
         return self._hp > 0
@@ -70,11 +70,12 @@ class Character(Unit, EquipableItem):
         self._level = 1
         self._exp = 0
         self._equipped_weapon = None
-        self._base_attack = 0
         self.set_name()
         self.set_birth()
         default_weapon = Weapon()
         self.equip(default_weapon)
+        self.set_min_damage(self.get_attack())
+        self.set_max_damage(self.get_attack())
         self._max_exp = 100
         self._poisoned = False
         self._poison_turn = 0
@@ -102,9 +103,7 @@ class Character(Unit, EquipableItem):
         while True:
             select_birth = input()
             Line.line_one()
-
             births = ["퇴역군인", "도굴꾼", "망국의왕족", "역병의사", "못가진자"]
-
             if select_birth in births:
                 break
             else:
@@ -164,8 +163,8 @@ class Character(Unit, EquipableItem):
             self._exp -= self._max_exp
             self._level += 1
             self.full_exp()
-            self.set_min_damage(self.get_min_damage() + 3)
-            self.set_max_damage(self.get_max_damage() + 3)
+            self.set_min_damage(3)
+            self.set_max_damage(3)
             self.set_max_hp(self.get_max_hp() + 20)
             self.set_hp(self.get_max_hp())
             # print(f"현재 누적 경험치 : {self._exp} / {self._max_exp}")
@@ -174,12 +173,10 @@ class Character(Unit, EquipableItem):
         if not self._equipped_weapon is None:
             self.un_equip()
 
-        self._base_attack = self.get_attack()
-
-        self.set_min_damage(self._base_attack + weapon.get_min_damage())
-        self.set_max_damage(self._base_attack + weapon.get_max_damage())
-
         self._equipped_weapon = weapon
+        self.set_min_damage(weapon.get_min_damage())
+        self.set_max_damage(weapon.get_max_damage())
+
         if self._equipped_weapon.get_name() == "누군가 쓰다버린 검":
             return
         else:
@@ -193,6 +190,8 @@ class Character(Unit, EquipableItem):
     def un_equip(self):
         if not self._equipped_weapon is None:
             print(f"{self._equipped_weapon.get_name()}을(를) 해제했습니다.")
+            self.set_min_damage(-(self._equipped_weapon.get_min_damage()))
+            self.set_max_damage(-(self._equipped_weapon.get_max_damage()))
             self._equipped_weapon = None
         else:
             print("장착한 무기가 없습니다.")

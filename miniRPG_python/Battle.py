@@ -176,24 +176,7 @@ class Dungeon:
                         self.current_floor += 1
                         if self.current_floor < Dungeon.max_floor:
                             self._monster_defeated = 0
-                            print(f"{self.current_floor + 1} 층으로 이동합니다.")
-
-        # if self.current_floor <= Dungeon.max_floor:
-        #     remaining_monsters = Dungeon.max_normal_monsters - self._monster_defeated
-        #     if remaining_monsters > 0:
-        #         self.battle_normal_monsters(character)
-        #         self._monster_defeated += 1
-        #     else:
-        #         print("해당 층의 모든 몬스터를 처치했습니다.")
-        #         print("보스가 등장합니다.")
-        #         self.battle_boss_monster(character)
-        #         if character.is_alive():
-        #             Monster.upgrade_monster_lst()
-        #             self.current_floor += 1
-        #             if self.current_floor < Dungeon.max_floor:
-        #                 self._monster_defeated = 0
-        #                 print(f"{self.current_floor + 1} 층으로 이동합니다.")
-        # print(self._monster_defeated)
+                            print(f"{self.current_floor} 층으로 이동합니다.")
 
     @staticmethod
     def battle_normal_monsters(character):
@@ -203,16 +186,6 @@ class Dungeon:
         Battle.repeat_normal_battle(character, encounter_monster)
         if not character.is_alive():
             print("캐릭터가 사망하여 던전을 클리어하지 못했습니다.")
-
-        # for i in range(10):
-        #     rand_monster = random.choice(Monster.monsters)
-        #     encounter_monster = Monster(rand_monster.get_name(), rand_monster.get_hp(), rand_monster.get_min_damage(),
-        #                                 rand_monster.get_max_damage())
-        #     print(f"해당 층의 남은 몬스터 : {10 - i} / {10}")
-        #     Battle.repeat_normal_battle(character, encounter_monster)
-        #     if not character.is_alive():
-        #         print("캐릭터가 사망하여 던전을 클리어하지 못했습니다.")
-        #         break
 
     @staticmethod
     def battle_boss_monster(character):
