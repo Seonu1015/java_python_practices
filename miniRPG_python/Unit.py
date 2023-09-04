@@ -143,7 +143,7 @@ class Character(Unit, EquipableItem):
     def set_exp(self):
         exp = random.random() * 70 + 40
         self._exp += exp
-        print(f"{str(round(exp,2))}의 경험치를 획득하였습니다.")
+        print(f"{str(round(exp, 2))}의 경험치를 획득하였습니다.")
         print(f"현재 누적 경험치 : {round(self._exp, 2)} / {self._max_exp}")
         return self._exp
 
@@ -254,10 +254,6 @@ class Character(Unit, EquipableItem):
 class Monster(Unit, DropItem):
     monsters = []
 
-    # 몬스터의 레벨업을 위해 초기화 하지 않도록 클래스 변수 생성
-    # 문제는 몬스터 정보가 초기화 되지 않아 같은 몬스터가 불러와졌을 때 몬스터 체력이 0이어서
-    # 전투를 건너뛰는 현상 발견
-
     def __init__(self, name, hp, min_damage, max_damage):
         super().__init__(name, hp, min_damage, max_damage)
 
@@ -284,28 +280,19 @@ class Monster(Unit, DropItem):
 
     @classmethod
     def read_csv_file(cls):
-
         try:
             with open("unit_monster.csv", mode='r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 next(reader)
-
                 for row in reader:
                     name, hp, min_attack, max_attack = row
                     mob = cls(name, int(hp), int(min_attack), int(max_attack))
                     cls.monsters.append(mob)
-
         except FileNotFoundError:
             print("파일을 찾을 수 없습니다.")
         except UnicodeDecodeError:
             print("파일 읽기 오류")
-
         return cls.monsters
-
-    # @classmethod
-    # def random_monster(cls):
-    #     rand_monster = random.choice(cls.monsters)
-    #     return rand_monster
 
     def upgrade_monster(self):
         self.set_hp(int(self.get_hp() * 1.3))
@@ -350,22 +337,18 @@ class Boss(Unit, DropItem):
     @classmethod
     def read_csv_file(cls, csv_file):
         bosses = []
-
         try:
             with open(csv_file, mode='r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 next(reader)
-
                 for row in reader:
                     name, hp, min_attack, max_attack, skill, skill_damage = row
                     boss = cls(name, int(hp), int(min_attack), int(max_attack), skill, int(skill_damage))
                     bosses.append(boss)
-
         except FileNotFoundError:
             print("파일을 찾을 수 없습니다.")
         except UnicodeDecodeError:
             print("파일 읽기 오류: 올바른 인코딩을 사용하세요.")
-
         return bosses
 
     @classmethod
