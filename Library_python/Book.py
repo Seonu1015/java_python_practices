@@ -4,8 +4,3 @@ class Book:
 
 class Library(Book):
     pass
-
-
-class Search:
-    pass
-
