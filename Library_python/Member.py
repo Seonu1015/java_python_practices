@@ -1,3 +1,5 @@
+import csv
+import datetime
 from abc import ABC, abstractmethod
 
 
@@ -20,10 +22,7 @@ class Member(ABC):
         return self._birth
 
     def set_birth(self):
-        try:  # 길이 제한에 관한 부분 필요할지도??
-            self._birth = int(input("생년월일 (YYMMDD) : "))
-        except TypeError:
-            print("숫자만 입력해주세요.")
+        self._birth = int(input("생년월일 (YYMMDD) : "))
 
     def get_phone_number(self):
         return self._phone_number
@@ -42,11 +41,53 @@ class Member(ABC):
 
 
 class User(Member):
-    def __init__(self, user_id, password):
+    def __init__(self):
         super().__init__("", 0, "", "", "")
-        self._user_id = user_id
-        self._password = password
+        self._user_id = ""
+        self._password = ""
+
+    def get_user_id(self):
+        return self._user_id
+
+    def set_user_id(self):
+        self._user_id = str(input("ID : "))
+
+    def get_password(self):
+        return self._password
+
+    def set_password(self):
+        self._password = str(input("Password : "))
+
+    def rent_book(self):
+        pass
+
+    def return_book(self):
+        pass
+
+    def reserve_book(self):
+        pass
+
+    def request_purchase(self):
+        pass
 
 
 class Admin(Member):
-    pass
+    def __init__(self):
+        super().__init__("", 0, "", "", "")
+        self._staff_no = ""
+        self._password = ""
+
+    def get_staff_no(self):
+        return self._staff_no
+
+    def set_staff_no(self):
+        staff_no_init = str(datetime.datetime.now().year)[-2:]
+        s_no = 1
+        four_s_no = f"{s_no:04d}"
+        self._staff_no = staff_no_init + four_s_no
+
+    def get_password(self):
+        return self._password
+
+    def set_password(self):
+        self._password = self.get_staff_no() + "p" + self.get_phone_number()[-4:]
