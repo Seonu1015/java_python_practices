@@ -1,3 +1,6 @@
+from Member import User
+
+
 class Book:
     def __init__(self, title, author, publisher, publication_year):
         self.title = title
