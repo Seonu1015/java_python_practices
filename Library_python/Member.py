@@ -1,5 +1,6 @@
 import csv
 import datetime
+from Interface import *
 from abc import ABC, abstractmethod
 
 
@@ -40,7 +41,7 @@ class Member(ABC):
         return self._address
 
 
-class User(Member):
+class User(Member, WriteFile):
     def __init__(self):
         super().__init__("", 0, "", "", "")
         self._user_id = ""
@@ -70,8 +71,24 @@ class User(Member):
     def request_purchase(self):
         pass
 
+    @abstractmethod
+    def write_csv_file(self, file_path):  # read 하고 추가해줘야 함!!
+        with open(file_path, mode='a', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(User())
 
-class Admin(Member):
+    @abstractmethod
+    def read_csv_file(self, file_path):
+        data = []
+        with open(file_path, mode='r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                name, birth, phone_number, email, address = row
+                data.append((name, int(birth), phone_number, email, address))
+        return data
+
+
+class Admin(Member, WriteFile):
     def __init__(self):
         super().__init__("", 0, "", "", "")
         self._staff_no = ""
@@ -91,3 +108,18 @@ class Admin(Member):
 
     def set_password(self):
         self._password = self.get_staff_no() + "p" + self.get_phone_number()[-4:]
+
+    @abstractmethod
+    def write_csv_file(self, file_path):  # read 하고 추가해줘야 함!!
+        with open(file_path, mode='w', encoding='utf-8') as f:
+            writer = csv.writer(f)
+
+    @abstractmethod
+    def read_csv_file(self, file_path):
+        data = []
+        with open(file_path, mode='r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                name, birth, phone_number, email, address = row
+                data.append((name, int(birth), phone_number, email, address))
+        return data
