@@ -8,6 +8,8 @@ class Book:
         self.publisher = publisher
         self.publication_year = publication_year
 
+        # csv 파일 : 제어번호, 제목, 저자, 발행처, 발행년도, ISBN, 분류기호, 대출횟수
+
     def get_title(self):
         return self.title
 

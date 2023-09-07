@@ -40,8 +40,11 @@ class Member(ABC):
     def get_address(self):
         return self._address
 
+    def set_address(self):
+        self._address = str(input("주소 : "))
 
-class User(Member, WriteFile):
+
+class User(Member):
     def __init__(self):
         super().__init__("", 0, "", "", "")
         self._user_id = ""
@@ -51,7 +54,21 @@ class User(Member, WriteFile):
         return self._user_id
 
     def set_user_id(self):
-        self._user_id = str(input("ID : "))
+        while True:
+            input_id = str(input("ID : "))
+            if self.is_user_id_available(input_id):
+                self._user_id = input_id
+                break
+            else:
+                print("사용할 수 없는 아이디입니다. 다른 아이디를 입력하세요.")
+
+    def is_user_id_available(self, input_id):
+        user_lst = self.read_csv_file('user.csv')
+        for i in user_lst:
+            if i[5] != input_id:
+                return True
+            else:
+                return False
 
     def get_password(self):
         return self._password
@@ -71,24 +88,68 @@ class User(Member, WriteFile):
     def request_purchase(self):
         pass
 
-    @abstractmethod
-    def write_csv_file(self, file_path):  # read 하고 추가해줘야 함!!
+    def register(self):
+        self.set_name()
+        self.set_birth()
+        self.set_phone_number()
+        self.set_email()
+        self.set_address()
+        self.set_user_id()
+        self.set_password()
+
+    def write_csv_file(self, file_path):
+        user_data = [
+            self.get_name(),
+            self.get_birth(),
+            self.get_phone_number(),
+            self.get_email(),
+            self.get_address(),
+            self.get_user_id(),
+            self.get_password()
+        ]
         with open(file_path, mode='a', encoding='utf-8') as f:
             writer = csv.writer(f)
-            writer.writerow(User())
+            writer.writerow(user_data)
 
-    @abstractmethod
-    def read_csv_file(self, file_path):
+    @staticmethod
+    def read_csv_file(file_path):
         data = []
         with open(file_path, mode='r', encoding='utf-8') as f:
             reader = csv.reader(f)
             for row in reader:
-                name, birth, phone_number, email, address = row
-                data.append((name, int(birth), phone_number, email, address))
+                if row:
+                    data.append(row)
         return data
 
+    def login(self):
+        input_id = str(input("ID : "))
+        input_password = str(input("Password : "))
 
-class Admin(Member, WriteFile):
+        if self.is_valid_login(input_id, input_password):
+            print("로그인 성공!")
+            Line.line_two()
+            return True
+        else:
+            print("로그인 실패. 아이디 또는 비밀번호를 확인하세요.")
+            Line.line_two()
+            return False
+
+    def is_valid_login(self, input_id, input_password):
+        user_list = self.read_csv_file('user.csv')
+        for row in user_list:
+            _, _, _, _, _, user_id, password = row
+            if user_id == input_id and password == input_password:
+                return True
+        return False
+
+
+# user = User()
+# user_data = user.read_csv_file('user.csv')
+# for i in user_data:
+#     print(i)
+
+
+class Admin(Member):
     def __init__(self):
         super().__init__("", 0, "", "", "")
         self._staff_no = ""
