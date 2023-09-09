@@ -74,14 +74,20 @@ class User(Member):
     def set_password(self):
         self._password = str(input("Password : "))
 
-    def register(self):
+    def enter_personal_info(self):
         self.set_name()
         self.set_birth()
         self.set_phone_number()
         self.set_email()
         self.set_address()
+
+    def enter_user_credentials(self):
         self.set_user_id()
         self.set_password()
+
+    def register(self):
+        self.enter_personal_info()
+        self.enter_user_credentials()
 
     def write_csv_file(self, file_path):
         user_data = [
@@ -228,7 +234,7 @@ class User(Member):
             pass
         return data
 
-    # def request_purchase(self):
+    # def request_purchase(self): <- 뺄까... 일단 보류
     #     # 도서 검색 결과에 원하는 게 없으면 도서구매신청
     #     pass
 
