@@ -141,5 +141,6 @@ class Library(Book):
             print("검색 조건과 일치하는 도서가 없습니다.")
         Line.line_two()
 
-    def check_availability(self, book_isbn):
+    @staticmethod
+    def check_availability():
         pass

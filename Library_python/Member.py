@@ -157,13 +157,13 @@ class User(Member):
         self.set_id()
         self.set_password()
 
-    def rent_book(self, isbn, title):
+    def rent_book(self):
         pass
 
-    def return_book(self, isbn):
+    def return_book(self):
         pass
 
-    def reserve_book(self, isbn, title):
+    def reserve_book(self):
         pass
 
     # def request_purchase(self): <- 뺄까... 일단 보류

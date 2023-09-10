@@ -49,15 +49,18 @@ class UserMenu(Main):
     @staticmethod
     def user_system():
         while True:
-            choice = int(input("1. 도서 검색 | 2. 대여 목록 | 3. 예약 목록 | 4. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            choice = int(input("1. 도서 검색 | 2. 대여 내역 | 3. 예약 내역 | 4. 구매 요청 내역 | 5. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
             Line.line_two()
             if choice == 1:
                 Library.search_book('CSVFiles/library_book.csv')
+                # 대여, 예약, 구매 신청 기능 추가
             elif choice == 2:
                 pass
             elif choice == 3:
                 pass
             elif choice == 4:
+                pass
+            elif choice == 5:
                 print("시스템을 종료합니다.")
                 break
 
