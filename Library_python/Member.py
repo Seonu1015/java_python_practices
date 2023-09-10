@@ -75,12 +75,13 @@ class Member:
             self.get_id(),
             self.get_password()
         ]
+        self.read_csv_file(file_path)
         with open(file_path, mode='a', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
             if header:
                 writer.writerow(header)
             writer.writerow(member_data)
-        print(f"{self.get_name()}님 반갑습니다! 회원가입이 완료되었습니다.")
+        print(f"{self.get_name()}님 반갑습니다! 등록이 완료되었습니다.")
         Line.line_two()
 
     @staticmethod
@@ -102,8 +103,8 @@ class Member:
         return data
 
     def login(self, file_path):
-        input_id = str(input("ID : "))
-        input_password = str(input("Password : "))
+        input_id = input("ID : ")
+        input_password = input("Password : ")
 
         if self.is_valid_login(input_id, input_password, file_path):
             print("로그인 성공!")
@@ -177,7 +178,7 @@ class User(Member):
 
 
 class Admin(Member):
-    s_no = 1
+    s_no = 0
 
     def __init__(self):
         super().__init__()
@@ -187,7 +188,7 @@ class Admin(Member):
 
     def set_id(self):
         staff_no_init = str(datetime.datetime.now().year)[-2:]
-        Admin.s_no += 1
+        Admin.s_no += 1  # 왜 누적이 되지 않지???
         four_s_no = f"{Admin.s_no:04d}"
         self._id = staff_no_init + four_s_no
 
@@ -200,32 +201,6 @@ class Admin(Member):
     def enter_member_credentials(self):
         self.set_id()
         self.set_password()
-
-    @staticmethod
-    def add_book_to_library():
-        from Book import Book, Library
-        book = Book()
-        library = Library
-        book.set_isbn()
-        book.set_title()
-        book.set_author()
-        book.set_publisher()
-        book.set_publication_year()
-        library.add_book(book)
-
-        with open('CSVFiles/library_books.csv', 'a', newline='') as csvfile:
-            fieldnames = ['ISBN', 'Title', 'Author', 'Publisher', 'Publication Year']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-            writer.writerow({
-                'ISBN': book.get_isbn(),
-                'Title': book.get_title(),
-                'Author': book.get_author(),
-                'Publisher': book.get_publisher(),
-                'Publication Year': book.get_publication_year()
-            })
-
-        print("도서가 도서관에 등록되었습니다.")
 
 # admin = Admin()
 # admin_data = admin.read_csv_file('CSVFiles/admin.csv')

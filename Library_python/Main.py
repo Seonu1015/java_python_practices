@@ -15,14 +15,14 @@ class Main:
             UserMenu.start_user_system()
         elif choice == 2:
             if AdminMenu.is_admin_info_exist():
-                admin = Admin()
-                if admin.login('CSVFiles/admin.csv'):
+                member = Admin()
+                if member.login('CSVFiles/admin.csv'):
                     AdminMenu.manage_system()
             else:
                 print("관리자 정보가 등록되어 있지 않습니다. 최초 관리자 정보를 등록해주세요.")
-                admin = Admin()
-                admin.register()
-                admin.write_csv_file('CSVFiles/admin.csv')
+                member = Admin()
+                member.register()
+                member.write_csv_file('CSVFiles/admin.csv', header=None)
 
         elif choice == 3:
             print("시스템을 종료합니다.")
@@ -41,24 +41,25 @@ class UserMenu(Main):
             elif choice == 2:
                 user = User()
                 user.register()
-                user.write_csv_file('CSVFiles/user.csv')
+                user.write_csv_file('CSVFiles/user.csv', header=None)
             elif choice == 3:
                 print("시스템을 종료합니다.")
                 break
 
     @staticmethod
     def user_system():
-        library = Library()
-        choice = int(input("1. 도서 검색 | 2. 대여 목록 | 3. 예약 목록 | 4. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
-        Line.line_two()
-        if choice == 1:
-            pass
-        elif choice == 2:
-            library.search_book()
-        elif choice == 3:
-            pass
-        elif choice == 4:
-            print("시스템을 종료합니다.")
+        while True:
+            choice = int(input("1. 도서 검색 | 2. 대여 목록 | 3. 예약 목록 | 4. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            Line.line_two()
+            if choice == 1:
+                Library.search_book('CSVFiles/library_book.csv')
+            elif choice == 2:
+                pass
+            elif choice == 3:
+                pass
+            elif choice == 4:
+                print("시스템을 종료합니다.")
+                break
 
 
 class AdminMenu(Main):
@@ -68,7 +69,7 @@ class AdminMenu(Main):
             with open('CSVFiles/admin.csv', mode='r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 header = next(reader)
-                if "Admin ID" in header and "Password" in header:
+                if "ID" in header and "Password" in header:
                     for row in reader:
                         if row:
                             return True
@@ -77,27 +78,31 @@ class AdminMenu(Main):
 
     @staticmethod
     def manage_system():
-        choice = int(input("1. 회원 관리 | 2. 직원 관리 | 3. 도서 관리 | 4. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
-        Line.line_two()
-        if choice == 1:
-            AdminMenu.manage_user()
-        elif choice == 2:
-            AdminMenu.manage_staff()
-        elif choice == 3:
-            AdminMenu.manage_books()
-        elif choice == 4:
-            print("시스템을 종료합니다.")
+        while True:
+            choice = int(input("1. 회원 관리 | 2. 직원 관리 | 3. 도서 관리 | 4. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            Line.line_two()
+            if choice == 1:
+                AdminMenu.manage_user()
+            elif choice == 2:
+                AdminMenu.manage_staff()
+            elif choice == 3:
+                AdminMenu.manage_books()
+            elif choice == 4:
+                print("시스템을 종료합니다.")
+                break
 
     @staticmethod
     def manage_user():
-        choice = int(input("1. 회원 검색 | 2. 연체자 검색 | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
-        Line.line_two()
-        if choice == 1:
-            AdminMenu.search_member('CSVFiles/user.csv')
-        elif choice == 2:
-            pass
-        elif choice == 3:
-            print("시스템을 종료합니다.")
+        while True:
+            choice = int(input("1. 회원 검색 | 2. 연체자 검색 | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            Line.line_two()
+            if choice == 1:
+                AdminMenu.search_member('CSVFiles/user.csv')
+            elif choice == 2:
+                pass
+            elif choice == 3:
+                print("시스템을 종료합니다.")
+                break
 
     @staticmethod
     def manage_staff():
@@ -109,7 +114,7 @@ class AdminMenu(Main):
             elif choice == 2:
                 admin = Admin()
                 admin.register()
-                admin.write_csv_file('CSVFiles/admin.csv')
+                admin.write_csv_file('CSVFiles/admin.csv', header=None)
             elif choice == 3:
                 AdminMenu.remove_member('CSVFiles/admin.csv')
             elif choice == 4:
@@ -119,7 +124,7 @@ class AdminMenu(Main):
     @staticmethod
     def search_member(file_path):
         search_member = input("이름 or ID (전체 검색을 원하면 엔터) : ")
-        member_data = User.read_csv_file(file_path)
+        member_data = Member.read_csv_file(file_path)
         found_member = None
 
         if search_member == "":
@@ -166,18 +171,20 @@ class AdminMenu(Main):
 
     @staticmethod
     def manage_books():
-        library = Library()
-        choice = int(input("1. 도서 검색 | 2. 도서 추가 | 3. 도서 삭제 | 4. 대여 목록 | 5. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
-        Line.line_two()
-        if choice == 1:
-            pass
-        elif choice == 2:
-            Admin.add_book_to_library()
-        elif choice == 3:
-            select_isbn = str(input("삭제하려는 도서의 ISBN을 입력하세요. : "))
-            library.remove_book(select_isbn)
-        elif choice == 4:
-            pass
-        # 대여 목록에서 대여신청/반납 승인 구현
-        elif choice == 5:
-            print("시스템을 종료합니다.")
+        while True:
+            choice = int(input("1. 도서 검색 | 2. 도서 추가 | 3. 도서 삭제 | 4. 대여 목록 | 5. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            Line.line_two()
+            if choice == 1:
+                Library.search_book('CSVFiles/library_book.csv')
+            elif choice == 2:
+                library = Library()
+                library.add_book()
+                library.add_book_to_library('CSVFiles/library_book.csv', header=None)
+            elif choice == 3:
+                Library.remove_book('CSVFiles/library_book.csv')
+            elif choice == 4:
+                pass
+            # 대여 목록에서 대여신청/반납 승인 구현
+            elif choice == 5:
+                print("시스템을 종료합니다.")
+                break
