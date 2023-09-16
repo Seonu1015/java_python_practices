@@ -161,25 +161,6 @@ class User(Member):
     def return_book(self):
         pass
 
-    # def purchase_requests(self):
-    #     from Main import UserMenu
-    #
-    #     print("도서 구매 요청을 시작합니다.")
-    #     book_title = input("요청하려는 도서의 제목을 입력하세요: ")
-    #     purchase_request = {
-    #         "요청자 이름": self.get_name(),
-    #         "도서 제목": book_title,
-    #         "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    #     }
-    #     UserMenu.add_purchase_request(purchase_request, 'CSVFiles/purchase_requests.csv')
-    #     print("도서 구매 요청이 접수되었습니다. 감사합니다!")
-
-
-# user = User()
-# user_data = user.read_csv_file('CSVFiles/user.csv')
-# for i in user_data:
-#     print(i)
-
 
 class Admin(Member):
     s_no = 0
@@ -205,8 +186,3 @@ class Admin(Member):
     def enter_member_credentials(self):
         self.set_id()
         self.set_password()
-
-# admin = Admin()
-# admin_data = admin.read_csv_file('CSVFiles/admin.csv')
-# for i in admin_data:
-#     print(i)

@@ -40,9 +40,7 @@ class UserMenu(Main):
             if choice == 1:
                 user = User()
                 if user.login('CSVFiles/user.csv'):
-                    print("user.get_name() : " + user.get_id())
                     UserMenu.current_user = user
-                    print("UserMenu.current_user.get_name() : " + UserMenu.current_user.get_id())
                     UserMenu.user_system()
             elif choice == 2:
                 user = User()
@@ -79,7 +77,9 @@ class UserMenu(Main):
                         request_data = {
                             "요청자": UserMenu.current_user.get_id(),
                             "도서 제목": book_title,
-                            "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d")
+                            "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d"),
+                            "승인 여부": "",
+                            "반려 사유": ""
                         }
                         print(request_data)
                         UserMenu.add_purchase_request(request_data, 'CSVFiles/purchase_requests.csv')
@@ -97,7 +97,7 @@ class UserMenu(Main):
     def add_purchase_request(request_data, file_path):
         try:
             with open(file_path, mode='x', encoding='utf-8', newline='') as f:
-                header = ["요청자", "도서 제목", "요청 날짜"]
+                header = ["요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
                 writer = csv.writer(f)
                 writer.writerow(header)
         except FileExistsError:
@@ -105,7 +105,8 @@ class UserMenu(Main):
 
         with open(file_path, mode='a', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow([request_data["요청자"], request_data["도서 제목"], request_data["요청 날짜"]])
+            writer.writerow([request_data["요청자"], request_data["도서 제목"], request_data["요청 날짜"],
+                             request_data["승인 여부"], request_data["반려 사유"]])
 
 
 class AdminMenu(Main):
@@ -242,7 +243,42 @@ class AdminMenu(Main):
             if choice == 1:
                 pass
             elif choice == 2:
-                pass
+                AdminMenu.purchase_requests_list('CSVFiles/purchase_requests.csv')
+                approval = str(input("구매 요청 승인여부를 처리하시겠습니까? (y/n) : "))
+                if approval == "y":
+                    AdminMenu.approve_purchase_request()
+                else:
+                    AdminMenu.reject_purchase_request()
             elif choice == 3:
                 print("시스템을 종료합니다.")
                 break
+
+    @staticmethod
+    def purchase_requests_list(file_path):
+        purchase_requests = AdminMenu.read_csv_file(file_path)
+        if purchase_requests:
+            columns = ["요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
+            df = pd.DataFrame(purchase_requests, columns=columns)
+            print("구매 요청 목록:")
+            print(df)
+        else:
+            print("구매 요청 목록이 비어 있습니다.")
+
+    @staticmethod
+    def approve_purchase_request():
+        pass
+
+    @staticmethod
+    def reject_purchase_request():
+        pass
+
+    @staticmethod
+    def read_csv_file(file_path):
+        data = []
+        with open(file_path, mode='r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            next(reader)
+            for row in reader:
+                if row:
+                    data.append(row)
+        return data
