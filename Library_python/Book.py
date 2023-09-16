@@ -47,6 +47,10 @@ class Book:
 class Library(Book):
     def __init__(self):
         super().__init__()
+        self._rent_avail = "대여 가능"
+
+    def get_availability(self):
+        return self._rent_avail
 
     def add_book(self):
         self.set_isbn()
@@ -61,7 +65,8 @@ class Library(Book):
             self.get_title(),
             self.get_author(),
             self.get_publisher(),
-            self.get_publication_year()
+            self.get_publication_year(),
+            self.get_availability()
         ]
 
         self.read_csv_file(file_path)
@@ -78,7 +83,7 @@ class Library(Book):
     def read_csv_file(file_path):
         try:
             with open(file_path, mode='x', encoding='utf-8', newline='') as f:
-                header = ["ISBN", "제목", "작가", "출판사", "발행년도"]
+                header = ["ISBN", "제목", "작가", "출판사", "발행년도", "대여가능여부"]
                 writer = csv.writer(f)
                 writer.writerow(header)
         except FileExistsError:
@@ -110,7 +115,7 @@ class Library(Book):
             book_data.remove(found_book)
             with open(file_path, mode='w', encoding='utf-8', newline='') as f:
                 writer = csv.writer(f)
-                header = ["ISBN", "제목", "작가", "출판사", "발행년도"]
+                header = ["ISBN", "제목", "작가", "출판사", "발행년도", "대여가능여부"]
                 writer.writerow(header)
                 for book in book_data:
                     writer.writerow(book)
@@ -120,20 +125,20 @@ class Library(Book):
 
     @staticmethod
     def search_book(file_path):
-        search_book = input("도서 ISBN (전체 검색을 원하면 엔터) : ")
         book_data = Library.read_csv_file(file_path)
-        found_isbn = None
+
+        search_book = input("도서 ISBN (전체 검색을 원하면 엔터) : ")
 
         if search_book == "":
             found_isbn = book_data
         else:
+            found_isbn = []
             for book in book_data:
                 if search_book in book[0]:
-                    found_isbn = book
-                    break
+                    found_isbn.append(book)
 
         if found_isbn:
-            columns = ["ISBN", "제목", "작가", "출판사", "발행년도"]
+            columns = ["ISBN", "제목", "작가", "출판사", "발행년도", "대여가능여부"]
             df = pd.DataFrame(found_isbn, columns=columns)
             print("검색 결과:")
             print(df)
@@ -141,6 +146,23 @@ class Library(Book):
             print("검색 조건과 일치하는 도서가 없습니다.")
         Line.line_two()
 
+    def rent_book(self):
+        if self._rent_avail == "대여 가능":
+            self._rent_avail = "대여 중"
+            print("도서 대여가 신청되었습니다.")
+            return True
+        else:
+            print("대여 신청이 불가능합니다.")
+            return False
+
     @staticmethod
-    def check_availability():
-        pass
+    def find_book_by_isbn(isbn):
+        book_data = Library.read_csv_file('CSVFiles/library_book.csv')
+        found_book = None
+
+        for book in book_data:
+            if isbn in book[0]:
+                found_book = book
+                break
+
+        return found_book

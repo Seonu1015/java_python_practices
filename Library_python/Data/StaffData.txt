@@ -11,8 +11,8 @@ Password: 230001p5555
 폰번호: 010-6666-8888
 이메일: songjiyoung@example.com
 주소: 서울시 서초구 서초로 1234
-ID: 230001
-Password: 230001p8888
+ID: 230002
+Password: 230002p8888
 
 이름: 박민지
 생일: 990619

@@ -157,18 +157,12 @@ class User(Member):
         self.set_id()
         self.set_password()
 
-    def rent_book(self):
-        pass
-
     def return_book(self):
         pass
 
-    def reserve_book(self):
+    def request_purchase(self):
+        # 도서 검색 결과에 원하는 게 없으면 도서구매신청
         pass
-
-    # def request_purchase(self): <- 뺄까... 일단 보류
-    #     # 도서 검색 결과에 원하는 게 없으면 도서구매신청
-    #     pass
 
 
 # user = User()

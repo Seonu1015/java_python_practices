@@ -48,19 +48,27 @@ class UserMenu(Main):
 
     @staticmethod
     def user_system():
+        library = Library()
         while True:
-            choice = int(input("1. 도서 검색 | 2. 대여 내역 | 3. 예약 내역 | 4. 구매 요청 내역 | 5. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            choice = int(input("1. 도서 검색 | 2. 신청 내역 | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
             Line.line_two()
             if choice == 1:
                 Library.search_book('CSVFiles/library_book.csv')
-                # 대여, 예약, 구매 신청 기능 추가
+                lookingfor_book = str(input("찾으시는 책이 있으신가요? (y/n) : "))
+                if lookingfor_book == "y":
+                    isbn = input("해당 책의 ISBN을 입력하세요. : ")
+                    found_book = Library.find_book_by_isbn(isbn)
+                    if found_book:
+
+                    else:
+                        print("해당 ISBN을 가진 도서를 찾을 수 없습니다.")
+                elif lookingfor_book == "n":
+                    pass  # 구매 신청
+                else:
+                    print("(입력이 잘못되었습니다. y or n 으로 입력해주세요.)")
             elif choice == 2:
                 pass
             elif choice == 3:
-                pass
-            elif choice == 4:
-                pass
-            elif choice == 5:
                 print("시스템을 종료합니다.")
                 break
 
@@ -186,8 +194,7 @@ class AdminMenu(Main):
             elif choice == 3:
                 Library.remove_book('CSVFiles/library_book.csv')
             elif choice == 4:
-                pass
-            # 대여 목록에서 대여신청/반납 승인 구현
+                pass  # 대여 목록에서 대여신청/반납 승인 구현
             elif choice == 5:
                 print("시스템을 종료합니다.")
                 break

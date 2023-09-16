@@ -30,7 +30,7 @@ Password: MyP@ssw0rd3
 ID: jaeyoung94
 Password: P@ssw0rd4Ever
 
-이름: 홍길동
+이름: 김희연
 생일: 870609
 폰번호: 010-1111-9999
 이메일: honggildong@example.com
