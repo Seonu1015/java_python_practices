@@ -107,6 +107,7 @@ class Member:
         input_password = input("Password : ")
 
         if self.is_valid_login(input_id, input_password, file_path):
+            self._id = input_id
             print("로그인 성공!")
             Line.line_two()
             return True
@@ -160,9 +161,18 @@ class User(Member):
     def return_book(self):
         pass
 
-    def request_purchase(self):
-        # 도서 검색 결과에 원하는 게 없으면 도서구매신청
-        pass
+    # def purchase_requests(self):
+    #     from Main import UserMenu
+    #
+    #     print("도서 구매 요청을 시작합니다.")
+    #     book_title = input("요청하려는 도서의 제목을 입력하세요: ")
+    #     purchase_request = {
+    #         "요청자 이름": self.get_name(),
+    #         "도서 제목": book_title,
+    #         "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    #     }
+    #     UserMenu.add_purchase_request(purchase_request, 'CSVFiles/purchase_requests.csv')
+    #     print("도서 구매 요청이 접수되었습니다. 감사합니다!")
 
 
 # user = User()

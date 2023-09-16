@@ -80,6 +80,15 @@ class Library(Book):
         Line.line_two()
 
     @staticmethod
+    def update_csv_file(book_data):
+        with open('CSVFiles/library_book.csv', mode='w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            header = ["ISBN", "제목", "작가", "출판사", "발행년도", "대여가능여부"]
+            writer.writerow(header)
+            for book in book_data:
+                writer.writerow(book)
+
+    @staticmethod
     def read_csv_file(file_path):
         try:
             with open(file_path, mode='x', encoding='utf-8', newline='') as f:
@@ -113,12 +122,7 @@ class Library(Book):
 
         if found_book:
             book_data.remove(found_book)
-            with open(file_path, mode='w', encoding='utf-8', newline='') as f:
-                writer = csv.writer(f)
-                header = ["ISBN", "제목", "작가", "출판사", "발행년도", "대여가능여부"]
-                writer.writerow(header)
-                for book in book_data:
-                    writer.writerow(book)
+            Library.update_csv_file(book_data)
             print(f"도서 {found_book[1]}가 삭제되었습니다.")
         else:
             print("해당 정보를 찾을 수 없습니다.")
@@ -148,12 +152,22 @@ class Library(Book):
 
     def rent_book(self):
         if self._rent_avail == "대여 가능":
-            self._rent_avail = "대여 중"
+            self._rent_avail = "대여 신청 중"
             print("도서 대여가 신청되었습니다.")
-            return True
+
+            book_data = Library.read_csv_file('CSVFiles/library_book.csv')
+            found_book = None
+
+            for book in book_data:
+                if self.get_isbn() in book[0]:
+                    found_book = book
+                    break
+
+            if found_book:
+                found_book[5] = self._rent_avail
+                Library.update_csv_file(book_data)
         else:
             print("대여 신청이 불가능합니다.")
-            return False
 
     @staticmethod
     def find_book_by_isbn(isbn):

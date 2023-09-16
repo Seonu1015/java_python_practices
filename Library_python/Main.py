@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 import pandas as pd
 from Book import Library
@@ -29,6 +30,8 @@ class Main:
 
 
 class UserMenu(Main):
+    current_user = None
+
     @staticmethod
     def start_user_system():
         while True:
@@ -37,6 +40,9 @@ class UserMenu(Main):
             if choice == 1:
                 user = User()
                 if user.login('CSVFiles/user.csv'):
+                    print("user.get_name() : " + user.get_id())
+                    UserMenu.current_user = user
+                    print("UserMenu.current_user.get_name() : " + UserMenu.current_user.get_id())
                     UserMenu.user_system()
             elif choice == 2:
                 user = User()
@@ -59,11 +65,26 @@ class UserMenu(Main):
                     isbn = input("해당 책의 ISBN을 입력하세요. : ")
                     found_book = Library.find_book_by_isbn(isbn)
                     if found_book:
-
+                        action = input("이 책을 대여하시겠습니까? (y/n) : ")
+                        if action == "y":
+                            library.rent_book()
+                        else:
+                            print("도서 대여 신청이 취소되었습니다.")
                     else:
                         print("해당 ISBN을 가진 도서를 찾을 수 없습니다.")
                 elif lookingfor_book == "n":
-                    pass  # 구매 신청
+                    action = input("구매를 요청하시겠습니까? (y/n) : ")
+                    if action == "y":
+                        book_title = input("요청하려는 도서의 제목을 입력하세요: ")
+                        request_data = {
+                            "요청자": UserMenu.current_user.get_id(),
+                            "도서 제목": book_title,
+                            "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d")
+                        }
+                        print(request_data)
+                        UserMenu.add_purchase_request(request_data, 'CSVFiles/purchase_requests.csv')
+                    else:
+                        print("구매 요청이 취소되었습니다.")
                 else:
                     print("(입력이 잘못되었습니다. y or n 으로 입력해주세요.)")
             elif choice == 2:
@@ -71,6 +92,20 @@ class UserMenu(Main):
             elif choice == 3:
                 print("시스템을 종료합니다.")
                 break
+
+    @staticmethod
+    def add_purchase_request(request_data, file_path):
+        try:
+            with open(file_path, mode='x', encoding='utf-8', newline='') as f:
+                header = ["요청자", "도서 제목", "요청 날짜"]
+                writer = csv.writer(f)
+                writer.writerow(header)
+        except FileExistsError:
+            pass
+
+        with open(file_path, mode='a', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow([request_data["요청자"], request_data["도서 제목"], request_data["요청 날짜"]])
 
 
 class AdminMenu(Main):
@@ -183,7 +218,7 @@ class AdminMenu(Main):
     @staticmethod
     def manage_books():
         while True:
-            choice = int(input("1. 도서 검색 | 2. 도서 추가 | 3. 도서 삭제 | 4. 대여 목록 | 5. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            choice = int(input("1. 도서 검색 | 2. 도서 추가 | 3. 도서 삭제 | 4. 요청 목록 | 5. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
             Line.line_two()
             if choice == 1:
                 Library.search_book('CSVFiles/library_book.csv')
@@ -194,7 +229,20 @@ class AdminMenu(Main):
             elif choice == 3:
                 Library.remove_book('CSVFiles/library_book.csv')
             elif choice == 4:
-                pass  # 대여 목록에서 대여신청/반납 승인 구현
+                AdminMenu.request_list()
             elif choice == 5:
+                print("시스템을 종료합니다.")
+                break
+
+    @staticmethod
+    def request_list():
+        while True:
+            choice = int(input("1. 대여 요청 목록 | 2. 구매 요청 목록 | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            Line.line_two()
+            if choice == 1:
+                pass
+            elif choice == 2:
+                pass
+            elif choice == 3:
                 print("시스템을 종료합니다.")
                 break
