@@ -66,6 +66,8 @@ class UserMenu(Main):
                     if found_book:
                         action = input("이 책을 대여하시겠습니까? (y/n) : ")
                         if action == "y":
+                            request_data = UserMenu.rent_request(isbn)
+                            UserMenu.add_rent_request(request_data, 'CSVFiles/rental_requests.csv')
                             library.rent_book()
                         else:
                             print("도서 대여 신청이 취소되었습니다.")
@@ -87,6 +89,34 @@ class UserMenu(Main):
             elif choice == 3:
                 print("시스템을 종료합니다.")
                 break
+
+    @staticmethod
+    def rent_request(book_isbn):
+        UserMenu.last_request_number += 1
+        request_number = datetime.datetime.now().strftime('%m%d') + f"{UserMenu.last_request_number:03d}"
+        request_data = {
+            "NO": request_number,
+            "요청자": UserMenu.current_user.get_id(),
+            "ISBN": book_isbn,
+            "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d"),
+            "대여 확인": "대여 신청 중"
+        }
+        return request_data
+
+    @staticmethod
+    def add_rent_request(request_data, file_path):
+        try:
+            with open(file_path, mode='x', encoding='utf-8', newline='') as f:
+                header = ["NO", "요청자", "ISBN", "요청 날짜", "대여 확인"]
+                writer = csv.writer(f)
+                writer.writerow(header)
+        except FileExistsError:
+            pass
+
+        with open(file_path, mode='a', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow([request_data["NO"], request_data["요청자"], request_data["ISBN"], request_data["요청 날짜"],
+                             request_data["대여 확인"]])
 
     @staticmethod
     def purchase_request(book_title):
@@ -150,7 +180,7 @@ class AdminMenu(Main):
     @staticmethod
     def manage_user():
         while True:
-            choice = int(input("1. 회원 검색 | 2. ???? | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            choice = int(input("1. 회원 검색 | 2. ????(연체정보? 회원삭제?) | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
             Line.line_two()
             if choice == 1:
                 AdminMenu.search_member('CSVFiles/user.csv')
@@ -169,7 +199,7 @@ class AdminMenu(Main):
             if choice == 1:
                 AdminMenu.search_member('CSVFiles/admin.csv')
             elif choice == 2:
-                # admin = Admin()  # 아무래도 이 부분이 누적되지 않는 원인 같은데... 루프 밖으로 옮겨봄
+                # admin = Admin()  # 아무래도 이 부분이 누적되지 않는 원인 같은데... 루프 밖으로 옮겨봤으나 차이는 없음
                 admin.register()
                 print(f"Main.py의 AdminMenu 내에서 추가 => ID: {admin.get_id()}")
                 admin.write_csv_file('CSVFiles/admin.csv', header=None)
@@ -252,19 +282,55 @@ class AdminMenu(Main):
             choice = int(input("1. 대여 요청 목록 | 2. 구매 요청 목록 | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
             Line.line_two()
             if choice == 1:
-                pass
+                AdminMenu.rental_requests_list('CSVFiles/rental_requests.csv')
+                rent_request_no = str(input("승인할 NO을 입력해주세요. : "))
+                AdminMenu.approve_rental_request(rent_request_no)
             elif choice == 2:
                 AdminMenu.purchase_requests_list('CSVFiles/purchase_requests.csv')
                 approval = str(input("구매 요청 승인여부 [ 1.승인 | 2.반려 ] : "))
                 if approval == "1":
-                    request_no = int(input("승인할 요청NO를 입력해주세요. : "))
-                    AdminMenu.approve_purchase_request(request_no)
+                    purchase_request_no = int(input("승인할 NO를 입력해주세요. : "))
+                    AdminMenu.approve_purchase_request(purchase_request_no)
                 else:
-                    request_no = int(input("반려할 요청NO를 입력해주세요. : "))
-                    AdminMenu.reject_purchase_request(request_no)
+                    purchase_request_no = int(input("반려할 요청NO를 입력해주세요. : "))
+                    AdminMenu.reject_purchase_request(purchase_request_no)
             elif choice == 3:
                 print("시스템을 종료합니다.")
                 break
+
+    @staticmethod
+    def rental_requests_list(file_path):
+        purchase_requests = AdminMenu.read_csv_file(file_path)
+        if purchase_requests:
+            columns = ["NO", "요청자", "ISBN", "요청 날짜", "대여 확인"]
+            df = pd.DataFrame(purchase_requests, columns=columns)
+            print("대여 요청 목록:")
+            print(df)
+        else:
+            print("대여 요청 목록이 비어 있습니다.")
+
+    @staticmethod
+    def approve_rental_request(request_no):
+        requests_data = AdminMenu.read_csv_file('CSVFiles/rental_requests.csv')
+
+        for request in requests_data:
+            if request[0] == request_no:
+                request[4] = "대여 완료"
+
+        with open('CSVFiles/rental_requests.csv', mode="w", encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            header = ["NO", "요청자", "ISBN", "요청 날짜", "대여 확인"]
+            writer.writerow(header)
+            for request in requests_data:
+                writer.writerow(request)
+
+        book_data = Library.read_csv_file('CSVFiles/library_book.csv')
+        for book in book_data:
+            if book[0] == request_no:
+                book[5] = "대여 중"
+        Library.update_csv_file(book_data)
+
+        print("대여 요청을 승인하였습니다.")
 
     @staticmethod
     def purchase_requests_list(file_path):
