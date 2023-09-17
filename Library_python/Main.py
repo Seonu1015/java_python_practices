@@ -1,7 +1,7 @@
 import csv
 import datetime
-
 import pandas as pd
+
 from Book import Library
 from Interface import Line
 from Member import Member, User, Admin
@@ -31,6 +31,7 @@ class Main:
 
 class UserMenu(Main):
     current_user = None
+    last_request_number = 0
 
     @staticmethod
     def start_user_system():
@@ -74,15 +75,9 @@ class UserMenu(Main):
                     action = input("구매를 요청하시겠습니까? (y/n) : ")
                     if action == "y":
                         book_title = input("요청하려는 도서의 제목을 입력하세요: ")
-                        request_data = {
-                            "요청자": UserMenu.current_user.get_id(),
-                            "도서 제목": book_title,
-                            "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d"),
-                            "승인 여부": "",
-                            "반려 사유": ""
-                        }
-                        print(request_data)
+                        request_data = UserMenu.purchase_request(book_title)
                         UserMenu.add_purchase_request(request_data, 'CSVFiles/purchase_requests.csv')
+                        print("구매 요청이 완료되었습니다.")
                     else:
                         print("구매 요청이 취소되었습니다.")
                 else:
@@ -94,10 +89,24 @@ class UserMenu(Main):
                 break
 
     @staticmethod
+    def purchase_request(book_title):
+        UserMenu.last_request_number += 1
+        request_number = datetime.datetime.now().strftime('%m%d') + f"{UserMenu.last_request_number:03d}"
+        request_data = {
+            "NO": request_number,
+            "요청자": UserMenu.current_user.get_id(),
+            "도서 제목": book_title,
+            "요청 날짜": datetime.datetime.now().strftime("%Y-%m-%d"),
+            "승인 여부": "",
+            "반려 사유": ""
+        }
+        return request_data
+
+    @staticmethod
     def add_purchase_request(request_data, file_path):
         try:
             with open(file_path, mode='x', encoding='utf-8', newline='') as f:
-                header = ["요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
+                header = ["NO", "요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
                 writer = csv.writer(f)
                 writer.writerow(header)
         except FileExistsError:
@@ -105,7 +114,7 @@ class UserMenu(Main):
 
         with open(file_path, mode='a', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow([request_data["요청자"], request_data["도서 제목"], request_data["요청 날짜"],
+            writer.writerow([request_data["NO"], request_data["요청자"], request_data["도서 제목"], request_data["요청 날짜"],
                              request_data["승인 여부"], request_data["반려 사유"]])
 
 
@@ -141,7 +150,7 @@ class AdminMenu(Main):
     @staticmethod
     def manage_user():
         while True:
-            choice = int(input("1. 회원 검색 | 2. 연체자 검색 | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
+            choice = int(input("1. 회원 검색 | 2. ???? | 3. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
             Line.line_two()
             if choice == 1:
                 AdminMenu.search_member('CSVFiles/user.csv')
@@ -153,14 +162,16 @@ class AdminMenu(Main):
 
     @staticmethod
     def manage_staff():
+        admin = Admin()
         while True:
             choice = int(input("1. 직원 검색 | 2. 직원 등록 | 3. 직원 삭제 | 4. 종료\n>> 진행하시려는 번호를 입력하세요 : "))
             Line.line_two()
             if choice == 1:
                 AdminMenu.search_member('CSVFiles/admin.csv')
             elif choice == 2:
-                admin = Admin()
+                # admin = Admin()  # 아무래도 이 부분이 누적되지 않는 원인 같은데... 루프 밖으로 옮겨봄
                 admin.register()
+                print(f"Main.py의 AdminMenu 내에서 추가 => ID: {admin.get_id()}")
                 admin.write_csv_file('CSVFiles/admin.csv', header=None)
             elif choice == 3:
                 AdminMenu.remove_member('CSVFiles/admin.csv')
@@ -244,11 +255,13 @@ class AdminMenu(Main):
                 pass
             elif choice == 2:
                 AdminMenu.purchase_requests_list('CSVFiles/purchase_requests.csv')
-                approval = str(input("구매 요청 승인여부를 처리하시겠습니까? (y/n) : "))
-                if approval == "y":
-                    AdminMenu.approve_purchase_request()
+                approval = str(input("구매 요청 승인여부 [ 1.승인 | 2.반려 ] : "))
+                if approval == "1":
+                    request_no = int(input("승인할 요청NO를 입력해주세요. : "))
+                    AdminMenu.approve_purchase_request(request_no)
                 else:
-                    AdminMenu.reject_purchase_request()
+                    request_no = int(input("반려할 요청NO를 입력해주세요. : "))
+                    AdminMenu.reject_purchase_request(request_no)
             elif choice == 3:
                 print("시스템을 종료합니다.")
                 break
@@ -257,7 +270,7 @@ class AdminMenu(Main):
     def purchase_requests_list(file_path):
         purchase_requests = AdminMenu.read_csv_file(file_path)
         if purchase_requests:
-            columns = ["요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
+            columns = ["NO", "요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
             df = pd.DataFrame(purchase_requests, columns=columns)
             print("구매 요청 목록:")
             print(df)
@@ -265,12 +278,45 @@ class AdminMenu(Main):
             print("구매 요청 목록이 비어 있습니다.")
 
     @staticmethod
-    def approve_purchase_request():
-        pass
+    def approve_purchase_request(request_no):
+        requests_data = AdminMenu.read_csv_file('CSVFiles/purchase_requests.csv')
+
+        for request in requests_data:
+            if request[0] == request_no:
+                request[4] = "승인"
+
+        with open('CSVFiles/purchase_requests.csv', mode="w", encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            header = ["NO", "요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
+            writer.writerow(header)
+            for request in requests_data:
+                writer.writerow(request)
+
+        library = Library()
+        library.add_book()
+        library.add_book_to_library('CSVFiles/library_book.csv', header=None)
+
+        print("구매 요청을 승인하였습니다.")
 
     @staticmethod
-    def reject_purchase_request():
-        pass
+    def reject_purchase_request(request_no):
+        requests_data = AdminMenu.read_csv_file('CSVFiles/purchase_requests.csv')
+
+        rejection_reason = str(input("반려 사유를 기입해주세요. : "))
+
+        for request in requests_data:
+            if request[0] == request_no:
+                request[4] = "반려"
+                request[5] = rejection_reason
+
+        with open('CSVFiles/purchase_requests.csv', mode='w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            header = ["NO", "요청자", "도서 제목", "요청 날짜", "승인 여부", "반려 사유"]
+            writer.writerow(header)
+            for request in requests_data:
+                writer.writerow(request)
+
+        print("구매 요청을 반려하였습니다.")
 
     @staticmethod
     def read_csv_file(file_path):

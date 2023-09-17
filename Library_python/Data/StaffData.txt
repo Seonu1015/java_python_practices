@@ -1,39 +1,41 @@
-이름: 이현우
-생일: 970301
-폰번호: 010-3333-5555
-이메일: leehyunwoo@example.com
-주소: 서울시 강남구 강남대로 5678
+이름, 생일, 폰번호, 이메일, 주소 
+
+이현우
+970301
+010-3333-5555
+leehyunwoo@example.com
+서울시 강남구 강남대로 5678
 ID: 230001
 Password: 230001p5555
 
-이름: 송지영
-생일: 920714
-폰번호: 010-6666-8888
-이메일: songjiyoung@example.com
-주소: 서울시 서초구 서초로 1234
-ID: 230002
-Password: 230002p8888
-
-이름: 박민지
-생일: 990619
-폰번호: 010-7777-2222
-이메일: parkminji@example.com
-주소: 서울시 중랑구 망우로 7890
+송지영
+920714
+010-6666-8888
+songjiyoung@example.com
+서울시 서초구 서초로 1234
 ID:
 Password:
 
-이름: 김태영
-생일: 940102
-폰번호: 010-9999-1234
-이메일: kimtaeyoung@example.com
-주소: 서울시 강동구 상일로 4567
+박민지
+990619
+010-7777-2222
+parkminji@example.com
+서울시 중랑구 망우로 7890
 ID:
 Password:
 
-이름: 정지훈
-생일: 970815
-폰번호: 010-8888-6666
-이메일: jeongjihun@example.com
-주소: 서울시 종로구 북촌로 9876
+김태영
+940102
+010-9999-1234
+kimtaeyoung@example.com
+서울시 강동구 상일로 4567
+ID:
+Password:
+
+정지훈
+970815
+010-8888-6666
+jeongjihun@example.com
+서울시 종로구 북촌로 9876
 ID:
 Password:

@@ -1,79 +1,81 @@
-이름: 김지영
-생일: 930704
-폰번호: 010-1234-5678
-이메일: kimjiyoung@example.com
-주소: 서울시 강남구 강남대로 1234
+이름, 생일, 폰번호, 이메일, 주소
+
+김지영
+930704
+010-1234-5678
+kimjiyoung@example.com
+서울시 강남구 강남대로 1234
 ID: kjy93
 Password: P@ssw0rd1
 
-이름: 박민준
-생일: 980215
-폰번호: 010-9876-5432
-이메일: parkminjun@example.com
-주소: 서울시 강서구 화곡로 567
+박민준
+980215
+010-9876-5432
+parkminjun@example.com
+서울시 강서구 화곡로 567
 ID: minjun98
 Password: SecurePwd!2
 
-이름: 이수진
-생일: 910531
-폰번호: 010-5555-8888
-이메일: leesujin@example.com
-주소: 서울시 송파구 올림픽로 789
+이수진
+910531
+010-5555-8888
+leesujin@example.com
+서울시 송파구 올림픽로 789
 ID: sujin91
 Password: MyP@ssw0rd3
 
-이름: 정재영
-생일: 940827
-폰번호: 010-7777-2222
-이메일: jungjaeyoung@example.com
-주소: 서울시 강동구 천호대로 987
+정재영
+940827
+010-7777-2222
+jungjaeyoung@example.com
+서울시 강동구 천호대로 987
 ID: jaeyoung94
 Password: P@ssw0rd4Ever
 
-이름: 김희연
-생일: 870609
-폰번호: 010-1111-9999
-이메일: honggildong@example.com
-주소: 서울시 종로구 인사동길 321
+김희연
+870609
+010-1111-9999
+honggildong@example.com
+서울시 종로구 인사동길 321
 ID: gildong87
 Password: H@ppyDay5
 
-이름: 윤미나
-생일: 960712
-폰번호: 010-2222-7777
-이메일: yoonmina@example.com
-주소: 서울시 중구 명동길 789
+윤미나
+960712
+010-2222-7777
+yoonmina@example.com
+서울시 중구 명동길 789
 ID: mina96
 Password: SecretP@ss6
 
-이름: 최영호
-생일: 920225
-폰번호: 010-3333-6666
-이메일: choiyeongho@example.com
-주소: 서울시 마포구 어울마당로 654
+최영호
+920225
+010-3333-6666
+choiyeongho@example.com
+서울시 마포구 어울마당로 654
 ID: yeongho92
 Password: ProtectedPwd!7
 
-이름: 권현우
-생일: 990430
-폰번호: 010-9999-1111
-이메일: kwonhyunwoo@example.com
-주소: 서울시 강북구 번동로 321
+권현우
+990430
+010-9999-1111
+kwonhyunwoo@example.com
+서울시 강북구 번동로 321
 ID: hyunwoo99
 Password: P@ssw0rd8Secure
 
-이름: 이지영
-생일: 930815
-폰번호: 010-8888-4444
-이메일: leejiyoung@example.com
-주소: 서울시 영등포구 여의도로 987
+이지영
+930815
+010-8888-4444
+leejiyoung@example.com
+서울시 영등포구 여의도로 987
 ID: jiyoung93
 Password: Saf3Pwd!9
 
-이름: 박승민
-생일: 950502
-폰번호: 010-7777-3333
-이메일: parkseungmin@example.com
-주소: 서울시 관악구 관천로 123
+박승민
+950502
+010-7777-3333
+parkseungmin@example.com
+서울시 관악구 관천로 123
 ID: seungmin95
 Password: Pr0t3ctedP@ss10

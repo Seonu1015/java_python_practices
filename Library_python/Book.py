@@ -49,8 +49,11 @@ class Library(Book):
         super().__init__()
         self._rent_avail = "대여 가능"
 
-    def get_availability(self):
+    def get_rent_avail(self):
         return self._rent_avail
+
+    def set_rent_avail(self, approval):
+        self._rent_avail = approval
 
     def add_book(self):
         self.set_isbn()
@@ -66,7 +69,7 @@ class Library(Book):
             self.get_author(),
             self.get_publisher(),
             self.get_publication_year(),
-            self.get_availability()
+            self.get_rent_avail()
         ]
 
         self.read_csv_file(file_path)

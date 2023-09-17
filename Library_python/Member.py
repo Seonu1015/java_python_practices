@@ -173,9 +173,10 @@ class Admin(Member):
 
     def set_id(self):
         staff_no_init = str(datetime.datetime.now().year)[-2:]
-        Admin.s_no += 1  # 왜 누적이 되지 않지???
+        Admin.s_no += 1
         four_s_no = f"{Admin.s_no:04d}"
         self._id = staff_no_init + four_s_no
+        print(f"Admin 클래스 내에서 추가 => ID : {self._id}")  # 여기서는 누적이 잘 되고 있음
 
     def get_password(self):
         return self._password
