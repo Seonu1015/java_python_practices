@@ -1,0 +1,41 @@
+이름, 생일, 폰번호, 이메일, 주소 
+
+이현우
+970301
+010-3333-5555
+leehyunwoo@example.com
+서울시 강남구 강남대로 5678
+ID: 230001
+Password: 230001p5555
+
+송지영
+920714
+010-6666-8888
+songjiyoung@example.com
+서울시 서초구 서초로 1234
+ID:
+Password:
+
+박민지
+990619
+010-7777-2222
+parkminji@example.com
+서울시 중랑구 망우로 7890
+ID:
+Password:
+
+김태영
+940102
+010-9999-1234
+kimtaeyoung@example.com
+서울시 강동구 상일로 4567
+ID:
+Password:
+
+정지훈
+970815
+010-8888-6666
+jeongjihun@example.com
+서울시 종로구 북촌로 9876
+ID:
+Password:

@@ -1,0 +1,81 @@
+이름, 생일, 폰번호, 이메일, 주소
+
+김지영
+930704
+010-1234-5678
+kimjiyoung@example.com
+서울시 강남구 강남대로 1234
+ID: kjy93
+Password: P@ssw0rd1
+
+박민준
+980215
+010-9876-5432
+parkminjun@example.com
+서울시 강서구 화곡로 567
+ID: minjun98
+Password: SecurePwd!2
+
+이수진
+910531
+010-5555-8888
+leesujin@example.com
+서울시 송파구 올림픽로 789
+ID: sujin91
+Password: MyP@ssw0rd3
+
+정재영
+940827
+010-7777-2222
+jungjaeyoung@example.com
+서울시 강동구 천호대로 987
+ID: jaeyoung94
+Password: P@ssw0rd4Ever
+
+김희연
+870609
+010-1111-9999
+honggildong@example.com
+서울시 종로구 인사동길 321
+ID: gildong87
+Password: H@ppyDay5
+
+윤미나
+960712
+010-2222-7777
+yoonmina@example.com
+서울시 중구 명동길 789
+ID: mina96
+Password: SecretP@ss6
+
+최영호
+920225
+010-3333-6666
+choiyeongho@example.com
+서울시 마포구 어울마당로 654
+ID: yeongho92
+Password: ProtectedPwd!7
+
+권현우
+990430
+010-9999-1111
+kwonhyunwoo@example.com
+서울시 강북구 번동로 321
+ID: hyunwoo99
+Password: P@ssw0rd8Secure
+
+이지영
+930815
+010-8888-4444
+leejiyoung@example.com
+서울시 영등포구 여의도로 987
+ID: jiyoung93
+Password: Saf3Pwd!9
+
+박승민
+950502
+010-7777-3333
+parkseungmin@example.com
+서울시 관악구 관천로 123
+ID: seungmin95
+Password: Pr0t3ctedP@ss10
